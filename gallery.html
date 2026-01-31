@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisconsin Dales | The Splash Zone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('WisconsinDales.jpg');
+            background-size: 150px;
+            background-attachment: fixed;
+            background-repeat: repeat;
+            background-color: rgba(240, 249, 255, 0.96);
+            background-blend-mode: overlay;
+            cursor: none; /* Using custom cursor below */
+        }
+        #custom-cursor {
+            width: 35px; height: 35px;
+            position: fixed;
+            background-image: url('WisconsinDales.jpg');
+            background-size: cover;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            border: 3px solid #D81B60;
+            transform: translate(-50%, -50%);
+        }
+        .sprinkler-active { animation: wiggle 0.05s infinite; }
+        @keyframes wiggle {
+            0% { transform: rotate(0deg) scale(1.05); }
+            50% { transform: rotate(2deg) scale(1.05); }
+            100% { transform: rotate(0deg) scale(1.05); }
+        }
+        .droplet, .logo-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 100;
+            animation: spray 0.9s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        }
+        .droplet { background: #3b82f6; border-radius: 50%; }
+        .logo-particle {
+            width: 45px; height: 45px;
+            background-image: url('WisconsinDales.jpg');
+            background-size: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        @keyframes spray {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tw-x), var(--tw-y)) rotate(720deg) scale(0); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="text-slate-800 font-sans">
+    <div id="custom-cursor"></div>
+
+    <nav class="bg-white/90 backdrop-blur-md border-b p-4 sticky top-0 z-50 shadow-md">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="WisconsinDales.jpg" class="h-12 w-12 rounded-full border-2 border-[#D81B60]">
+                <div class="font-black text-2xl text-blue-800 tracking-tighter uppercase">WI DALES</div>
+            </div>
+            <a href="index.html" class="bg-gray-800 text-white px-6 py-2 rounded-full font-bold hover:bg-black">← Back Home</a>
+        </div>
+    </nav>
+
+    <header class="py-20 px-4 text-center">
+        <div class="mb-10 flex justify-center">
+            <img src="WisconsinDales.jpg" id="heroLogo" class="h-56 w-56 md:h-72 md:w-72 rounded-[4rem] shadow-2xl border-8 border-white hover:scale-110 transition-transform cursor-pointer">
+        </div>
+
+        <div class="flex flex-col items-center gap-6">
+            <button id="sprinklerBtn" class="bg-green-500 text-white px-16 py-8 rounded-full font-black text-4xl hover:bg-green-600 shadow-[0_15px_0_rgb(21,128,61)] active:shadow-none active:translate-y-[15px] transition-all flex items-center gap-6">
+                <i class="ri-water-flash-fill"></i> ACTIVATE SPRINKLER
+            </button>
+            <div id="sound-status" class="text-xs font-bold text-slate-400 uppercase tracking-widest">Audio: System Ready</div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto py-10 px-6">
+        <section id="pun-box" class="bg-white border-4 border-[#D81B60] p-16 rounded-[4rem] shadow-2xl text-center">
+            <h2 class="text-[#D81B60] font-black uppercase mb-4 tracking-widest">The Splash Pun</h2>
+            <p id="pun-text" class="text-3xl md:text-5xl font-black text-slate-900">"Water you waiting for?"</p>
+        </section>
+    </main>
+
+    <script>
+        const puns = ["I'm having a 'Dells' of a time!", "Water you waiting for?", "Leaf me alone, I'm at the Dales!", "Lawn and order: Special Sprinkler Unit."];
+        const cursor = document.getElementById('custom-cursor');
+        const punDisplay = document.getElementById('pun-text');
+        const btn = document.getElementById('sprinklerBtn');
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let sprayInterval;
+
+        function playSprinklerSound() {
+            const oscillator = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            oscillator.type = 'square';
+            oscillator.frequency.setValueAtTime(Math.random() * 150 + 50, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            oscillator.connect(gain); gain.connect(audioCtx.destination);
+            oscillator.start(); oscillator.stop(audioCtx.currentTime + 0.1);
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        btn.addEventListener('click', () => {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            btn.classList.toggle('sprinkler-active');
+            if(btn.classList.contains('sprinkler-active')) {
+                btn.innerHTML = `<i class="ri-tornado-line"></i> CH-CH-CH-CH!`;
+                btn.classList.replace('bg-green-500', 'bg-blue-600');
+                sprayInterval = setInterval(() => {
+                    playSprinklerSound();
+                    createParticle('droplet');
+                    if(Math.random() > 0.5) createParticle('logo-particle');
+                }, 100);
+            } else {
+                btn.innerHTML = `<i class="ri-water-flash-fill"></i> ACTIVATE SPRINKLER`;
+                btn.classList.replace('bg-blue-600', 'bg-green-500');
+                clearInterval(sprayInterval);
+            }
+        });
+
+        function createParticle(type) {
+            const p = document.createElement('div');
+            p.classList.add(type);
+            const size = Math.random() * (type === 'droplet' ? 15 : 40) + 10 + 'px';
+            p.style.width = size; p.style.height = size;
+            const rect = btn.getBoundingClientRect();
+            p.style.left = (rect.left + rect.width / 2) + 'px';
+            p.style.top = (rect.top + rect.height / 2) + 'px';
+            p.style.setProperty('--tw-x', (Math.random() - 0.5) * 1200 + 'px');
+            p.style.setProperty('--tw-y', (Math.random() - 0.5) * 1200 + 'px');
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 900);
+        }
+    </script>
+</body>
+</html>
