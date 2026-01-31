@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wisconsin Dales</title>
+    <style>
+        /* This is the style section - it controls how things look */
+        body { background-color: #fdf5e6; font-family: sans-serif; margin: 0; text-align: center; }
+        
+        nav { 
+            background: white; 
+            padding: 20px; 
+            border-bottom: 1px solid #ddd; 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center;
+        }
+
+        .nav-logo { font-weight: bold; color: #D81B60; font-size: 1.2rem; }
+
+        /* Styling for your clickable links */
+        .nav-links a {
+            text-decoration: none; 
+            color: #333;           
+            font-weight: bold;
+            margin-left: 20px;     
+            transition: 0.3s;      
+        }
+
+        .nav-links a:hover {
+            color: #D81B60; /* Turns magenta when you point at it */
+        }
+
+        .hero { background-color: #D81B60; color: white; padding: 60px 20px; }
+        .hero img { max-width: 300px; height: auto; }
+
+        .container { display: flex; justify-content: center; gap: 20px; padding: 40px; flex-wrap: wrap; }
+        .card { background: white; padding: 20px; border-radius: 10px; width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        h2 { color: #D81B60; }
+        
+        /* This makes the page scroll smoothly when you click a link */
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-logo">WI DALES</div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <img src="WisconsinDales.jpg" alt="Wisconsin Dales Logo">
+        <p>A personal play on the classic Dells vacation.</p>
+    </header>
+
+    <div class="container">
+
+        <main class="container">
+        <section class="card" id="about" style="min-height: 400px;">
+            <h2>The Vision</h2>
+            <p>Quality puns and relaxed vibes. The Dales is the place to be.</p>
+            <p>Just like the real Dells, we focus on family and fun—just with about 99% fewer tourists in our living room.</p>
+        </section>
+        
+        <section class="card" style="min-height: 400px;">
+            <h2>The Difference</h2>
+            <p>Fewer lines, more snacks. We don't have a wave pool, but we have a hose and a very enthusiastic sprinkler.</p>
+        </section>
+
+        <section class="card" id="contact" style="min-height: 400px;">
+            <h2>Contact</h2>
+            <p>Want to visit the Dales? Just look for the magenta sign and the smell of grill snacks.</p>
+            <p>Drop us a line if you're ever in the neighborhood (or just lost looking for Noah's Ark).</p>
+        </section>
+    </main>
+        </div>
+    </div>
+
+</body>
+</html>
