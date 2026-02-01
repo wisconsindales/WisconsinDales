@@ -5,50 +5,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wisconsin Dales | Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
-        body { background-color: #fdf5e6; font-family: sans-serif; margin: 0; text-align: center; }
-        html { scroll-behavior: smooth; }
-        .hero { background-color: #D81B60; color: white; padding: 80px 20px; }
-        .hero img { max-width: 300px; height: auto; border-radius: 20px; margin-bottom: 20px; }
+        body {
+            background-color: #fdf5e6;
+            font-family: sans-serif;
+            margin: 0;
+            text-align: center;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .hero {
+            background-color: #D81B60;
+            color: white;
+            padding: 90px 20px;
+        }
+
+        /* Main hero logo */
+        .hero-logo {
+            max-width: 360px;
+            margin: 0 auto 30px;
+        }
+
+        /* Subtle float animation for image button */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .floaty {
+            animation: float 4s ease-in-out infinite;
+        }
     </style>
 </head>
 <body>
 
-    <nav class="bg-white p-5 border-b flex justify-around items-center sticky top-0 z-50 shadow-sm">
-        <div class="font-bold text-[#D81B60] text-xl">WI DALES</div>
-        <div class="flex gap-6 items-center">
-            <a href="#" class="font-bold text-gray-700 hover:text-[#D81B60]">Home</a>
-            <a href="#about" class="font-bold text-gray-700 hover:text-[#D81B60]">About</a>
-            <a href="gallery.html" class="bg-[#D81B60] text-white px-4 py-2 rounded-full font-bold hover:bg-magenta-700 transition">Visit Splash Zone</a>
-        </div>
-    </nav>
-
-    <header class="hero">
-        <img src="WisconsinDales.jpg" alt="Wisconsin Dales Logo">
-        <h1 class="text-5xl font-black mb-4">Wisconsin Dales</h1>
-        <p class="text-xl mb-8 opacity-90">A personal play on the classic Dells vacation.</p>
-        
-        <a href="gallery.html" class="inline-block bg-white text-[#D81B60] px-10 py-4 rounded-full font-black text-2xl shadow-xl hover:scale-105 transition-transform">
-             ENTER THE SPLASH ZONE 💦
+<!-- NAV -->
+<nav class="bg-white p-5 border-b flex justify-around items-center sticky top-0 z-50 shadow-sm">
+    <div class="font-bold text-[#D81B60] text-xl">WI DALES</div>
+    <div class="flex gap-6 items-center">
+        <a href="#" class="font-bold text-gray-700 hover:text-[#D81B60]">Home</a>
+        <a href="#about" class="font-bold text-gray-700 hover:text-[#D81B60]">About</a>
+        <a href="gallery.html"
+           class="bg-[#D81B60] text-white px-4 py-2 rounded-full font-bold hover:opacity-90 transition">
+            Visit Splash Zone
         </a>
-    </header>
+    </div>
+</nav>
 
-    <main class="max-w-6xl mx-auto py-12 px-6 grid md:grid-cols-3 gap-8">
-        <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#D81B60]" id="about">
-            <h2 class="text-2xl font-bold text-[#D81B60] mb-4">The Vision</h2>
-            <p class="text-gray-600">Quality puns and relaxed vibes. The Dales is the place to be with 99% fewer tourists.</p>
-        </section>
-        
-        <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#D81B60]">
-            <h2 class="text-2xl font-bold text-[#D81B60] mb-4">The Difference</h2>
-            <p class="text-gray-600">Fewer lines, more snacks. We have a very enthusiastic garden hose.</p>
-        </section>
+<!-- HERO -->
+<header class="hero">
 
-        <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#D81B60]" id="contact">
-            <h2 class="text-2xl font-bold text-[#D81B60] mb-4">Contact</h2>
-            <p class="text-gray-600">Look for the magenta sign and the smell of grill snacks in the neighborhood.</p>
-        </section>
-    </main>
+    <!-- LOGO FRONT & CENTER -->
+    <img src="WisconsinDales.jpg"
+         alt="Wisconsin Dales Logo"
+         class="hero-logo">
+
+    <p class="text-xl mb-10 opacity-90 max-w-xl mx-auto">
+        A personal play on the classic Dells vacation.
+    </p>
+
+    <!-- BUTTON STACK -->
+    <div class="flex flex-col items-center gap-8">
+
+        <!-- PRIMARY TEXT BUTTON -->
+        <a href="gallery.html"
+           class="inline-block bg-white text-[#D81B60] px-12 py-4 rounded-full font-black text-2xl shadow-xl
+                  hover:scale-105 transition-transform">
+            ENTER THE SPLASH ZONE 💦
+        </a>
+
+        <!-- IMAGE OUTLINE BUTTON -->
+        <a href="gallery.html"
+           class="floaty inline-block rounded-3xl border-4 border-white/80 p-4
+                  hover:border-white hover:shadow-[0_0_40px_rgba(255,255,255,0.6)]
+                  transition-all duration-300">
+            <img
+                src="Wisconsin Dales Creations.png"
+                alt="Wisconsin Dales Creations Gallery"
+                class="mx-auto max-w-xs"
+            >
+        </a>
+
+    </div>
+</header>
+
+<!-- MAIN -->
+<main class="max-w-6xl mx-auto py-12 px-6 grid md:grid-cols-3 gap-8">
+
+    <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#D81B60]" id="about">
+        <h2 class="text-2xl font-bold text-[#D81B60] mb-4">The Vision</h2>
+        <p class="text-gray-600">
+            Quality puns and relaxed vibes. The Dales is the place to be with 99.999% fewer tourists.
+        </p>
+    </section>
+
+    <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#D81B60]">
+        <h2 class="text-2xl font-bold text-[#D81B60] mb-4">The Difference</h2>
+        <p class="text-gray-600">
+            Fewer lines, more snacks. We have a very enthusiastic garden hose.
+        </p>
+    </section>
+
+    <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#D81B60]" id="contact">
+        <h2 class="text-2xl font-bold text-[#D81B60] mb-4">Contact</h2>
+        <p class="text-gray-600">
+            Look for the magenta sign and the smell of grill snacks in the neighborhood.
+        </p>
+    </section>
+
+</main>
 
 </body>
 </html>
