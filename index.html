@@ -152,6 +152,8 @@
 
 <!-- PUN SCRIPT -->
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+
     const puns = [
         "Welcome to the Wisconsin Dales — where the only thing wetter than the jokes is the weather.",
         "It’s like the Wisconsin Dells, but legally distinct and emotionally identical.",
@@ -193,7 +195,7 @@
         "The only thing deeper than our water is our commitment to puns.",
         "Wisconsin Dales: where expectations are managed very carefully.",
         "Our admission price is one polite nod and a chuckle.",
-        "What happens at the Dales, stays at the.... nope,nope. Thats Vegas!",
+        "What happens at the Dales, stays at the.... nope,nope. Thats Vegas!.",
         "Please supervise children, adults, and anyone telling jokes.",
         "This attraction may cause uncontrollable sighing and smiling.",
         "We don’t have a height requirements, but emotional immaturity greatly helps.",
@@ -205,28 +207,31 @@
         "We take fun very seriously. Medium-seriously."
     ];
 
-    let index = Math.floor(Math.random() * puns.length);
-    const punEl = document.getElementById("pun");
+      const punEl = document.getElementById("pun");
     const btn = document.getElementById("punBtn");
 
-    function nextPun() {
-        if (!punEl) return;
+    if (!punEl) {
+        console.error("Pun element not found");
+        return;
+    }
 
+    let index = Math.floor(Math.random() * puns.length);
+
+    function nextPun() {
         punEl.classList.add("opacity-0");
 
         setTimeout(() => {
             index = (index + 1) % puns.length;
-            punEl.innerText = puns[index];
+            punEl.textContent = puns[index];
             punEl.classList.remove("opacity-0");
         }, 200);
     }
 
     btn?.addEventListener("click", nextPun);
     nextPun();
+});
 </script>
 
-</body>
-</html>
 
 
 
