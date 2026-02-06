@@ -218,19 +218,25 @@ document.addEventListener("DOMContentLoaded", () => {
     let index = Math.floor(Math.random() * puns.length);
 
     function nextPun() {
-        punEl.classList.add("opacity-0");
+    let next;
+    do {
+        next = Math.floor(Math.random() * puns.length);
+    } while (next === index);
 
-        setTimeout(() => {
-            index = (index + 1) % puns.length;
-            punEl.textContent = puns[index];
-            punEl.classList.remove("opacity-0");
-        }, 200);
-    }
+    index = next;
+
+    punEl.classList.add("opacity-0");
+    setTimeout(() => {
+        punEl.textContent = puns[index];
+        punEl.classList.remove("opacity-0");
+    }, 200);
+}
 
     btn?.addEventListener("click", nextPun);
     nextPun();
 });
 </script>
+
 
 
 
