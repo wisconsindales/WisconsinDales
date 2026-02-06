@@ -218,15 +218,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let index = Math.floor(Math.random() * puns.length);
 
     function nextPun() {
-    let next;
-    do {
-        next = Math.floor(Math.random() * puns.length);
-    } while (next === index);
-
-    index = next;
-
     punEl.classList.add("opacity-0");
+
     setTimeout(() => {
+        index = (index + 1) % puns.length; // moves to the next pun in order
         punEl.textContent = puns[index];
         punEl.classList.remove("opacity-0");
     }, 200);
@@ -236,6 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
     nextPun();
 });
 </script>
+
 
 
 
