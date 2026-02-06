@@ -296,12 +296,11 @@ document.addEventListener("DOMContentLoaded", () => {
 // Splash effect for button
 btn.addEventListener("click", (e) => {
     const splash = document.createElement("span");
-    const rect = btn.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    
+    const size = Math.max(btn.offsetWidth, btn.offsetHeight);
+
     splash.style.width = splash.style.height = `${size}px`;
-    splash.style.left = `${e.clientX - rect.left - size/2}px`;
-    splash.style.top = `${e.clientY - rect.top - size/2}px`;
+    splash.style.left = `${e.offsetX - size/2}px`;
+    splash.style.top = `${e.offsetY - size/2}px`;
 
     btn.appendChild(splash);
 
@@ -316,6 +315,7 @@ nextPun();
 
 </body>
 </html>
+
 
 
 
