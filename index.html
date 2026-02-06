@@ -1,106 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wisconsin Dales | Home</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wisconsin Dales | Home</title>
 
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
 
-    <style>
-        body {
-            background-color: #D81B60;
-            font-family: sans-serif;
-            margin: 0;
-            text-align: center;
-        }
+<style>
+    body {
+        background-color: #D81B60;
+        font-family: sans-serif;
+        margin: 0;
+        text-align: center;
+    }
 
-        html {
-            scroll-behavior: smooth;
-        }
+    html {
+        scroll-behavior: smooth;
+    }
 
-        .hero {
-            background-color: #D81B60;
-            color: white;
-            padding: 90px 20px;
-        }
+    .hero {
+        background-color: #D81B60;
+        color: white;
+        padding: 90px 20px;
+    }
 
-        .hero-logo {
-            max-width: 360px;
-            margin: 0 auto 30px;
-        }
+    .hero-logo {
+        max-width: 360px;
+        margin: 0 auto 30px;
+    }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-        }
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-6px); }
+    }
 
-        .floaty {
-            animation: float 4s ease-in-out infinite;
-        }
+    .floaty {
+        animation: float 4s ease-in-out infinite;
+    }
 
-        /* New Pun Styling */
-        #pun {
-            font-size: 2.5rem; /* bigger font */
-            font-weight: 900;
-            background: linear-gradient(90deg, #D81B60, #FF79A9, #FFC0CB); /* magenta → pink gradient */
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.15); /* subtle shadow for contrast */
-            text-align: center;
-            padding: 20px;
-            max-width: 90%;
-            transition: all 0.5s ease-in-out;
-        }
+    /* Puns Styling & Gradient Animation */
+    @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
 
-        /* Pop animation for size */
-        @keyframes pop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
+    #pun {
+        font-size: 2.5rem;
+        font-weight: 900;
+        background: linear-gradient(270deg, #D81B60, #FF79A9, #FFC0CB);
+        background-size: 600% 600%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.15);
+        text-align: center;
+        padding: 20px;
+        max-width: 90%;
+        transition: all 0.5s ease-in-out;
+        animation: gradientMove 5s ease infinite;
+    }
 
-        /* Bounce animation for vertical movement */
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); } /* moves up 10px */
-        }
+    /* Pop animation for pun text */
+    @keyframes pop {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
 
-        /* Apply both animations together */
-        .pop {
-            animation: pop 0.4s ease-in-out, bounce 0.8s ease-in-out;
-        }
-        /* Water drop effect for the button */
-.splash-btn {
-    position: relative;
-    overflow: hidden;
-}
+    /* Bounce animation for pun text */
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
 
-.splash-btn span {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
-    transform: scale(0);
-    animation: splash 0.6s ease-out forwards;
-    pointer-events: none;
-}
+    .pop {
+        animation: pop 0.4s ease-in-out, bounce 0.8s ease-in-out;
+    }
 
-@keyframes splash {
-    0% {
+    /* Water drop effect for the button */
+    .splash-btn {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .splash-btn span {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.7);
         transform: scale(0);
-        opacity: 1;
+        animation: splash 0.6s ease-out forwards;
+        pointer-events: none;
     }
-    80% {
-        transform: scale(3);
-        opacity: 0.6;
+
+    @keyframes splash {
+        0% { transform: scale(0); opacity: 1; }
+        80% { transform: scale(3); opacity: 0.6; }
+        100% { transform: scale(4); opacity: 0; }
     }
-    100% {
-        transform: scale(4);
-        opacity: 0;
+
+    /* Button pop animation */
+    @keyframes buttonPop {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
     }
-}
-    </style>
+</style>
 </head>
 <body>
 
@@ -110,8 +116,7 @@
     <div class="flex gap-6 items-center">
         <a href="#" class="font-bold text-gray-700 hover:text-[#D81B60]">Home</a>
         <a href="#about" class="font-bold text-gray-700 hover:text-[#D81B60]">About</a>
-        <a href="gallery.html"
-           class="bg-[#D81B60] text-white px-4 py-2 rounded-full font-bold hover:opacity-90 transition">
+        <a href="gallery.html" class="bg-[#D81B60] text-white px-4 py-2 rounded-full font-bold hover:opacity-90 transition">
             Visit Splash Zone
         </a>
     </div>
@@ -120,12 +125,7 @@
 <!-- HERO -->
 <header class="hero">
 
-    <!-- rename file to: wisconsin-dales.jpg -->
-    <img
-        src="wisconsin-dales.jpg"
-        alt="Wisconsin Dales"
-        class="mx-auto w-full max-w-xs"
-    />
+    <img src="wisconsin-dales.jpg" alt="Wisconsin Dales" class="mx-auto w-full max-w-xs"/>
 
     <p class="text-xl mb-10 opacity-90 max-w-xl mx-auto">
         A personal play on the classic Dells vacation — with way more puns.
@@ -134,21 +134,13 @@
     <div class="flex flex-col items-center gap-8">
 
         <a href="gallery.html"
-           class="inline-block bg-white text-[#D81B60] px-12 py-4 rounded-full font-black text-2xl shadow-xl
-                  hover:scale-105 transition-transform">
+           class="inline-block bg-white text-[#D81B60] px-12 py-4 rounded-full font-black text-2xl shadow-xl hover:scale-105 transition-transform">
             ENTER THE SPLASH ZONE 💦
         </a>
 
-        <!-- rename file to: wisconsin dales creations.png -->
         <a href="gallery.html"
-           class="floaty inline-block rounded-3xl border-4 border-white/80 p-4
-                  hover:border-white hover:shadow-[0_0_40px_rgba(255,255,255,0.6)]
-                  transition-all duration-300">
-            <img
-                src="wisconsin-dales-creations.png"
-                alt="Wisconsin Dales Creations"
-                class="mx-auto w-full max-w-xs"
-            >
+           class="floaty inline-block rounded-3xl border-4 border-white/80 p-4 hover:border-white hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] transition-all duration-300">
+            <img src="wisconsin-dales-creations.png" alt="Wisconsin Dales Creations" class="mx-auto w-full max-w-xs">
         </a>
 
     </div>
@@ -160,20 +152,14 @@
     <!-- PUN ZONE -->
     <section class="bg-white p-10 rounded-3xl shadow-xl border-t-4 border-[#D81B60] text-center mb-12">
 
-        <h2 class="text-3xl font-black text-[#D81B60] mb-6">
-            Da Pun Zone 😎
-        </h2>
+        <h2 class="text-3xl font-black text-[#D81B60] mb-6">Da Pun Zone 😎</h2>
 
-        <p id="pun"
-           class="min-h-[4rem] transition-opacity duration-300">
-            Loading peak Wisconsin humor…
-        </p>
+        <p id="pun" class="min-h-[4rem] transition-opacity duration-300">Loading peak Wisconsin humor…</p>
 
         <button id="punBtn"
-    class="bg-[#D81B60] text-white px-10 py-4 rounded-full font-black text-xl
-           shadow-lg hover:scale-105 transition-transform splash-btn">
-    SPLASH ME ANOTHER 💦
-</button>
+            class="bg-[#D81B60] text-white px-10 py-4 rounded-full font-black text-xl shadow-lg hover:scale-105 transition-transform splash-btn">
+            SPLASH ME ANOTHER 💦
+        </button>
 
     </section>
 
@@ -189,16 +175,12 @@
 
         <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#D81B60]">
             <h2 class="text-2xl font-bold text-[#D81B60] mb-4">The Difference</h2>
-            <p class="text-gray-600">
-                Fewer lines, more snacks. Our wave pool is imaginary.
-            </p>
+            <p class="text-gray-600">Fewer lines, more snacks. Our wave pool is imaginary.</p>
         </section>
 
         <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#D81B60]" id="contact">
             <h2 class="text-2xl font-bold text-[#D81B60] mb-4">Contact</h2>
-            <p class="text-gray-600">
-                Look for the magenta sign and listen for excessive dad laughter.
-            </p>
+            <p class="text-gray-600">Look for the magenta sign and listen for excessive dad laughter.</p>
         </section>
 
     </div>
@@ -210,7 +192,7 @@
     Wisconsin Dales — Come for the puns. Stay cause you clicked.
 </footer>
 
-<!-- PUN SCRIPT -->
+<!-- SCRIPT -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -270,22 +252,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const punEl = document.getElementById("pun");
     const btn = document.getElementById("punBtn");
 
-    if (!punEl) {
-        console.error("Pun element not found");
-        return;
-    }
+    if (!punEl) return;
 
     let index = Math.floor(Math.random() * puns.length);
 
     function nextPun() {
         punEl.classList.add("opacity-0");
-
         setTimeout(() => {
             index = (index + 1) % puns.length;
             punEl.textContent = puns[index];
             punEl.classList.remove("opacity-0");
 
-            // trigger pop + bounce animation
+            // Pop + bounce
             punEl.classList.add("pop");
             setTimeout(() => punEl.classList.remove("pop"), 800);
         }, 200);
@@ -293,34 +271,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     btn?.addEventListener("click", nextPun);
 
-// Splash effect for button
-btn.addEventListener("click", (e) => {
-    const splash = document.createElement("span");
-    const size = Math.max(btn.offsetWidth, btn.offsetHeight);
+    // Splash effect + button pop
+    btn?.addEventListener("click", (e) => {
+        // Splash
+        const splash = document.createElement("span");
+        const rect = btn.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        splash.style.width = splash.style.height = `${size}px`;
+        splash.style.left = `${e.clientX - rect.left - size/2}px`;
+        splash.style.top = `${e.clientY - rect.top - size/2}px`;
+        btn.appendChild(splash);
+        setTimeout(() => splash.remove(), 600);
 
-    splash.style.width = splash.style.height = `${size}px`;
-    splash.style.left = `${e.offsetX - size/2}px`;
-    splash.style.top = `${e.offsetY - size/2}px`;
+        // Button pop
+        btn.style.animation = "buttonPop 0.3s ease";
+        setTimeout(() => btn.style.animation = "", 300);
+    });
 
-    btn.appendChild(splash);
-
-    setTimeout(() => {
-        splash.remove();
-    }, 600); // match animation duration
-});
-
-nextPun();
+    nextPun();
 });
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
