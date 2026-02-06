@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wisconsin Dales | Home</title>
+
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
@@ -24,13 +26,11 @@
             padding: 90px 20px;
         }
 
-        /* Main hero logo */
         .hero-logo {
             max-width: 360px;
             margin: 0 auto 30px;
         }
 
-        /* Subtle float animation for image button */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-6px); }
@@ -59,26 +59,22 @@
 <!-- HERO -->
 <header class="hero">
 
-    <!-- LOGO FRONT & CENTER -->
     <img src="WisconsinDales.jpg"
          alt="Wisconsin Dales Logo"
          class="hero-logo">
 
     <p class="text-xl mb-10 opacity-90 max-w-xl mx-auto">
-        A personal play on the classic Dells vacation.
+        A personal play on the classic Dells vacation — with way more puns.
     </p>
 
-    <!-- BUTTON STACK -->
     <div class="flex flex-col items-center gap-8">
 
-        <!-- PRIMARY TEXT BUTTON -->
         <a href="gallery.html"
            class="inline-block bg-white text-[#D81B60] px-12 py-4 rounded-full font-black text-2xl shadow-xl
                   hover:scale-105 transition-transform">
             ENTER THE SPLASH ZONE 💦
         </a>
 
-        <!-- IMAGE OUTLINE BUTTON -->
         <a href="gallery.html"
            class="floaty inline-block rounded-3xl border-4 border-white/80 p-4
                   hover:border-white hover:shadow-[0_0_40px_rgba(255,255,255,0.6)]
@@ -94,30 +90,120 @@
 </header>
 
 <!-- MAIN -->
-<main class="max-w-6xl mx-auto py-12 px-6 grid md:grid-cols-3 gap-8">
+<main class="max-w-6xl mx-auto py-12 px-6">
 
-    <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#D81B60]" id="about">
-        <h2 class="text-2xl font-bold text-[#D81B60] mb-4">The Vision</h2>
-        <p class="text-gray-600">
-            Quality puns and relaxed vibes. The Dales is the place to be with 99.999% fewer tourists.
+    <!-- PUN ZONE -->
+    <section class="bg-white p-10 rounded-3xl shadow-xl border-t-4 border-[#D81B60] text-center mb-12">
+
+        <h2 class="text-3xl font-black text-[#D81B60] mb-6">
+            Wisconsin Dales Pun Zone 😎
+        </h2>
+
+        <p id="pun"
+           class="text-2xl font-extrabold text-gray-700 mb-8 transition-all duration-300">
+            Loading peak Wisconsin humor…
         </p>
+
+        <button onclick="nextPun()"
+            class="bg-[#D81B60] text-white px-10 py-4 rounded-full font-black text-xl
+                   shadow-lg hover:scale-105 transition-transform">
+            SPLASH ME ANOTHER PUN 💦
+        </button>
+
     </section>
 
-    <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#D81B60]">
-        <h2 class="text-2xl font-bold text-[#D81B60] mb-4">The Difference</h2>
-        <p class="text-gray-600">
-            Fewer lines, more snacks. We have a very enthusiastic garden hose.
-        </p>
-    </section>
+    <!-- INFO CARDS -->
+    <div class="grid md:grid-cols-3 gap-8">
 
-    <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#D81B60]" id="contact">
-        <h2 class="text-2xl font-bold text-[#D81B60] mb-4">Contact</h2>
-        <p class="text-gray-600">
-            Look for the magenta sign and the smell of grill snacks in the neighborhood.
-        </p>
-    </section>
+        <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#D81B60]" id="about">
+            <h2 class="text-2xl font-bold text-[#D81B60] mb-4">The Vision</h2>
+            <p class="text-gray-600">
+                Quality puns, relaxed vibes, and 99.999% fewer tourists than the Dells.
+            </p>
+        </section>
+
+        <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#D81B60]">
+            <h2 class="text-2xl font-bold text-[#D81B60] mb-4">The Difference</h2>
+            <p class="text-gray-600">
+                Fewer lines, more snacks. Our wave pool is mostly imagination.
+            </p>
+        </section>
+
+        <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#D81B60]" id="contact">
+            <h2 class="text-2xl font-bold text-[#D81B60] mb-4">Contact</h2>
+            <p class="text-gray-600">
+                Look for the magenta sign and listen for excessive dad laughter.
+            </p>
+        </section>
+
+    </div>
 
 </main>
+
+<!-- FOOTER -->
+<footer class="bg-[#7c0d22] text-white py-10 text-center font-semibold">
+    Wisconsin Dales — Come for the puns. Stay because you clicked one more time.
+</footer>
+
+<!-- PUN SCRIPT -->
+<script>
+    const puns = [
+        "Welcome to the Wisconsin Dales — where the only thing wetter than the jokes is the weather.",
+        "It’s like the Wisconsin Dells, but legally distinct and emotionally identical.",
+        "Our slides are imaginary, but the puns are real slippery.",
+        "Come for the Dales. Stay because you misread the sign.",
+        "We put the ‘Dell’ in ‘Well… that was a joke.’",
+        "No water parks, just splash damage from laughter.",
+        "If you’re not having fun, you might be in the wrong Dales.",
+        "Less chlorine. More groan-ine.",
+        "Wisconsin Dales: where every joke is a little cheesy — as tradition demands.",
+        "You wanted the Dells. You got the Dales. Close enough for a Midwestern goodbye.",
+        "All thrills, no spills… unless you spill your drink laughing.",
+        "We’re on a pun-limited aquifer. Please recycle your groans.",
+        "This site contains 0% water and 100% dad approval.",
+        "The Dells zigged. The Dales zagged. Nobody knows why.",
+        "Please keep your arms, legs, and expectations inside the joke at all times."
+	"Welcome to the Wisconsin Dales — the only attraction where the main splash is sarcasm.",
+  	"It’s like the Dells, but with fewer tourists and more emotional support snacks.",
+ 	"Our lazy river is just you standing around thinking about snacks.",
+ 	"No water rides, but plenty of dry humor.",
+  	"Wisconsin Dales: come for the name, stay because you already parked.",
+  	"The slides are imaginary, but the dad jokes are very real.",
+  	"We proudly operate on a strict no-refunds-for-eye-rolling policy.",
+  	"If found fun, please return to the Wisconsin Dales immediately.",
+  	"Our wave pool is just someone saying “woooosh” nearby.",
+  	"This is what happens when the Dells takes a wrong turn and leans into it.",
+  	"Zero chlorine. 100% groan.",
+  	"Wisconsin Dales — legally distinct, spiritually identical.",
+  	"We’re not saying it’s better than the Dells… but we’re also not not saying that.",
+  	"Come ride our most popular attraction: mild amusement.",
+  	"Our gift shop is just compliments and bad advice.",
+  	"You can’t spell ‘Dales’ without ‘Deals’… actually you can, but still.",
+  	"We’re a splash of fun and a puddle of responsibility.",
+  	"If excitement lasts more than four hours, please tell everyone.",
+  	"The only thing deeper than our water is our commitment to puns.",
+  	"Wisconsin Dales: where expectations are managed very carefully.",
+  	"Our admission price is one polite nod and a chuckle.",
+  	"Please supervise children, adults, and anyone telling jokes.",
+  	"This attraction may cause uncontrollable sighing and smiling.",
+  	"We don’t have a height requirement, but emotional maturity helps.",
+  	"Our rides are imaginary, which makes the lines move really fast.",
+  	"The Midwest goodbye starts here and never truly ends.",
+  	"If you’re confused, you’re doing it right.",
+  	"Welcome! You are now officially ‘having a good enough time.’",
+  	"Wisconsin Dales — because someone had to lean into the typo.",
+  	"We take fun very seriously. Medium-seriously."
+    ];
+
+    let index = Math.floor(Math.random() * puns.length);
+
+    function nextPun() {
+        index = (index + 1) % puns.length;
+        document.getElementById("pun").innerText = puns[index];
+    }
+
+    nextPun();
+</script>
 
 </body>
 </html>
