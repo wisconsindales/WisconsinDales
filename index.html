@@ -191,6 +191,9 @@
 <footer class="bg-[#7c0d22] text-white py-10 text-center font-semibold">
     Wisconsin Dales — Come for the puns. Stay cause you clicked.
 </footer>
+    
+<!-- Splash Sound -->
+<audio id="splashSound" src="splash.mp3" preload="auto"></audio>
 
 <!-- SCRIPT -->
 <script>
@@ -273,24 +276,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Splash effect + button pop
     btn?.addEventListener("click", (e) => {
-        // Splash
-        const splash = document.createElement("span");
-        const rect = btn.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        splash.style.width = splash.style.height = `${size}px`;
-        splash.style.left = `${e.clientX - rect.left - size/2}px`;
-        splash.style.top = `${e.clientY - rect.top - size/2}px`;
-        btn.appendChild(splash);
-        setTimeout(() => splash.remove(), 600);
+    // Play splash sound
+    const audio = document.getElementById("splashSound");
+    if (audio) {
+        audio.currentTime = 0; // restart if already playing
+        audio.play();
+    }
 
-        // Button pop
-        btn.style.animation = "buttonPop 0.3s ease";
-        setTimeout(() => btn.style.animation = "", 300);
-    });
+    // Splash animation
+    const splash = document.createElement("span");
+    const rect = btn.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    
+    splash.style.width = splash.style.height = `${size}px`;
+    splash.style.left = `${e.clientX - rect.left - size/2}px`;
+    splash.style.top = `${e.clientY - rect.top - size/2}px`;
 
+    btn.appendChild(splash);
+
+    setTimeout(() => {
+        splash.remove();
+    }, 600);
+
+    // Button pop
+    btn.style.animation = "buttonPop 0.3s ease";
+    setTimeout(() => btn.style.animation = "", 300);
+});
+    
     nextPun();
 });
 </script>
 
 </body>
 </html>
+
