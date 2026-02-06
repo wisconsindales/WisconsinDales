@@ -71,6 +71,35 @@
         .pop {
             animation: pop 0.4s ease-in-out, bounce 0.8s ease-in-out;
         }
+        /* Water drop effect for the button */
+.splash-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.splash-btn span {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.7);
+    transform: scale(0);
+    animation: splash 0.6s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes splash {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    80% {
+        transform: scale(3);
+        opacity: 0.6;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
     </style>
 </head>
 <body>
@@ -141,10 +170,10 @@
         </p>
 
         <button id="punBtn"
-            class="bg-[#D81B60] text-white px-10 py-4 rounded-full font-black text-xl
-                   shadow-lg hover:scale-105 transition-transform mt-4">
-            SPLASH ME ANOTHER 💦
-        </button>
+    class="bg-[#D81B60] text-white px-10 py-4 rounded-full font-black text-xl
+           shadow-lg hover:scale-105 transition-transform splash-btn">
+    SPLASH ME ANOTHER 💦
+</button>
 
     </section>
 
@@ -263,12 +292,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     btn?.addEventListener("click", nextPun);
-    nextPun();
+
+// Splash effect for button
+btn.addEventListener("click", (e) => {
+    const splash = document.createElement("span");
+    const rect = btn.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    
+    splash.style.width = splash.style.height = `${size}px`;
+    splash.style.left = `${e.clientX - rect.left - size/2}px`;
+    splash.style.top = `${e.clientY - rect.top - size/2}px`;
+
+    btn.appendChild(splash);
+
+    setTimeout(() => {
+        splash.remove();
+    }, 600); // match animation duration
+});
+
+nextPun();
 });
 </script>
 
 </body>
 </html>
+
 
 
 
