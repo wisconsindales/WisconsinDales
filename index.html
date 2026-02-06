@@ -39,6 +39,38 @@
         .floaty {
             animation: float 4s ease-in-out infinite;
         }
+
+        /* New Pun Styling */
+        #pun {
+            font-size: 2.5rem; /* bigger font */
+            font-weight: 900;
+            background: linear-gradient(90deg, #D81B60, #FF79A9, #FFC0CB); /* magenta → pink gradient */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.15); /* subtle shadow for contrast */
+            text-align: center;
+            padding: 20px;
+            max-width: 90%;
+            transition: all 0.5s ease-in-out;
+        }
+
+        /* Pop animation for size */
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Bounce animation for vertical movement */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); } /* moves up 10px */
+        }
+
+        /* Apply both animations together */
+        .pop {
+            animation: pop 0.4s ease-in-out, bounce 0.8s ease-in-out;
+        }
     </style>
 </head>
 <body>
@@ -61,10 +93,10 @@
 
     <!-- rename file to: wisconsin-dales.jpg -->
     <img
-  src="wisconsin-dales.jpg"
-  alt="Wisconsin Dales"
-  class="mx-auto w-full max-w-xs"
-/>
+        src="wisconsin-dales.jpg"
+        alt="Wisconsin Dales"
+        class="mx-auto w-full max-w-xs"
+    />
 
     <p class="text-xl mb-10 opacity-90 max-w-xl mx-auto">
         A personal play on the classic Dells vacation — with way more puns.
@@ -104,14 +136,13 @@
         </h2>
 
         <p id="pun"
-           class="text-2xl font-extrabold text-gray-700 mb-8 min-h-[4rem]
-                  transition-opacity duration-300">
+           class="min-h-[4rem] transition-opacity duration-300">
             Loading peak Wisconsin humor…
         </p>
 
         <button id="punBtn"
             class="bg-[#D81B60] text-white px-10 py-4 rounded-full font-black text-xl
-                   shadow-lg hover:scale-105 transition-transform">
+                   shadow-lg hover:scale-105 transition-transform mt-4">
             SPLASH ME ANOTHER 💦
         </button>
 
@@ -207,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "We take fun very seriously. Medium-seriously."
     ];
 
-      const punEl = document.getElementById("pun");
+    const punEl = document.getElementById("pun");
     const btn = document.getElementById("punBtn");
 
     if (!punEl) {
@@ -218,32 +249,26 @@ document.addEventListener("DOMContentLoaded", () => {
     let index = Math.floor(Math.random() * puns.length);
 
     function nextPun() {
-    punEl.classList.add("opacity-0");
+        punEl.classList.add("opacity-0");
 
-    setTimeout(() => {
-        index = (index + 1) % puns.length; // moves to the next pun in order
-        punEl.textContent = puns[index];
-        punEl.classList.remove("opacity-0");
-    }, 200);
-}
+        setTimeout(() => {
+            index = (index + 1) % puns.length;
+            punEl.textContent = puns[index];
+            punEl.classList.remove("opacity-0");
+
+            // trigger pop + bounce animation
+            punEl.classList.add("pop");
+            setTimeout(() => punEl.classList.remove("pop"), 800);
+        }, 200);
+    }
 
     btn?.addEventListener("click", nextPun);
     nextPun();
 });
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
+</body>
+</html>
 
 
 
