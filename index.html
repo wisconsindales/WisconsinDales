@@ -59,9 +59,10 @@
 <!-- HERO -->
 <header class="hero">
 
-    <img src="WisconsinDales.jpg"
-         alt="Wisconsin Dales Logo"
-         class="hero-logo">
+    <!-- rename file to: wisconsin-dales.jpg -->
+    <img src="wisconsin-dales.jpg"
+         alt="Wisconsin Dales logo"
+         class="hero-logo w-full max-w-xs mx-auto">
 
     <p class="text-xl mb-10 opacity-90 max-w-xl mx-auto">
         A personal play on the classic Dells vacation — with way more puns.
@@ -75,14 +76,15 @@
             ENTER THE SPLASH ZONE 💦
         </a>
 
+        <!-- rename file to: wisconsin-dales-creations.png -->
         <a href="gallery.html"
            class="floaty inline-block rounded-3xl border-4 border-white/80 p-4
                   hover:border-white hover:shadow-[0_0_40px_rgba(255,255,255,0.6)]
                   transition-all duration-300">
             <img
-                src="Wisconsin Dales Creations.png"
-                alt="Wisconsin Dales Creations Gallery"
-                class="mx-auto max-w-xs"
+                src="wisconsin-dales-creations.png"
+                alt="Wisconsin Dales Creations gallery preview"
+                class="mx-auto w-full max-w-xs"
             >
         </a>
 
@@ -96,18 +98,19 @@
     <section class="bg-white p-10 rounded-3xl shadow-xl border-t-4 border-[#D81B60] text-center mb-12">
 
         <h2 class="text-3xl font-black text-[#D81B60] mb-6">
-            Wisconsin Dales Pun Zone 😎
+            Da Pun Zone 😎
         </h2>
 
         <p id="pun"
-           class="text-2xl font-extrabold text-gray-700 mb-8 transition-all duration-300">
+           class="text-2xl font-extrabold text-gray-700 mb-8 min-h-[4rem]
+                  transition-opacity duration-300">
             Loading peak Wisconsin humor…
         </p>
 
-        <button onclick="nextPun()"
+        <button id="punBtn"
             class="bg-[#D81B60] text-white px-10 py-4 rounded-full font-black text-xl
                    shadow-lg hover:scale-105 transition-transform">
-            SPLASH ME ANOTHER PUN 💦
+            SPLASH ME ANOTHER 💦
         </button>
 
     </section>
@@ -125,7 +128,7 @@
         <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#D81B60]">
             <h2 class="text-2xl font-bold text-[#D81B60] mb-4">The Difference</h2>
             <p class="text-gray-600">
-                Fewer lines, more snacks. Our wave pool is mostly imagination.
+                Fewer lines, more snacks. Our wave pool is mostly imaginary.
             </p>
         </section>
 
@@ -163,48 +166,57 @@
         "This site contains 0% water and 100% dad approval.",
         "The Dells zigged. The Dales zagged. Nobody knows why.",
         "Please keep your arms, legs, and expectations inside the joke at all times.",
-	"Welcome to the Wisconsin Dales — the only attraction where the main splash is sarcasm.",
-  	"It’s like the Dells, but with fewer tourists and more emotional support snacks.",
- 	"Our lazy river is just you standing around thinking about snacks.",
- 	"No water rides, but plenty of dry humor.",
-  	"Wisconsin Dales: come for the name, stay because you already parked.",
-  	"The slides are imaginary, but the dad jokes are very real.",
-  	"We proudly operate on a strict no-refunds-for-eye-rolling policy.",
-  	"If found fun, please return to the Wisconsin Dales immediately.",
-  	"Our wave pool is just someone saying “woooosh” nearby.",
-  	"This is what happens when the Dells takes a wrong turn and leans into it.",
-  	"Zero chlorine. 100% groan.",
-  	"Wisconsin Dales — legally distinct, spiritually identical.",
-  	"We’re not saying it’s better than the Dells… but we’re also not not saying that.",
-  	"Come ride our most popular attraction: mild amusement.",
-  	"Our gift shop is just compliments and bad advice.",
-  	"You can’t spell ‘Dales’ without ‘Deals’… actually you can, but still.",
-  	"We’re a splash of fun and a puddle of responsibility.",
-  	"If excitement lasts more than four hours, please tell everyone.",
-  	"The only thing deeper than our water is our commitment to puns.",
-  	"Wisconsin Dales: where expectations are managed very carefully.",
-  	"Our admission price is one polite nod and a chuckle.",
-  	"Please supervise children, adults, and anyone telling jokes.",
-  	"This attraction may cause uncontrollable sighing and smiling.",
-  	"We don’t have a height requirement, but emotional maturity helps.",
-  	"Our rides are imaginary, which makes the lines move really fast.",
-  	"The Midwest goodbye starts here and never truly ends.",
-  	"If you’re confused, you’re doing it right.",
-  	"Welcome! You are now officially ‘having a good enough time.’",
-  	"Wisconsin Dales — because someone had to lean into the typo.",
-  	"We take fun very seriously. Medium-seriously."
+        "Welcome to the Wisconsin Dales — the only attraction where the main splash is sarcasm.",
+        "It’s like the Dells, but with fewer tourists and more emotional support snacks.",
+        "Our lazy river is just you standing around thinking about snacks.",
+        "No water rides, but plenty of dry humor.",
+        "Wisconsin Dales: come for the name, stay because you already parked.",
+        "The slides are imaginary, but the dad jokes are very real.",
+        "We proudly operate on a strict no-refunds-for-eye-rolling policy.",
+        "If found fun, please return to the Wisconsin Dales immediately.",
+        "Our wave pool is just someone saying “woooosh” nearby.",
+        "This is what happens when the Dells takes a wrong turn and leans into it.",
+        "Zero chlorine. 100% groan.",
+        "Wisconsin Dales — legally distinct, spiritually identical.",
+        "We’re not saying it’s better than the Dells… but we’re also not not saying that.",
+        "Come ride our most popular attraction: mild amusement.",
+        "Our gift shop is just compliments and bad advice.",
+        "You can’t spell ‘Dales’ without ‘Deals’… actually you can, but still.",
+        "We’re a splash of fun and a puddle of responsibility.",
+        "If excitement lasts more than four hours, please tell everyone.",
+        "The only thing deeper than our water is our commitment to puns.",
+        "Wisconsin Dales: where expectations are managed very carefully.",
+        "Our admission price is one polite nod and a chuckle.",
+        "Please supervise children, adults, and anyone telling jokes.",
+        "This attraction may cause uncontrollable sighing and smiling.",
+        "We don’t have a height requirement, but emotional maturity helps.",
+        "Our rides are imaginary, which makes the lines move really fast.",
+        "The Midwest goodbye starts here and never truly ends.",
+        "If you’re confused, you’re doing it right.",
+        "Welcome! You are now officially ‘having a good enough time.’",
+        "Wisconsin Dales — because someone had to lean into the typo.",
+        "We take fun very seriously. Medium-seriously."
     ];
 
     let index = Math.floor(Math.random() * puns.length);
+    const punEl = document.getElementById("pun");
+    const btn = document.getElementById("punBtn");
 
     function nextPun() {
-        index = (index + 1) % puns.length;
-        document.getElementById("pun").innerText = puns[index];
+        if (!punEl) return;
+
+        punEl.classList.add("opacity-0");
+
+        setTimeout(() => {
+            index = (index + 1) % puns.length;
+            punEl.innerText = puns[index];
+            punEl.classList.remove("opacity-0");
+        }, 200);
     }
 
+    btn?.addEventListener("click", nextPun);
     nextPun();
 </script>
 
 </body>
 </html>
-
