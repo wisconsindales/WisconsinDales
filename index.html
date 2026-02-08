@@ -313,9 +313,14 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
+<div style="position:fixed;bottom:10px;right:10px;background:#fff;padding:8px;border-radius:8px;z-index:9999;">
+  <a href="/sw.js" target="_blank">Open sw.js</a> |
+  <a href="/manifest.json" target="_blank">Open manifest</a>
+</div>
+
 <script>
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./sw.js");
+  navigator.serviceWorker.register("/sw.js");
 }
 </script>
 
