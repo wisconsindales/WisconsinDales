@@ -1,8 +1,8 @@
 {
 "name": "Wisconsin Dales",
 "short_name": "Dales",
-"start_url": "/",
-"scope": "/",
+"start_url": ".",
+"scope": ".",
 "display": "standalone",
 "background_color": "#D81B60",
 "theme_color": "#D81B60",
@@ -20,6 +20,7 @@
 }
 ]
 }
+
 
 
 
