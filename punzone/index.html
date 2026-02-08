@@ -291,31 +291,33 @@
     // ----------------------------
     // Game data
     // ----------------------------
-    const PUNS_EASY = [
-      "Wisconsin Dales: where every joke is a little cheesy — as tradition demands.",
-      "Our wave pool is just someone saying “woooosh” nearby.",
-      "This site contains 0% water and 100% dad approval.",
-      "No water rides, but plenty of dry humor.",
-      "Less chlorine. More groan-ine.",
-      "We’re on a pun-limited aquifer. Please recycle your groans.",
-      "All thrills, no spills… unless you spill your drink laughing.",
-      "If you’re confused, you’re doing it right.",
-      "Come for the Dales. Stay because you misread the sign.",
-      "Wisconsin Dales — legally distinct, spiritually identical."
-    ];
+    let PUNS_EASY = [];
+    let PUNS_BOSS = [];
+    let PUNS_ALL = [];
+    async function loadPuns() {
+  try {
+    const res = await fetch("/punzone/puns.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to load puns.json");
 
-    const PUNS_BOSS = [
-      "Our lazy river is just you standing around thinking about snacks.",
-      "Please keep your arms, legs, and expectations inside the joke at all times.",
-      "We put the ‘Dell’ in ‘Well… that was a joke.’",
-      "Our admission price is one polite nod and a chuckle.",
-      "The Midwest goodbye starts here and never truly ends.",
-      "If excitement lasts more than four hours, please tell everyone.",
-      "Come ride our most popular attraction: mild amusement.",
-      "Zero chlorine. 100% WTF.",
-      "Welcome to the Wisconsin Dales — the only attraction where the main splash is sarcasm.",
-      "You wanted the Dells. You got the Dales. Close enough for a Midwestern goodbye."
-    ];
+    const data = await res.json();
+
+    PUNS_EASY = Array.isArray(data.easy) ? data.easy : [];
+    PUNS_BOSS = Array.isArray(data.boss) ? data.boss : [];
+
+    // Combined list (used for daily mode)
+    PUNS_ALL = [...PUNS_EASY, ...PUNS_BOSS];
+
+    roundStatusEl.textContent = `Loaded ${PUNS_ALL.length} puns ✅`;
+
+  } catch (err) {
+    roundStatusEl.textContent = "Could not load puns.json 😬";
+
+    // fallback so game doesn't break
+    PUNS_EASY = ["Offline fallback pun 😅"];
+    PUNS_BOSS = ["Offline fallback boss pun 😈"];
+    PUNS_ALL = [...PUNS_EASY, ...PUNS_BOSS];
+  }
+}
 
     // ----------------------------
     // UI elements
@@ -640,21 +642,29 @@
     // ----------------------------
     // Init
     // ----------------------------
-    loadHighScore();
+(async function init() {
 
-    // default mode
-    setMode("quick");
+  // Load saved score
+  loadHighScore();
 
-    // daily label
-    const seed = dailySeed();
-    dailyLabel.textContent = seed;
+  // Default mode
+  setMode("quick");
 
-    // restore haptics
-    const storedHaptics = (localStorage.getItem(LS_KEYS.haptics) === "1");
-    setHaptics(storedHaptics);
+  // Disable buttons until game starts
+  setButtonsEnabled(false);
 
-    // disable game buttons until round starts
-    setButtonsEnabled(false);
+  // Load puns from JSON
+  await loadPuns();
+
+  // Daily label
+  const seed = dailySeed();
+  dailyLabel.textContent = seed;
+
+  // Restore haptics setting
+  const storedHaptics = (localStorage.getItem(LS_KEYS.haptics) === "1");
+  setHaptics(storedHaptics);
+
+})();
   </script>
 </body>
 </html>
