@@ -1,1 +1,9 @@
+{
+  "easy": [
+    { "q": "Why don’t eggs tell jokes?", "c": ["Because they’d crack up", "Because they’re too serious", "Because chickens forbid it"], "a": 0 }
+  ],
+  "deep": [
+    { "q": "Why did the dad bring string to the waterpark?", "c": ["To tie up loose ends", "To measure the waves", "To lasso the lazy river"], "a": 0 }
+  ]
+}
 
