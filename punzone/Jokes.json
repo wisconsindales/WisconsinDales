@@ -1,9 +1,30 @@
 {
   "easy": [
-    { "q": "Why don’t eggs tell jokes?", "c": ["Because they’d crack up", "Because they’re too serious", "Because chickens forbid it"], "a": 0 }
+    { "q": "Why don’t eggs tell jokes?", "c": ["Because they’d crack up", "Because they’re too serious", "Because chickens forbid it"], "a": 0 },
+    { "q": "What do you call cheese that isn’t yours?", "c": ["Nacho cheese", "Stranger cheddar", "Borrowed brie"], "a": 0 },
+    { "q": "Why did the scarecrow win an award?", "c": ["He was outstanding in his field", "He had great fashion", "He scared the competition"], "a": 0 },
+    { "q": "What did the ocean say to the beach?", "c": ["Nothing, it just waved", "Stop being so sandy", "Long time no sea"], "a": 0 },
+    { "q": "Why can’t you trust stairs?", "c": ["They’re always up to something", "They’re too step-y", "They never stand still"], "a": 0 },
+    { "q": "Why did the bicycle fall over?", "c": ["It was two-tired", "It lost its balance", "It hit a speed bump"], "a": 0 },
+    { "q": "What do you call a bear with no teeth?", "c": ["A gummy bear", "A smooth grizzly", "A snacky cub"], "a": 0 },
+    { "q": "Why did the math book look sad?", "c": ["It had too many problems", "It lost its numbers", "It couldn’t count on anyone"], "a": 0 },
+    { "q": "Wisconsin Dales: Why did the dad bring a ladder to the pool?", "c": ["He heard the drinks were on the house", "He wanted a higher tide", "He forgot how stairs work"], "a": 0 },
+    { "q": "Why did the dad sit by the wave pool with a notebook?", "c": ["He wanted to take current events", "He was writing a water bill", "He was doing splash math"], "a": 0 },
+    { "q": "What do you call a dad joke at a waterpark?", "c": ["A slip pun slide", "A chlorine comedy", "A wet one-liner"], "a": 0 },
+    { "q": "Why did the dad wear sunglasses in the lazy river?", "c": ["To keep it cool", "To block the splashes", "To hide the tears of joy"], "a": 2 }
   ],
   "deep": [
-    { "q": "Why did the dad bring string to the waterpark?", "c": ["To tie up loose ends", "To measure the waves", "To lasso the lazy river"], "a": 0 }
+    { "q": "Why did the dad bring string to the waterpark?", "c": ["To tie up loose ends", "To measure the waves", "To lasso the lazy river"], "a": 0 },
+    { "q": "Why did the dad name his towel ‘Thunder’?", "c": ["Because it always comes after the rain", "Because it was loud", "Because it was from Wisconsin"], "a": 0 },
+    { "q": "Why did the dad refuse to race down the slide?", "c": ["He didn’t want to make a big splash", "He was saving water", "He was afraid of winning"], "a": 0 },
+    { "q": "Why did the dad bring duct tape to the wave pool?", "c": ["To fix the current situation", "To tape the waves down", "To patch his swimsuit"], "a": 0 },
+    { "q": "Why did the dad carry a map at Wisconsin Dales?", "c": ["So he wouldn’t get lost in the sauce", "So he could find the pun zone", "So he could navigate the slipstreams"], "a": 1 },
+    { "q": "What do you call a Midwestern cannonball?", "c": ["An ope-splash", "A polite plunge", "A cheese drop"], "a": 0 },
+    { "q": "Why did the dad bring a pencil to the lazy river?", "c": ["To draw his own conclusions", "To sketch the waves", "To write a water novel"], "a": 0 },
+    { "q": "Why did the dad put his phone in a sandwich bag at the waterpark?", "c": ["For a clean download", "To keep it from streaming", "To stop it from buffering"], "a": 1 },
+    { "q": "Why did the dad call the wave pool ‘Wi-Fi’?", "c": ["Because it had good reception", "Because it kept dropping", "Because it was password protected"], "a": 1 },
+    { "q": "Why did the dad bring an extra sock to Wisconsin Dales?", "c": ["In case he stepped up the fun", "In case he got cold feet", "Because Wisconsin"], "a": 1 },
+    { "q": "Why did the dad clap at the end of the slide?", "c": ["He thought it was a splash performance", "He was drying his hands", "He was applauding gravity"], "a": 2 },
+    { "q": "Why did the dad say ‘ope’ on the water slide?", "c": ["He passed someone on the left", "He almost bumped into fun", "He reached maximum Midwest speed"], "a": 1 }
   ]
 }
-
