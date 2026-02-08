@@ -1,1 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pun Zone — Wisconsin Dales</title>
+
+  <!-- PWA manifest for the game (punzone/manifest.json) -->
+  <link rel="manifest" href="/punzone/manifest.json" />
+  <meta name="theme-color" content="#D81B60" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* Soft animated background */
+    .bg-anim {
+      background: radial-gradient(1200px circle at 10% 10%, rgba(216,27,96,0.35), transparent 45%),
+                  radial-gradient(1000px circle at 90% 20%, rgba(255,121,169,0.35), transparent 50%),
+                  radial-gradient(1200px circle at 50% 100%, rgba(255,192,203,0.25), transparent 55%),
+                  linear-gradient(180deg, #0a0a0a 0%, #120611 40%, #0a0a0a 100%);
+      background-size: 100% 100%;
+      animation: glowShift 10s ease-in-out infinite;
+    }
+    @keyframes glowShift {
+      0%,100% { filter: saturate(1.05) contrast(1.05); }
+      50% { filter: saturate(1.2) contrast(1.1); }
+    }
+
+    /* “Card” shine */
+    .shine {
+      position: relative;
+      overflow: hidden;
+    }
+    .shine:before {
+      content: "";
+      position: absolute;
+      top: -120%;
+      left: -40%;
+      width: 60%;
+      height: 300%;
+      transform: rotate(25deg);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent);
+      animation: sweep 7s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes sweep {
+      0% { transform: translateX(-40%) rotate(25deg); opacity: 0; }
+      10% { opacity: 1; }
+      45% { transform: translateX(220%) rotate(25deg); opacity: 0.2; }
+      100% { transform: translateX(220%) rotate(25deg); opacity: 0; }
+    }
+
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 9999;
+    }
+    .confetti span {
+      position: absolute;
+      width: 8px;
+      height: 14px;
+      opacity: 0.9;
+      transform: translateY(-20px) rotate(0deg);
+      animation: fall 900ms ease-out forwards;
+      border-radius: 2px;
+    }
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(360deg); opacity: 0.95; }
+    }
+
+    /* Big pop */
+    .pop {
+      animation: pop 160ms ease-out;
+    }
+    @keyframes pop {
+      0% { transform: scale(1); }
+      60% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+
+    /* Reduce motion */
+    @media (prefers-reduced-motion: reduce) {
+      .bg-anim { animation: none; }
+      .shine:before { animation: none; }
+      .pop { animation: none; }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen text-white bg-anim">
+  <div class="confetti" id="confetti"></div>
+
+  <!-- Top bar -->
+  <header class="sticky top-0 z-50 backdrop-blur bg-black/25 border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-white/10 border border-white/15 grid place-items-center">
+          <span class="text-xl">💦</span>
+        </div>
+        <div>
+          <div class="font-black tracking-tight text-lg leading-tight">Pun Zone</div>
+          <div class="text-xs text-white/70 -mt-0.5">Wisconsin Dales • tiny game mode</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a href="/" class="text-sm px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10">
+          Back to site
+        </a>
+        <button id="installBtn" class="hidden text-sm px-3 py-2 rounded-xl bg-[#D81B60] hover:opacity-90 font-bold">
+          Install
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-5 py-8">
+    <!-- Hero -->
+    <section class="grid lg:grid-cols-2 gap-6 items-start">
+      <div class="shine rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h1 class="text-3xl sm:text-4xl font-black tracking-tight">
+              Splash, score, repeat.
+            </h1>
+            <p class="text-white/75 mt-2">
+              A fast little pun game. Build a streak, beat your high score, and try the daily challenge.
+            </p>
+          </div>
+
+          <div class="text-right">
+            <div class="text-xs text-white/60">High score</div>
+            <div class="text-2xl font-black" id="highScore">0</div>
+          </div>
+        </div>
+
+        <!-- Mode / Controls -->
+        <div class="mt-5 grid sm:grid-cols-3 gap-3">
+          <div class="rounded-2xl bg-black/25 border border-white/10 p-4">
+            <div class="text-xs text-white/60">Mode</div>
+            <div class="mt-2 flex items-center gap-2">
+              <button id="modeQuick" class="modeBtn px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-sm font-bold">
+                Quick 30s
+              </button>
+              <button id="modeBoss" class="modeBtn px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-sm font-bold">
+                Boss 60s
+              </button>
+            </div>
+          </div>
+
+          <div class="rounded-2xl bg-black/25 border border-white/10 p-4">
+            <div class="text-xs text-white/60">Haptics</div>
+            <div class="mt-2 flex items-center justify-between">
+              <span class="text-sm font-semibold text-white/85">Vibrate</span>
+              <label class="inline-flex items-center cursor-pointer">
+                <input id="hapticsToggle" type="checkbox" class="sr-only">
+                <div class="w-12 h-7 rounded-full bg-white/15 border border-white/15 relative">
+                  <div id="hapticsKnob" class="w-6 h-6 bg-white rounded-full absolute top-0.5 left-0.5 transition-all"></div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="rounded-2xl bg-black/25 border border-white/10 p-4">
+            <div class="text-xs text-white/60">Daily challenge</div>
+            <div class="mt-2 flex items-center justify-between gap-2">
+              <span class="text-sm font-semibold text-white/85" id="dailyLabel">Loading…</span>
+              <button id="playDaily" class="px-3 py-2 rounded-xl bg-[#D81B60] hover:opacity-90 text-sm font-black">
+                Play
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Start / Status -->
+        <div class="mt-5 flex flex-wrap items-center gap-3">
+          <button id="startBtn" class="px-5 py-3 rounded-2xl bg-[#D81B60] hover:opacity-90 font-black text-lg shadow-lg">
+            Start Round
+          </button>
+          <button id="resetBtn" class="px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 font-bold">
+            Reset High Score
+          </button>
+
+          <div class="ml-auto flex items-center gap-3">
+            <div class="text-right">
+              <div class="text-xs text-white/60">Time</div>
+              <div class="text-2xl font-black tabular-nums" id="timeLeft">—</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs text-white/60">Score</div>
+              <div class="text-2xl font-black tabular-nums" id="score">0</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs text-white/60">Streak</div>
+              <div class="text-2xl font-black tabular-nums" id="streak">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 text-xs text-white/60">
+          Tip: In <span class="font-bold">Boss</span> mode you’ll get tougher puns. Keep the streak alive for bonus points.
+        </div>
+      </div>
+
+      <!-- Game Card -->
+      <div class="shine rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl">
+        <div class="flex items-center justify-between gap-2">
+          <div class="text-sm text-white/70">Your pun:</div>
+          <div class="text-xs text-white/60" id="roundStatus">Not started</div>
+        </div>
+
+        <div id="punCard" class="mt-3 rounded-3xl bg-black/30 border border-white/10 p-6">
+          <div id="punText" class="text-2xl sm:text-3xl font-black tracking-tight leading-snug">
+            Hit <span class="text-[#FF79A9]">Start Round</span> to begin splashing puns.
+          </div>
+          <div class="mt-4 text-white/70 text-sm">
+            Rate it fast to score points. “Groan” breaks your streak 😈
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="mt-5 grid grid-cols-3 gap-3">
+          <button id="btnLaugh" class="px-4 py-4 rounded-2xl bg-white text-black font-black text-lg hover:opacity-90">
+            😂<div class="text-xs font-bold mt-1">Laugh</div>
+          </button>
+          <button id="btnSmile" class="px-4 py-4 rounded-2xl bg-white/10 border border-white/10 font-black text-lg hover:bg-white/15">
+            🙂<div class="text-xs font-bold mt-1">Smile</div>
+          </button>
+          <button id="btnGroan" class="px-4 py-4 rounded-2xl bg-black/30 border border-white/10 font-black text-lg hover:bg-black/40">
+            🙄<div class="text-xs font-bold mt-1">Groan</div>
+          </button>
+        </div>
+
+        <div class="mt-4 grid sm:grid-cols-2 gap-3">
+          <button id="skipBtn" class="px-4 py-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 font-bold">
+            Skip (no points)
+          </button>
+          <button id="shareBtn" class="px-4 py-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 font-bold">
+            Share this pun
+          </button>
+        </div>
+
+        <div class="mt-5 rounded-2xl bg-black/25 border border-white/10 p-4 text-sm text-white/75">
+          <div class="font-bold text-white mb-1">How scoring works</div>
+          <ul class="list-disc list-inside space-y-1">
+            <li><span class="font-bold">Laugh</span> = +3 points (+streak bonus)</li>
+            <li><span class="font-bold">Smile</span> = +1 point (streak continues)</li>
+            <li><span class="font-bold">Groan</span> = 0 points and streak resets</li>
+            <li>Streak bonus: +1 every 3 streaks</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer note -->
+    <section class="mt-8 text-center text-xs text-white/50">
+      Built as a PWA game. Updates happen when you refresh. 💦
+    </section>
+  </main>
+
+  <script>
+    // ----------------------------
+    // PWA install button (optional)
+    // ----------------------------
+    let deferredPrompt = null;
+    const installBtn = document.getElementById("installBtn");
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.classList.remove("hidden");
+    });
+    installBtn.addEventListener("click", async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      installBtn.classList.add("hidden");
+    });
+
+    // ----------------------------
+    // Service worker (punzone scope)
+    // ----------------------------
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/punzone/sw.js");
+    }
+
+    // ----------------------------
+    // Game data
+    // ----------------------------
+    const PUNS_EASY = [
+      "Wisconsin Dales: where every joke is a little cheesy — as tradition demands.",
+      "Our wave pool is just someone saying “woooosh” nearby.",
+      "This site contains 0% water and 100% dad approval.",
+      "No water rides, but plenty of dry humor.",
+      "Less chlorine. More groan-ine.",
+      "We’re on a pun-limited aquifer. Please recycle your groans.",
+      "All thrills, no spills… unless you spill your drink laughing.",
+      "If you’re confused, you’re doing it right.",
+      "Come for the Dales. Stay because you misread the sign.",
+      "Wisconsin Dales — legally distinct, spiritually identical."
+    ];
+
+    const PUNS_BOSS = [
+      "Our lazy river is just you standing around thinking about snacks.",
+      "Please keep your arms, legs, and expectations inside the joke at all times.",
+      "We put the ‘Dell’ in ‘Well… that was a joke.’",
+      "Our admission price is one polite nod and a chuckle.",
+      "The Midwest goodbye starts here and never truly ends.",
+      "If excitement lasts more than four hours, please tell everyone.",
+      "Come ride our most popular attraction: mild amusement.",
+      "Zero chlorine. 100% WTF.",
+      "Welcome to the Wisconsin Dales — the only attraction where the main splash is sarcasm.",
+      "You wanted the Dells. You got the Dales. Close enough for a Midwestern goodbye."
+    ];
+
+    // ----------------------------
+    // UI elements
+    // ----------------------------
+    const scoreEl = document.getElementById("score");
+    const streakEl = document.getElementById("streak");
+    const timeEl = document.getElementById("timeLeft");
+    const highScoreEl = document.getElementById("highScore");
+    const roundStatusEl = document.getElementById("roundStatus");
+    const punTextEl = document.getElementById("punText");
+    const punCardEl = document.getElementById("punCard");
+    const confettiEl = document.getElementById("confetti");
+
+    const startBtn = document.getElementById("startBtn");
+    const resetBtn = document.getElementById("resetBtn");
+
+    const modeQuick = document.getElementById("modeQuick");
+    const modeBoss = document.getElementById("modeBoss");
+
+    const btnLaugh = document.getElementById("btnLaugh");
+    const btnSmile = document.getElementById("btnSmile");
+    const btnGroan = document.getElementById("btnGroan");
+    const skipBtn = document.getElementById("skipBtn");
+    const shareBtn = document.getElementById("shareBtn");
+
+    const playDaily = document.getElementById("playDaily");
+    const dailyLabel = document.getElementById("dailyLabel");
+
+    const hapticsToggle = document.getElementById("hapticsToggle");
+    const hapticsKnob = document.getElementById("hapticsKnob");
+
+    // ----------------------------
+    // State
+    // ----------------------------
+    const LS_KEYS = {
+      highScore: "punzone_highscore",
+      haptics: "punzone_haptics"
+    };
+
+    let mode = "quick";   // quick | boss | daily
+    let roundSeconds = 30;
+    let timer = null;
+    let running = false;
+
+    let score = 0;
+    let streak = 0;
+
+    let currentPun = "";
+    let lastPun = "";
+
+    // ----------------------------
+    // Helpers
+    // ----------------------------
+    function setMode(newMode) {
+      mode = newMode;
+      // Visual
+      [modeQuick, modeBoss].forEach(b => b.classList.remove("bg-white/20"));
+      if (mode === "boss") modeBoss.classList.add("bg-white/20");
+      else modeQuick.classList.add("bg-white/20");
+
+      if (mode === "boss") roundSeconds = 60;
+      else roundSeconds = 30;
+
+      timeEl.textContent = "—";
+      roundStatusEl.textContent = (mode === "boss") ? "Boss mode ready" : "Quick mode ready";
+    }
+
+    function loadHighScore() {
+      const v = Number(localStorage.getItem(LS_KEYS.highScore) || 0);
+      highScoreEl.textContent = String(v);
+    }
+    function saveHighScoreIfNeeded() {
+      const high = Number(localStorage.getItem(LS_KEYS.highScore) || 0);
+      if (score > high) {
+        localStorage.setItem(LS_KEYS.highScore, String(score));
+        highScoreEl.textContent = String(score);
+        burstConfetti(20);
+      }
+    }
+
+    function setHaptics(on) {
+      hapticsToggle.checked = on;
+      localStorage.setItem(LS_KEYS.haptics, on ? "1" : "0");
+      hapticsKnob.style.left = on ? "1.7rem" : "0.125rem";
+    }
+    function vibrate(ms) {
+      const on = localStorage.getItem(LS_KEYS.haptics) === "1";
+      if (!on) return;
+      if (navigator.vibrate) navigator.vibrate(ms);
+    }
+
+    function pickPun(list) {
+      if (!list || !list.length) return "No puns yet. Add more!";
+      let p = list[Math.floor(Math.random() * list.length)];
+      // avoid immediate repeat
+      if (p === lastPun && list.length > 1) {
+        p = list[(Math.floor(Math.random() * (list.length - 1)) + 1) % list.length];
+      }
+      lastPun = p;
+      return p;
+    }
+
+    function dailySeed() {
+      // YYYY-MM-DD in local time
+      const d = new Date();
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const dd = String(d.getDate()).padStart(2, "0");
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function seededIndex(seedStr, max) {
+      // simple deterministic hash
+      let h = 2166136261;
+      for (let i = 0; i < seedStr.length; i++) {
+        h ^= seedStr.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return Math.abs(h) % max;
+    }
+
+    function setPun(text) {
+      currentPun = text;
+      punTextEl.textContent = text;
+      punCardEl.classList.remove("pop");
+      // trigger pop
+      void punCardEl.offsetWidth;
+      punCardEl.classList.add("pop");
+    }
+
+    function burstConfetti(n = 16) {
+      const w = window.innerWidth;
+      for (let i = 0; i < n; i++) {
+        const s = document.createElement("span");
+        const left = Math.random() * w;
+        const delay = Math.random() * 120;
+        const size = 6 + Math.random() * 8;
+
+        s.style.left = `${left}px`;
+        s.style.top = `${-20 - Math.random() * 50}px`;
+        s.style.width = `${size}px`;
+        s.style.height = `${size * 1.6}px`;
+        s.style.animationDelay = `${delay}ms`;
+
+        // random bright-ish colors (no external libs)
+        const colors = ["#D81B60", "#FF79A9", "#FFC0CB", "#FFFFFF", "#8B5CF6", "#22C55E", "#F59E0B"];
+        s.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+        confettiEl.appendChild(s);
+        setTimeout(() => s.remove(), 1200);
+      }
+    }
+
+    function setButtonsEnabled(enabled) {
+      [btnLaugh, btnSmile, btnGroan, skipBtn, shareBtn].forEach(b => b.disabled = !enabled);
+      const cls = enabled ? "opacity-100" : "opacity-50";
+      [btnLaugh, btnSmile, btnGroan, skipBtn, shareBtn].forEach(b => b.classList.remove("opacity-50", "opacity-100"));
+      [btnLaugh, btnSmile, btnGroan, skipBtn, shareBtn].forEach(b => b.classList.add(cls));
+    }
+
+    function updateHud() {
+      scoreEl.textContent = String(score);
+      streakEl.textContent = String(streak);
+    }
+
+    function stopRound(message = "Round ended") {
+      running = false;
+      clearInterval(timer);
+      timer = null;
+      roundStatusEl.textContent = message;
+      setButtonsEnabled(false);
+      saveHighScoreIfNeeded();
+    }
+
+    function startRound(opts = { daily: false }) {
+      clearInterval(timer);
+      timer = null;
+
+      score = 0;
+      streak = 0;
+      updateHud();
+
+      setButtonsEnabled(true);
+      running = true;
+
+      let seconds = roundSeconds;
+      timeEl.textContent = String(seconds);
+
+      roundStatusEl.textContent = opts.daily ? "Daily challenge running" : (mode === "boss" ? "Boss round running" : "Quick round running");
+
+      // initial pun
+      if (opts.daily) {
+        const seed = dailySeed();
+        const all = [...PUNS_EASY, ...PUNS_BOSS];
+        const idx = seededIndex(seed, all.length);
+        setPun(all[idx]);
+      } else {
+        setPun(mode === "boss" ? pickPun(PUNS_BOSS) : pickPun(PUNS_EASY));
+      }
+
+      timer = setInterval(() => {
+        seconds -= 1;
+        timeEl.textContent = String(seconds);
+        if (seconds <= 0) {
+          stopRound("Time! Tap Start Round to play again.");
+          burstConfetti(14);
+          vibrate(30);
+        }
+      }, 1000);
+    }
+
+    function nextPun() {
+      if (!running) return;
+      if (mode === "daily") {
+        // daily stays the same pun; you’re “rating” it for points
+        setPun(currentPun);
+      } else {
+        setPun(mode === "boss" ? pickPun(PUNS_BOSS) : pickPun(PUNS_EASY));
+      }
+    }
+
+    function applyScore(type) {
+      if (!running) return;
+
+      if (type === "groan") {
+        streak = 0;
+        vibrate(15);
+        roundStatusEl.textContent = "Groan! Streak reset 😈";
+        nextPun();
+        updateHud();
+        return;
+      }
+
+      streak += 1;
+
+      const streakBonus = Math.floor(streak / 3); // +1 every 3 streak
+      const base = (type === "laugh") ? 3 : 1;
+      const gained = base + streakBonus;
+
+      score += gained;
+      updateHud();
+
+      if (type === "laugh") {
+        roundStatusEl.textContent = `😂 +${gained} (bonus +${streakBonus})`;
+        vibrate(20);
+        burstConfetti(8);
+      } else {
+        roundStatusEl.textContent = `🙂 +${gained} (bonus +${streakBonus})`;
+        vibrate(8);
+      }
+
+      nextPun();
+    }
+
+    async function shareCurrentPun() {
+      const text = `Pun Zone 💦\n\n"${currentPun}"\n\nPlay: https://www.wisconsindales.com/punzone/`;
+      try {
+        if (navigator.share) {
+          await navigator.share({ title: "Pun Zone", text });
+        } else {
+          await navigator.clipboard.writeText(text);
+          roundStatusEl.textContent = "Copied pun to clipboard ✅";
+          vibrate(10);
+        }
+      } catch {
+        // user cancelled, ignore
+      }
+    }
+
+    // ----------------------------
+    // Wire up buttons
+    // ----------------------------
+    modeQuick.addEventListener("click", () => {
+      if (running) return;
+      setMode("quick");
+    });
+    modeBoss.addEventListener("click", () => {
+      if (running) return;
+      setMode("boss");
+    });
+
+    startBtn.addEventListener("click", () => {
+      // if user had daily mode on, revert to chosen mode when starting normal
+      if (mode === "daily") setMode("quick");
+      startRound({ daily: false });
+    });
+
+    playDaily.addEventListener("click", () => {
+      if (running) return;
+      mode = "daily";
+      roundSeconds = 30;
+      timeEl.textContent = "—";
+      startRound({ daily: true });
+    });
+
+    resetBtn.addEventListener("click", () => {
+      localStorage.setItem(LS_KEYS.highScore, "0");
+      loadHighScore();
+      roundStatusEl.textContent = "High score reset.";
+      vibrate(10);
+    });
+
+    btnLaugh.addEventListener("click", () => applyScore("laugh"));
+    btnSmile.addEventListener("click", () => applyScore("smile"));
+    btnGroan.addEventListener("click", () => applyScore("groan"));
+
+    skipBtn.addEventListener("click", () => {
+      if (!running) return;
+      roundStatusEl.textContent = "Skipped (no points).";
+      vibrate(6);
+      nextPun();
+    });
+
+    shareBtn.addEventListener("click", shareCurrentPun);
+
+    // Haptics toggle
+    hapticsToggle.addEventListener("change", () => {
+      setHaptics(hapticsToggle.checked);
+      vibrate(8);
+    });
+
+    // ----------------------------
+    // Init
+    // ----------------------------
+    loadHighScore();
+
+    // default mode
+    setMode("quick");
+
+    // daily label
+    const seed = dailySeed();
+    dailyLabel.textContent = seed;
+
+    // restore haptics
+    const storedHaptics = (localStorage.getItem(LS_KEYS.haptics) === "1");
+    setHaptics(storedHaptics);
+
+    // disable game buttons until round starts
+    setButtonsEnabled(false);
+  </script>
+</body>
+</html>
 
