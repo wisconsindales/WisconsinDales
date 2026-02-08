@@ -2,56 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pun Zone — Wisconsin Dales</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Wisconsin Dales — Splash Quiz</title>
 
-  <!-- PWA manifest for the game (punzone/manifest.json) -->
   <link rel="manifest" href="/punzone/manifest.json" />
   <meta name="theme-color" content="#D81B60" />
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    /* Soft animated background */
-    .bg-anim {
-      background: radial-gradient(1200px circle at 10% 10%, rgba(216,27,96,0.35), transparent 45%),
-                  radial-gradient(1000px circle at 90% 20%, rgba(255,121,169,0.35), transparent 50%),
-                  radial-gradient(1200px circle at 50% 100%, rgba(255,192,203,0.25), transparent 55%),
-                  linear-gradient(180deg, #0a0a0a 0%, #120611 40%, #0a0a0a 100%);
-      background-size: 100% 100%;
-      animation: glowShift 10s ease-in-out infinite;
-    }
-    @keyframes glowShift {
-      0%,100% { filter: saturate(1.05) contrast(1.05); }
-      50% { filter: saturate(1.2) contrast(1.1); }
+    html { font-size: 18px; }
+    @media (min-width: 768px) { html { font-size: 16px; } }
+
+    body {
+      overscroll-behavior: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
-    /* “Card” shine */
-    .shine {
-      position: relative;
-      overflow: hidden;
-    }
-    .shine:before {
-      content: "";
-      position: absolute;
-      top: -120%;
-      left: -40%;
-      width: 60%;
-      height: 300%;
-      transform: rotate(25deg);
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent);
-      animation: sweep 7s ease-in-out infinite;
-      pointer-events: none;
-    }
-    @keyframes sweep {
-      0% { transform: translateX(-40%) rotate(25deg); opacity: 0; }
-      10% { opacity: 1; }
-      45% { transform: translateX(220%) rotate(25deg); opacity: 0.2; }
-      100% { transform: translateX(220%) rotate(25deg); opacity: 0; }
+    .bg-dales {
+      background:
+        radial-gradient(1200px circle at 10% 15%, rgba(255,255,255,0.14), transparent 45%),
+        radial-gradient(900px circle at 90% 10%, rgba(255,121,169,0.25), transparent 50%),
+        radial-gradient(1200px circle at 50% 105%, rgba(255,192,203,0.16), transparent 55%),
+        linear-gradient(180deg, #2b0013 0%, #120611 45%, #0b0b0b 100%);
     }
 
-    /* Confetti */
+    .card-glow { box-shadow: 0 20px 70px rgba(216,27,96,0.25); }
+
+    .shake { animation: shake 260ms ease-in-out; }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+
+    .pop { animation: pop 180ms ease-out; }
+    @keyframes pop {
+      0% { transform: scale(1); }
+      60% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
     .confetti {
       position: fixed;
       inset: 0;
@@ -63,365 +55,358 @@
       position: absolute;
       width: 8px;
       height: 14px;
-      opacity: 0.9;
-      transform: translateY(-20px) rotate(0deg);
-      animation: fall 900ms ease-out forwards;
       border-radius: 2px;
+      transform: translateY(-20px) rotate(0deg);
+      animation: fall 850ms ease-out forwards;
+      opacity: 0.95;
     }
     @keyframes fall {
-      to { transform: translateY(110vh) rotate(360deg); opacity: 0.95; }
+      to { transform: translateY(110vh) rotate(360deg); opacity: 1; }
     }
 
-    /* Big pop */
-    .pop {
-      animation: pop 160ms ease-out;
-    }
-    @keyframes pop {
-      0% { transform: scale(1); }
-      60% { transform: scale(1.03); }
-      100% { transform: scale(1); }
-    }
-
-    /* Reduce motion */
     @media (prefers-reduced-motion: reduce) {
-      .bg-anim { animation: none; }
-      .shine:before { animation: none; }
-      .pop { animation: none; }
+      .shake, .pop { animation: none; }
     }
   </style>
 </head>
 
-<body class="min-h-screen text-white bg-anim">
+<body class="min-h-screen bg-dales text-white">
   <div class="confetti" id="confetti"></div>
 
-  <!-- Top bar -->
-  <header class="sticky top-0 z-50 backdrop-blur bg-black/25 border-b border-white/10">
-    <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between gap-3">
+  <!-- Top HUD -->
+  <header class="sticky top-0 z-40 backdrop-blur bg-black/25 border-b border-white/10">
+    <div class="max-w-xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-2xl bg-white/10 border border-white/15 grid place-items-center">
           <span class="text-xl">💦</span>
         </div>
-        <div>
-          <div class="font-black tracking-tight text-lg leading-tight">Pun Zone</div>
-          <div class="text-xs text-white/70 -mt-0.5">Wisconsin Dales • tiny game mode</div>
+        <div class="leading-tight">
+          <div class="font-black tracking-tight">Splash Quiz</div>
+          <div class="text-xs text-white/70">Wisconsin Dales • Dad Joke Edition</div>
         </div>
       </div>
 
       <div class="flex items-center gap-2">
         <a href="/" class="text-sm px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10">
-          Back to site
+          Back
         </a>
-        <button id="installBtn" class="hidden text-sm px-3 py-2 rounded-xl bg-[#D81B60] hover:opacity-90 font-bold">
-          Install
-        </button>
       </div>
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-5 py-8">
-    <!-- Hero -->
-    <section class="grid lg:grid-cols-2 gap-6 items-start">
-      <div class="shine rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl">
-        <div class="flex items-start justify-between gap-3">
-          <div>
-            <h1 class="text-3xl sm:text-4xl font-black tracking-tight">
-              Splash, score, repeat.
-            </h1>
-            <p class="text-white/75 mt-2">
-              A fast little pun game. Build a streak, beat your high score, and try the daily challenge.
-            </p>
-          </div>
-
-          <div class="text-right">
-            <div class="text-xs text-white/60">High score</div>
-            <div class="text-2xl font-black" id="highScore">0</div>
-          </div>
-        </div>
-
-        <!-- Mode / Controls -->
-        <div class="mt-5 grid sm:grid-cols-3 gap-3">
-          <div class="rounded-2xl bg-black/25 border border-white/10 p-4">
-            <div class="text-xs text-white/60">Mode</div>
-            <div class="mt-2 flex items-center gap-2">
-              <button id="modeQuick" class="modeBtn px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-sm font-bold">
-                Quick 30s
-              </button>
-              <button id="modeBoss" class="modeBtn px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-sm font-bold">
-                Boss 60s
-              </button>
-            </div>
-          </div>
-
-          <div class="rounded-2xl bg-black/25 border border-white/10 p-4">
-            <div class="text-xs text-white/60">Haptics</div>
-            <div class="mt-2 flex items-center justify-between">
-              <span class="text-sm font-semibold text-white/85">Vibrate</span>
-              <label class="inline-flex items-center cursor-pointer">
-                <input id="hapticsToggle" type="checkbox" class="sr-only">
-                <div class="w-12 h-7 rounded-full bg-white/15 border border-white/15 relative">
-                  <div id="hapticsKnob" class="w-6 h-6 bg-white rounded-full absolute top-0.5 left-0.5 transition-all"></div>
-                </div>
-              </label>
-            </div>
-          </div>
-
-          <div class="rounded-2xl bg-black/25 border border-white/10 p-4">
-            <div class="text-xs text-white/60">Daily challenge</div>
-            <div class="mt-2 flex items-center justify-between gap-2">
-              <span class="text-sm font-semibold text-white/85" id="dailyLabel">Loading…</span>
-              <button id="playDaily" class="px-3 py-2 rounded-xl bg-[#D81B60] hover:opacity-90 text-sm font-black">
-                Play
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Start / Status -->
-        <div class="mt-5 flex flex-wrap items-center gap-3">
-          <button id="startBtn" class="px-5 py-3 rounded-2xl bg-[#D81B60] hover:opacity-90 font-black text-lg shadow-lg">
-            Start Round
-          </button>
-          <button id="resetBtn" class="px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 font-bold">
-            Reset High Score
-          </button>
-
-          <div class="ml-auto flex items-center gap-3">
-            <div class="text-right">
-              <div class="text-xs text-white/60">Time</div>
-              <div class="text-2xl font-black tabular-nums" id="timeLeft">—</div>
-            </div>
-            <div class="text-right">
-              <div class="text-xs text-white/60">Score</div>
-              <div class="text-2xl font-black tabular-nums" id="score">0</div>
-            </div>
-            <div class="text-right">
-              <div class="text-xs text-white/60">Streak</div>
-              <div class="text-2xl font-black tabular-nums" id="streak">0</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-4 text-xs text-white/60">
-          Tip: In <span class="font-bold">Boss</span> mode you’ll get tougher puns. Keep the streak alive for bonus points.
+  <main class="max-w-xl mx-auto px-4 py-5 pb-10">
+    <!-- Wave Timer -->
+    <section class="mt-3">
+      <div class="flex items-center justify-between text-xs text-white/70 mb-2">
+        <div id="waveLabel">Wave incoming…</div>
+        <div class="tabular-nums">
+          Q <span id="qNum">0</span>/<span id="qTotal">10</span>
         </div>
       </div>
+      <div class="h-3 rounded-full bg-white/10 border border-white/10 overflow-hidden">
+        <div id="waveBar" class="h-full w-full bg-[#D81B60]"></div>
+      </div>
+    </section>
 
-      <!-- Game Card -->
-      <div class="shine rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl">
-        <div class="flex items-center justify-between gap-2">
-          <div class="text-sm text-white/70">Your pun:</div>
-          <div class="text-xs text-white/60" id="roundStatus">Not started</div>
-        </div>
+    <!-- Score row -->
+    <section class="mt-4 grid grid-cols-3 gap-3">
+      <div class="rounded-2xl bg-black/25 border border-white/10 p-3 text-center">
+        <div class="text-xs text-white/60">Score</div>
+        <div class="text-2xl font-black tabular-nums" id="score">0</div>
+      </div>
+      <div class="rounded-2xl bg-black/25 border border-white/10 p-3 text-center">
+        <div class="text-xs text-white/60">Streak</div>
+        <div class="text-2xl font-black tabular-nums" id="streak">0</div>
+      </div>
+      <div class="rounded-2xl bg-black/25 border border-white/10 p-3 text-center">
+        <div class="text-xs text-white/60">High</div>
+        <div class="text-2xl font-black tabular-nums" id="high">0</div>
+      </div>
+    </section>
 
-        <div id="punCard" class="mt-3 rounded-3xl bg-black/30 border border-white/10 p-6">
-          <div id="punText" class="text-2xl sm:text-3xl font-black tracking-tight leading-snug">
-            Hit <span class="text-[#FF79A9]">Start Round</span> to begin splashing puns.
-          </div>
-          <div class="mt-4 text-white/70 text-sm">
-            Rate it fast to score points. “Groan” breaks your streak 😈
-          </div>
-        </div>
+    <!-- Settings row -->
+    <section class="mt-4 grid grid-cols-3 gap-3">
+      <button id="modeRound"
+        class="rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 p-3 text-left">
+        <div class="text-xs text-white/60">Mode</div>
+        <div class="font-black" id="modeText">Round</div>
+        <div class="text-xs text-white/60 mt-1" id="modeSub">10 questions</div>
+      </button>
 
-        <!-- Buttons -->
-        <div class="mt-5 grid grid-cols-3 gap-3">
-          <button id="btnLaugh" class="px-4 py-4 rounded-2xl bg-white text-black font-black text-lg hover:opacity-90">
-            😂<div class="text-xs font-bold mt-1">Laugh</div>
-          </button>
-          <button id="btnSmile" class="px-4 py-4 rounded-2xl bg-white/10 border border-white/10 font-black text-lg hover:bg-white/15">
-            🙂<div class="text-xs font-bold mt-1">Smile</div>
-          </button>
-          <button id="btnGroan" class="px-4 py-4 rounded-2xl bg-black/30 border border-white/10 font-black text-lg hover:bg-black/40">
-            🙄<div class="text-xs font-bold mt-1">Groan</div>
-          </button>
-        </div>
+      <button id="difficultyBtn"
+        class="rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 p-3 text-left">
+        <div class="text-xs text-white/60">Difficulty</div>
+        <div class="font-black" id="diffText">Easy</div>
+        <div class="text-xs text-white/60 mt-1" id="diffSub">Chill groans</div>
+      </button>
 
-        <div class="mt-4 grid sm:grid-cols-2 gap-3">
-          <button id="skipBtn" class="px-4 py-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 font-bold">
-            Skip (no points)
-          </button>
-          <button id="shareBtn" class="px-4 py-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 font-bold">
-            Share this pun
-          </button>
-        </div>
+      <button id="soundBtn"
+        class="rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 p-3 text-left">
+        <div class="text-xs text-white/60">Sound</div>
+        <div class="font-black" id="soundText">On</div>
+        <div class="text-xs text-white/60 mt-1" id="soundSub">Splash FX</div>
+      </button>
+    </section>
 
-        <div class="mt-5 rounded-2xl bg-black/25 border border-white/10 p-4 text-sm text-white/75">
-          <div class="font-bold text-white mb-1">How scoring works</div>
-          <ul class="list-disc list-inside space-y-1">
-            <li><span class="font-bold">Laugh</span> = +3 points (+streak bonus)</li>
-            <li><span class="font-bold">Smile</span> = +1 point (streak continues)</li>
-            <li><span class="font-bold">Groan</span> = 0 points and streak resets</li>
-            <li>Streak bonus: +1 every 3 streaks</li>
+    <!-- Game Card -->
+    <section id="card" class="mt-4 rounded-3xl bg-white/5 border border-white/10 p-5 card-glow">
+      <!-- Start Screen -->
+      <div id="startScreen" class="text-center">
+        <div class="text-3xl font-black tracking-tight">Enter the Splash Quiz 💦</div>
+        <p class="text-white/75 mt-2" id="startDesc">
+          10 dad jokes. 3 choices. Beat the wave timer.
+        </p>
+
+        <div class="mt-4 rounded-2xl bg-black/25 border border-white/10 p-4 text-left">
+          <div class="text-sm font-bold">How it works</div>
+          <ul class="text-sm text-white/75 mt-2 space-y-1 list-disc list-inside">
+            <li>Pick the correct punchline before the wave hits.</li>
+            <li>Correct = points. Wrong/timeout = streak resets.</li>
+            <li>Streak bonus every 3 correct answers 🔥</li>
           </ul>
         </div>
+
+        <button id="startBtn"
+          class="mt-5 w-full py-4 rounded-2xl bg-[#D81B60] hover:opacity-90 font-black text-lg shadow-lg">
+          Start Round
+        </button>
+
+        <div class="mt-4 text-xs text-white/60" id="loadStatus">Loading jokes…</div>
+      </div>
+
+      <!-- Play Screen -->
+      <div id="playScreen" class="hidden">
+        <div class="flex items-center justify-between text-xs text-white/70">
+          <div id="status">Pick the right punchline.</div>
+          <div class="tabular-nums" id="seconds">5.0s</div>
+        </div>
+
+        <div id="jokeBox"
+          class="mt-3 rounded-3xl bg-black/30 border border-white/10 p-5">
+          <div class="text-sm text-white/60">Dad says:</div>
+          <div id="question" class="mt-1 text-2xl font-black leading-snug">…</div>
+        </div>
+
+        <div class="mt-4 grid gap-3">
+          <button class="choice w-full px-4 py-4 rounded-2xl bg-white text-black font-black text-lg hover:opacity-95"
+            data-i="0"></button>
+          <button class="choice w-full px-4 py-4 rounded-2xl bg-white/10 border border-white/10 font-black text-lg hover:bg-white/15"
+            data-i="1"></button>
+          <button class="choice w-full px-4 py-4 rounded-2xl bg-white/10 border border-white/10 font-black text-lg hover:bg-white/15"
+            data-i="2"></button>
+        </div>
+
+        <button id="skipBtn"
+          class="mt-4 w-full py-3 rounded-2xl bg-black/30 border border-white/10 font-bold hover:bg-black/40">
+          Skip (no points)
+        </button>
+      </div>
+
+      <!-- End Screen -->
+      <div id="endScreen" class="hidden text-center">
+        <div class="text-3xl font-black tracking-tight">Round Complete 🎟️</div>
+        <p class="text-white/75 mt-2">Here’s your Splash Report Card:</p>
+
+        <div class="mt-4 grid grid-cols-3 gap-3">
+          <div class="rounded-2xl bg-black/25 border border-white/10 p-3">
+            <div class="text-xs text-white/60">Correct</div>
+            <div class="text-2xl font-black tabular-nums" id="correctOut">0</div>
+          </div>
+          <div class="rounded-2xl bg-black/25 border border-white/10 p-3">
+            <div class="text-xs text-white/60">Best Streak</div>
+            <div class="text-2xl font-black tabular-nums" id="bestStreakOut">0</div>
+          </div>
+          <div class="rounded-2xl bg-black/25 border border-white/10 p-3">
+            <div class="text-xs text-white/60">Score</div>
+            <div class="text-2xl font-black tabular-nums" id="scoreOut">0</div>
+          </div>
+        </div>
+
+        <button id="playAgainBtn"
+          class="mt-5 w-full py-4 rounded-2xl bg-[#D81B60] hover:opacity-90 font-black text-lg shadow-lg">
+          Play Again
+        </button>
+
+        <button id="shareBtn"
+          class="mt-3 w-full py-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 font-bold">
+          Share Score
+        </button>
       </div>
     </section>
 
-    <!-- Footer note -->
-    <section class="mt-8 text-center text-xs text-white/50">
-      Built as a PWA game. Updates happen when you refresh. 💦
-    </section>
+    <p class="text-center text-xs text-white/50 mt-4">
+      Wisconsin Dales: come for the jokes. stay cause you clicked.
+    </p>
   </main>
 
-  <script>
-    // ----------------------------
-    // PWA install button (optional)
-    // ----------------------------
-    let deferredPrompt = null;
-    const installBtn = document.getElementById("installBtn");
-    window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBtn.classList.remove("hidden");
-    });
-    installBtn.addEventListener("click", async () => {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      installBtn.classList.add("hidden");
-    });
+  <!-- Sounds (put files in /punzone/) -->
+  <audio id="sfxCorrect" src="/punzone/correct.wav" preload="auto"></audio>
+  <audio id="sfxWrong" src="/punzone/wrong.wav" preload="auto"></audio>
+  <audio id="sfxTick" src="/punzone/tick.wav" preload="auto"></audio>
 
-    // ----------------------------
-    // Service worker (punzone scope)
-    // ----------------------------
+  <script>
+    // Service worker for the game
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/punzone/sw.js");
     }
 
     // ----------------------------
-    // Game data
+    // Config
     // ----------------------------
-    let PUNS_EASY = [];
-    let PUNS_BOSS = [];
-    let PUNS_ALL = [];
-    async function loadPuns() {
-  try {
-    const res = await fetch("/punzone/puns.json", { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to load puns.json");
-
-    const data = await res.json();
-
-    PUNS_EASY = Array.isArray(data.easy) ? data.easy : [];
-    PUNS_BOSS = Array.isArray(data.boss) ? data.boss : [];
-
-    // Combined list (used for daily mode)
-    PUNS_ALL = [...PUNS_EASY, ...PUNS_BOSS];
-
-    roundStatusEl.textContent = `Loaded ${PUNS_ALL.length} puns ✅`;
-
-  } catch (err) {
-    roundStatusEl.textContent = "Could not load puns.json 😬";
-
-    // fallback so game doesn't break
-    PUNS_EASY = ["Offline fallback pun 😅"];
-    PUNS_BOSS = ["Offline fallback boss pun 😈"];
-    PUNS_ALL = [...PUNS_EASY, ...PUNS_BOSS];
-  }
-}
-
-    // ----------------------------
-    // UI elements
-    // ----------------------------
-    const scoreEl = document.getElementById("score");
-    const streakEl = document.getElementById("streak");
-    const timeEl = document.getElementById("timeLeft");
-    const highScoreEl = document.getElementById("highScore");
-    const roundStatusEl = document.getElementById("roundStatus");
-    const punTextEl = document.getElementById("punText");
-    const punCardEl = document.getElementById("punCard");
-    const confettiEl = document.getElementById("confetti");
-
-    const startBtn = document.getElementById("startBtn");
-    const resetBtn = document.getElementById("resetBtn");
-
-    const modeQuick = document.getElementById("modeQuick");
-    const modeBoss = document.getElementById("modeBoss");
-
-    const btnLaugh = document.getElementById("btnLaugh");
-    const btnSmile = document.getElementById("btnSmile");
-    const btnGroan = document.getElementById("btnGroan");
-    const skipBtn = document.getElementById("skipBtn");
-    const shareBtn = document.getElementById("shareBtn");
-
-    const playDaily = document.getElementById("playDaily");
-    const dailyLabel = document.getElementById("dailyLabel");
-
-    const hapticsToggle = document.getElementById("hapticsToggle");
-    const hapticsKnob = document.getElementById("hapticsKnob");
-
-    // ----------------------------
-    // State
-    // ----------------------------
-    const LS_KEYS = {
-      highScore: "punzone_highscore",
-      haptics: "punzone_haptics"
+    const LS = {
+      high: "dales_quiz_high",
+      sound: "dales_quiz_sound",
+      diff: "dales_quiz_diff",        // "easy" | "deep"
+      mode: "dales_quiz_mode"         // "round" | "daily"
     };
 
-    let mode = "quick";   // quick | boss | daily
-    let roundSeconds = 30;
-    let timer = null;
-    let running = false;
+    const ROUND_TOTAL = 10;
 
-    let score = 0;
-    let streak = 0;
+    // Easy vs Deep (faster timer and slightly higher scoring)
+    const DIFF = {
+      easy: { label: "Easy", sub: "Chill groans", timeMs: 5200, base: 10, streakBonusStep: 3, streakBonusAmt: 2 },
+      deep: { label: "Deep", sub: "Fast waves", timeMs: 4200, base: 12, streakBonusStep: 2, streakBonusAmt: 2 }
+    };
 
-    let currentPun = "";
-    let lastPun = "";
+    // ----------------------------
+    // UI
+    // ----------------------------
+    const qTotalEl = document.getElementById("qTotal");
+    const qNumEl = document.getElementById("qNum");
+    const waveLabel = document.getElementById("waveLabel");
+    const waveBar = document.getElementById("waveBar");
+    const secondsEl = document.getElementById("seconds");
+
+    const scoreEl = document.getElementById("score");
+    const streakEl = document.getElementById("streak");
+    const highEl = document.getElementById("high");
+
+    const card = document.getElementById("card");
+    const startScreen = document.getElementById("startScreen");
+    const playScreen = document.getElementById("playScreen");
+    const endScreen = document.getElementById("endScreen");
+
+    const statusEl = document.getElementById("status");
+    const questionEl = document.getElementById("question");
+    const jokeBox = document.getElementById("jokeBox");
+
+    const startBtn = document.getElementById("startBtn");
+    const skipBtn = document.getElementById("skipBtn");
+    const playAgainBtn = document.getElementById("playAgainBtn");
+    const shareBtn = document.getElementById("shareBtn");
+
+    const correctOut = document.getElementById("correctOut");
+    const bestStreakOut = document.getElementById("bestStreakOut");
+    const scoreOut = document.getElementById("scoreOut");
+
+    const confetti = document.getElementById("confetti");
+    const choiceButtons = Array.from(document.querySelectorAll(".choice"));
+
+    const loadStatus = document.getElementById("loadStatus");
+    const startDesc = document.getElementById("startDesc");
+
+    const modeRoundBtn = document.getElementById("modeRound");
+    const modeText = document.getElementById("modeText");
+    const modeSub = document.getElementById("modeSub");
+
+    const difficultyBtn = document.getElementById("difficultyBtn");
+    const diffText = document.getElementById("diffText");
+    const diffSub = document.getElementById("diffSub");
+
+    const soundBtn = document.getElementById("soundBtn");
+    const soundText = document.getElementById("soundText");
+    const soundSub = document.getElementById("soundSub");
+
+    // Sounds
+    const sfxCorrect = document.getElementById("sfxCorrect");
+    const sfxWrong = document.getElementById("sfxWrong");
+    const sfxTick = document.getElementById("sfxTick");
+
+    // ----------------------------
+    // Data
+    // jokes.json format:
+    // {
+    //   "easy": [ { "q": "...", "c": ["..","..",".."], "a": 0 }, ... ],
+    //   "deep": [ ... ]   // optional; if missing, easy list is used
+    // }
+    // ----------------------------
+    let JOKES_EASY = [];
+    let JOKES_DEEP = [];
+
+    async function loadJokes() {
+      try {
+        const res = await fetch("/punzone/jokes.json", { cache: "no-store" });
+        if (!res.ok) throw new Error("Failed to load jokes.json");
+        const data = await res.json();
+
+        JOKES_EASY = Array.isArray(data.easy) ? data.easy : [];
+        JOKES_DEEP = Array.isArray(data.deep) ? data.deep : [];
+
+        // Fallback: if deep isn't provided, reuse easy
+        if (JOKES_DEEP.length === 0) JOKES_DEEP = JOKES_EASY.slice();
+
+        if (JOKES_EASY.length < ROUND_TOTAL) {
+          loadStatus.textContent = `Loaded ${JOKES_EASY.length} jokes 😬 (add more for best results)`;
+        } else {
+          loadStatus.textContent = `Loaded jokes ✅ Ready to splash.`;
+        }
+
+        startBtn.disabled = false;
+        startBtn.classList.remove("opacity-60");
+      } catch (e) {
+        loadStatus.textContent = "Could not load jokes.json 😬 (check file name & location)";
+        startBtn.disabled = true;
+        startBtn.classList.add("opacity-60");
+      }
+    }
 
     // ----------------------------
     // Helpers
     // ----------------------------
-    function setMode(newMode) {
-      mode = newMode;
-      // Visual
-      [modeQuick, modeBoss].forEach(b => b.classList.remove("bg-white/20"));
-      if (mode === "boss") modeBoss.classList.add("bg-white/20");
-      else modeQuick.classList.add("bg-white/20");
+    qTotalEl.textContent = ROUND_TOTAL;
 
-      if (mode === "boss") roundSeconds = 60;
-      else roundSeconds = 30;
-
-      timeEl.textContent = "—";
-      roundStatusEl.textContent = (mode === "boss") ? "Boss mode ready" : "Quick mode ready";
-    }
-
-    function loadHighScore() {
-      const v = Number(localStorage.getItem(LS_KEYS.highScore) || 0);
-      highScoreEl.textContent = String(v);
-    }
-    function saveHighScoreIfNeeded() {
-      const high = Number(localStorage.getItem(LS_KEYS.highScore) || 0);
-      if (score > high) {
-        localStorage.setItem(LS_KEYS.highScore, String(score));
-        highScoreEl.textContent = String(score);
-        burstConfetti(20);
+    function burstConfetti(n = 14) {
+      const w = window.innerWidth;
+      const colors = ["#D81B60", "#FF79A9", "#FFC0CB", "#FFFFFF", "#F59E0B", "#22C55E", "#8B5CF6"];
+      for (let i = 0; i < n; i++) {
+        const s = document.createElement("span");
+        s.style.left = `${Math.random() * w}px`;
+        s.style.top = `${-30 - Math.random() * 60}px`;
+        s.style.background = colors[Math.floor(Math.random() * colors.length)];
+        s.style.animationDelay = `${Math.random() * 120}ms`;
+        confetti.appendChild(s);
+        setTimeout(() => s.remove(), 1200);
       }
     }
 
-    function setHaptics(on) {
-      hapticsToggle.checked = on;
-      localStorage.setItem(LS_KEYS.haptics, on ? "1" : "0");
-      hapticsKnob.style.left = on ? "1.7rem" : "0.125rem";
-    }
-    function vibrate(ms) {
-      const on = localStorage.getItem(LS_KEYS.haptics) === "1";
-      if (!on) return;
-      if (navigator.vibrate) navigator.vibrate(ms);
-    }
-
-    function pickPun(list) {
-      if (!list || !list.length) return "No puns yet. Add more!";
-      let p = list[Math.floor(Math.random() * list.length)];
-      // avoid immediate repeat
-      if (p === lastPun && list.length > 1) {
-        p = list[(Math.floor(Math.random() * (list.length - 1)) + 1) % list.length];
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
       }
-      lastPun = p;
-      return p;
+      return arr;
     }
 
-    function dailySeed() {
-      // YYYY-MM-DD in local time
+    function setScreen(which) {
+      startScreen.classList.add("hidden");
+      playScreen.classList.add("hidden");
+      endScreen.classList.add("hidden");
+      which.classList.remove("hidden");
+    }
+
+    function setHUD() {
+      scoreEl.textContent = String(score);
+      streakEl.textContent = String(streak);
+      qNumEl.textContent = String(Math.min(idx, ROUND_TOTAL));
+    }
+
+    function setWave(progress01) {
+      const pct = Math.max(0, Math.min(1, progress01)) * 100;
+      waveBar.style.width = pct + "%";
+      waveBar.style.background = (pct < 35) ? "#ff6b6b" : "#D81B60";
+    }
+
+    function todayKey() {
       const d = new Date();
       const yyyy = d.getFullYear();
       const mm = String(d.getMonth() + 1).padStart(2, "0");
@@ -430,7 +415,6 @@
     }
 
     function seededIndex(seedStr, max) {
-      // simple deterministic hash
       let h = 2166136261;
       for (let i = 0; i < seedStr.length; i++) {
         h ^= seedStr.charCodeAt(i);
@@ -439,233 +423,387 @@
       return Math.abs(h) % max;
     }
 
-    function setPun(text) {
-      currentPun = text;
-      punTextEl.textContent = text;
-      punCardEl.classList.remove("pop");
-      // trigger pop
-      void punCardEl.offsetWidth;
-      punCardEl.classList.add("pop");
+    // ----------------------------
+    // Settings (mode/difficulty/sound)
+    // ----------------------------
+    function getMode() {
+      return localStorage.getItem(LS.mode) || "round"; // "round" | "daily"
     }
-
-    function burstConfetti(n = 16) {
-      const w = window.innerWidth;
-      for (let i = 0; i < n; i++) {
-        const s = document.createElement("span");
-        const left = Math.random() * w;
-        const delay = Math.random() * 120;
-        const size = 6 + Math.random() * 8;
-
-        s.style.left = `${left}px`;
-        s.style.top = `${-20 - Math.random() * 50}px`;
-        s.style.width = `${size}px`;
-        s.style.height = `${size * 1.6}px`;
-        s.style.animationDelay = `${delay}ms`;
-
-        // random bright-ish colors (no external libs)
-        const colors = ["#D81B60", "#FF79A9", "#FFC0CB", "#FFFFFF", "#8B5CF6", "#22C55E", "#F59E0B"];
-        s.style.background = colors[Math.floor(Math.random() * colors.length)];
-
-        confettiEl.appendChild(s);
-        setTimeout(() => s.remove(), 1200);
-      }
-    }
-
-    function setButtonsEnabled(enabled) {
-      [btnLaugh, btnSmile, btnGroan, skipBtn, shareBtn].forEach(b => b.disabled = !enabled);
-      const cls = enabled ? "opacity-100" : "opacity-50";
-      [btnLaugh, btnSmile, btnGroan, skipBtn, shareBtn].forEach(b => b.classList.remove("opacity-50", "opacity-100"));
-      [btnLaugh, btnSmile, btnGroan, skipBtn, shareBtn].forEach(b => b.classList.add(cls));
-    }
-
-    function updateHud() {
-      scoreEl.textContent = String(score);
-      streakEl.textContent = String(streak);
-    }
-
-    function stopRound(message = "Round ended") {
-      running = false;
-      clearInterval(timer);
-      timer = null;
-      roundStatusEl.textContent = message;
-      setButtonsEnabled(false);
-      saveHighScoreIfNeeded();
-    }
-
-    function startRound(opts = { daily: false }) {
-      clearInterval(timer);
-      timer = null;
-
-      score = 0;
-      streak = 0;
-      updateHud();
-
-      setButtonsEnabled(true);
-      running = true;
-
-      let seconds = roundSeconds;
-      timeEl.textContent = String(seconds);
-
-      roundStatusEl.textContent = opts.daily ? "Daily challenge running" : (mode === "boss" ? "Boss round running" : "Quick round running");
-
-      // initial pun
-      if (opts.daily) {
-        const seed = dailySeed();
-        const all = [...PUNS_EASY, ...PUNS_BOSS];
-        const idx = seededIndex(seed, all.length);
-        setPun(all[idx]);
-      } else {
-        setPun(mode === "boss" ? pickPun(PUNS_BOSS) : pickPun(PUNS_EASY));
-      }
-
-      timer = setInterval(() => {
-        seconds -= 1;
-        timeEl.textContent = String(seconds);
-        if (seconds <= 0) {
-          stopRound("Time! Tap Start Round to play again.");
-          burstConfetti(14);
-          vibrate(30);
-        }
-      }, 1000);
-    }
-
-    function nextPun() {
-      if (!running) return;
+    function setMode(mode) {
+      localStorage.setItem(LS.mode, mode);
       if (mode === "daily") {
-        // daily stays the same pun; you’re “rating” it for points
-        setPun(currentPun);
+        modeText.textContent = "Daily";
+        modeSub.textContent = todayKey();
+        waveLabel.textContent = "Today’s wave…";
+        startDesc.textContent = "Daily challenge: same 10 jokes today. Beat your score.";
+        startBtn.textContent = "Start Daily";
       } else {
-        setPun(mode === "boss" ? pickPun(PUNS_BOSS) : pickPun(PUNS_EASY));
+        modeText.textContent = "Round";
+        modeSub.textContent = "10 questions";
+        waveLabel.textContent = "Wave incoming…";
+        startDesc.textContent = "10 dad jokes. 3 choices. Beat the wave timer.";
+        startBtn.textContent = "Start Round";
       }
     }
 
-    function applyScore(type) {
-      if (!running) return;
+    function getDiffKey() {
+      return localStorage.getItem(LS.diff) || "easy";
+    }
+    function setDifficulty(key) {
+      const cfg = DIFF[key] || DIFF.easy;
+      localStorage.setItem(LS.diff, key);
+      diffText.textContent = cfg.label;
+      diffSub.textContent = cfg.sub;
+    }
 
-      if (type === "groan") {
-        streak = 0;
-        vibrate(15);
-        roundStatusEl.textContent = "Groan! Streak reset 😈";
-        nextPun();
-        updateHud();
+    function getSoundOn() {
+      const v = localStorage.getItem(LS.sound);
+      return v === null ? true : (v === "1");
+    }
+    function setSoundOn(on) {
+      localStorage.setItem(LS.sound, on ? "1" : "0");
+      soundText.textContent = on ? "On" : "Off";
+      soundSub.textContent = on ? "Splash FX" : "Silent";
+    }
+
+    function playSfx(el) {
+      if (!getSoundOn()) return;
+      try {
+        el.currentTime = 0;
+        el.play();
+      } catch { /* ignore */ }
+    }
+
+    // ----------------------------
+    // Game state
+    // ----------------------------
+    let order = [];
+    let idx = 0;
+    let timer = null;
+    let startTime = 0;
+
+    let score = 0;
+    let streak = 0;
+    let bestStreak = 0;
+    let correct = 0;
+
+    let activeAnswer = 0;
+    let accepting = false;
+
+    function loadHigh() {
+      const v = Number(localStorage.getItem(LS.high) || 0);
+      highEl.textContent = String(v);
+      return v;
+    }
+
+    function saveHighIfNeeded() {
+      const currentHigh = Number(localStorage.getItem(LS.high) || 0);
+      if (score > currentHigh) {
+        localStorage.setItem(LS.high, String(score));
+        highEl.textContent = String(score);
+        burstConfetti(22);
+      }
+    }
+
+    function stopTimer() {
+      if (timer) cancelAnimationFrame(timer);
+      timer = null;
+    }
+
+    function startTimer(questionTimeMs) {
+      stopTimer();
+      startTime = performance.now();
+
+      const tick = (now) => {
+        const elapsed = now - startTime;
+        const remaining = Math.max(0, questionTimeMs - elapsed);
+        const sec = (remaining / 1000).toFixed(1);
+        secondsEl.textContent = sec + "s";
+        setWave(remaining / questionTimeMs);
+
+        // tick sound when < 1.5s remaining (subtle)
+        if (remaining < 1500 && remaining > 1400) playSfx(sfxTick);
+        if (remaining < 1000 && remaining > 900) playSfx(sfxTick);
+        if (remaining < 500 && remaining > 400) playSfx(sfxTick);
+
+        if (remaining <= 0) {
+          accepting = false;
+          onTimeout();
+          return;
+        }
+        timer = requestAnimationFrame(tick);
+      };
+
+      timer = requestAnimationFrame(tick);
+    }
+
+    function setChoicesEnabled(enabled) {
+      choiceButtons.forEach((b) => {
+        b.disabled = !enabled;
+        b.classList.toggle("opacity-60", !enabled);
+      });
+      skipBtn.disabled = !enabled;
+      skipBtn.classList.toggle("opacity-60", !enabled);
+    }
+
+    function currentJokesList() {
+      const diffKey = getDiffKey();
+      return diffKey === "deep" ? JOKES_DEEP : JOKES_EASY;
+    }
+
+    function dailyOrder(listLength) {
+      // Make a deterministic set of 10 indices for today
+      const seed = todayKey() + "|" + getDiffKey();
+      const used = new Set();
+      const result = [];
+      let counter = 0;
+
+      while (result.length < Math.min(ROUND_TOTAL, listLength) && counter < 5000) {
+        const idx = seededIndex(seed + "|" + counter, listLength);
+        if (!used.has(idx)) {
+          used.add(idx);
+          result.push(idx);
+        }
+        counter++;
+      }
+
+      // If list is small, fill by cycling
+      while (result.length < Math.min(ROUND_TOTAL, listLength)) {
+        result.push(result.length % listLength);
+      }
+      return result;
+    }
+
+    function renderQuestion() {
+      accepting = true;
+      setChoicesEnabled(true);
+
+      const list = currentJokesList();
+      const joke = list[order[idx]];
+      if (!joke) {
+        // Safety fallback if list is too short
+        endRound();
         return;
       }
 
-      streak += 1;
+      activeAnswer = Number(joke.a) || 0;
 
-      const streakBonus = Math.floor(streak / 3); // +1 every 3 streak
-      const base = (type === "laugh") ? 3 : 1;
-      const gained = base + streakBonus;
+      statusEl.textContent = "Pick the right punchline.";
+      questionEl.textContent = joke.q || "…";
 
-      score += gained;
-      updateHud();
+      // Fill buttons
+      choiceButtons.forEach((btn, i) => {
+        btn.textContent = (joke.c && joke.c[i]) ? joke.c[i] : "—";
+        btn.classList.remove("bg-green-500", "bg-red-500", "text-white");
+        if (i === 0) {
+          btn.classList.add("bg-white");
+          btn.classList.remove("bg-white/10", "border", "border-white/10");
+          btn.classList.add("text-black");
+        } else {
+          btn.classList.remove("bg-white");
+          btn.classList.add("bg-white/10", "border", "border-white/10");
+          btn.classList.remove("text-black");
+          btn.classList.add("text-white");
+        }
+      });
 
-      if (type === "laugh") {
-        roundStatusEl.textContent = `😂 +${gained} (bonus +${streakBonus})`;
-        vibrate(20);
-        burstConfetti(8);
-      } else {
-        roundStatusEl.textContent = `🙂 +${gained} (bonus +${streakBonus})`;
-        vibrate(8);
-      }
+      card.classList.remove("pop");
+      void card.offsetWidth;
+      card.classList.add("pop");
 
-      nextPun();
+      const cfg = DIFF[getDiffKey()] || DIFF.easy;
+      startTimer(cfg.timeMs);
+      setHUD();
     }
 
-    async function shareCurrentPun() {
-      const text = `Pun Zone 💦\n\n"${currentPun}"\n\nPlay: https://www.wisconsindales.com/punzone/`;
+    function scoreForCorrect() {
+      const cfg = DIFF[getDiffKey()] || DIFF.easy;
+      const bonus = Math.floor(streak / cfg.streakBonusStep) * cfg.streakBonusAmt;
+      return cfg.base + bonus;
+    }
+
+    function showCorrect(btn) {
+      btn.classList.remove("bg-white", "bg-white/10", "border-white/10", "text-black", "text-white");
+      btn.classList.add("bg-green-500", "text-white");
+      burstConfetti(10);
+    }
+
+    function showWrong(btn) {
+      btn.classList.remove("bg-white", "bg-white/10", "border-white/10", "text-black", "text-white");
+      btn.classList.add("bg-red-500", "text-white");
+
+      jokeBox.classList.remove("shake");
+      void jokeBox.offsetWidth;
+      jokeBox.classList.add("shake");
+    }
+
+    function lockAndAdvance(delay = 650) {
+      accepting = false;
+      setChoicesEnabled(false);
+      stopTimer();
+
+      setTimeout(() => {
+        idx += 1;
+        if (idx >= ROUND_TOTAL) endRound();
+        else renderQuestion();
+      }, delay);
+    }
+
+    function onTimeout() {
+      statusEl.textContent = "🌊 Too slow! The wave got you.";
+      streak = 0;
+      setHUD();
+      playSfx(sfxWrong);
+      lockAndAdvance(700);
+    }
+
+    function handleChoice(i) {
+      if (!accepting) return;
+
+      const btn = choiceButtons[i];
+
+      if (i === activeAnswer) {
+        correct += 1;
+        streak += 1;
+        bestStreak = Math.max(bestStreak, streak);
+
+        const gained = scoreForCorrect();
+        score += gained;
+
+        statusEl.textContent = `💦 SPLASH! +${gained}`;
+        showCorrect(btn);
+        playSfx(sfxCorrect);
+      } else {
+        statusEl.textContent = "🙄 Wrong! Dad disapproves.";
+        streak = 0;
+        showWrong(btn);
+        playSfx(sfxWrong);
+
+        const correctBtn = choiceButtons[activeAnswer];
+        showCorrect(correctBtn);
+      }
+
+      setHUD();
+      lockAndAdvance(750);
+    }
+
+    function startRound() {
+      const list = currentJokesList();
+
+      if (!list || list.length === 0) {
+        loadStatus.textContent = "No jokes loaded 😬 Check jokes.json";
+        return;
+      }
+
+      score = 0;
+      streak = 0;
+      bestStreak = 0;
+      correct = 0;
+
+      const mode = getMode();
+      idx = 0;
+
+      if (mode === "daily") {
+        // deterministic
+        order = dailyOrder(list.length);
+      } else {
+        // random 10 unique if possible
+        const all = shuffle([...Array(list.length).keys()]);
+        order = all.slice(0, Math.min(ROUND_TOTAL, all.length));
+        // if fewer than 10 jokes, loop them
+        while (order.length < ROUND_TOTAL) order.push(order[order.length % all.length]);
+      }
+
+      setScreen(playScreen);
+      setHUD();
+      renderQuestion();
+    }
+
+    function endRound() {
+      stopTimer();
+      accepting = false;
+
+      saveHighIfNeeded();
+
+      correctOut.textContent = `${correct}/${ROUND_TOTAL}`;
+      bestStreakOut.textContent = String(bestStreak);
+      scoreOut.textContent = String(score);
+
+      setScreen(endScreen);
+    }
+
+    async function shareScore() {
+      const mode = getMode();
+      const diff = getDiffKey();
+      const tag = mode === "daily" ? `Daily ${todayKey()}` : "Round";
+      const text = `Wisconsin Dales: Splash Quiz 💦\nMode: ${tag}\nDifficulty: ${diff.toUpperCase()}\nScore: ${score}\nCorrect: ${correct}/${ROUND_TOTAL}\nBest Streak: ${bestStreak}\nPlay: https://www.wisconsindales.com/punzone/`;
       try {
         if (navigator.share) {
-          await navigator.share({ title: "Pun Zone", text });
+          await navigator.share({ title: "Splash Quiz", text });
         } else {
           await navigator.clipboard.writeText(text);
-          roundStatusEl.textContent = "Copied pun to clipboard ✅";
-          vibrate(10);
+          statusEl.textContent = "Copied score ✅";
         }
-      } catch {
-        // user cancelled, ignore
-      }
+      } catch { /* ignore */ }
     }
 
     // ----------------------------
-    // Wire up buttons
+    // Events
     // ----------------------------
-    modeQuick.addEventListener("click", () => {
-      if (running) return;
-      setMode("quick");
-    });
-    modeBoss.addEventListener("click", () => {
-      if (running) return;
-      setMode("boss");
-    });
-
-    startBtn.addEventListener("click", () => {
-      // if user had daily mode on, revert to chosen mode when starting normal
-      if (mode === "daily") setMode("quick");
-      startRound({ daily: false });
-    });
-
-    playDaily.addEventListener("click", () => {
-      if (running) return;
-      mode = "daily";
-      roundSeconds = 30;
-      timeEl.textContent = "—";
-      startRound({ daily: true });
-    });
-
-    resetBtn.addEventListener("click", () => {
-      localStorage.setItem(LS_KEYS.highScore, "0");
-      loadHighScore();
-      roundStatusEl.textContent = "High score reset.";
-      vibrate(10);
-    });
-
-    btnLaugh.addEventListener("click", () => applyScore("laugh"));
-    btnSmile.addEventListener("click", () => applyScore("smile"));
-    btnGroan.addEventListener("click", () => applyScore("groan"));
+    startBtn.addEventListener("click", startRound);
+    playAgainBtn.addEventListener("click", startRound);
+    shareBtn.addEventListener("click", shareScore);
 
     skipBtn.addEventListener("click", () => {
-      if (!running) return;
-      roundStatusEl.textContent = "Skipped (no points).";
-      vibrate(6);
-      nextPun();
+      if (!accepting) return;
+      statusEl.textContent = "Skipped.";
+      streak = 0;
+      setHUD();
+      lockAndAdvance(500);
     });
 
-    shareBtn.addEventListener("click", shareCurrentPun);
+    choiceButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const i = Number(btn.dataset.i);
+        handleChoice(i);
+      });
+    });
 
-    // Haptics toggle
-    hapticsToggle.addEventListener("change", () => {
-      setHaptics(hapticsToggle.checked);
-      vibrate(8);
+    modeRoundBtn.addEventListener("click", () => {
+      const next = (getMode() === "round") ? "daily" : "round";
+      setMode(next);
+    });
+
+    difficultyBtn.addEventListener("click", () => {
+      const next = (getDiffKey() === "easy") ? "deep" : "easy";
+      setDifficulty(next);
+    });
+
+    soundBtn.addEventListener("click", () => {
+      setSoundOn(!getSoundOn());
+      // tiny confirmation
+      if (getSoundOn()) playSfx(sfxCorrect);
     });
 
     // ----------------------------
     // Init
     // ----------------------------
-(async function init() {
+    (async function init() {
+      // disable start until jokes load
+      startBtn.disabled = true;
+      startBtn.classList.add("opacity-60");
 
-  // Load saved score
-  loadHighScore();
+      loadHigh();
+      setSoundOn(getSoundOn());
+      setDifficulty(getDiffKey());
+      setMode(getMode());
 
-  // Default mode
-  setMode("quick");
+      setScreen(startScreen);
+      setWave(1);
+      secondsEl.textContent = "5.0s";
 
-  // Disable buttons until game starts
-  setButtonsEnabled(false);
-
-  // Load puns from JSON
-  await loadPuns();
-
-  // Daily label
-  const seed = dailySeed();
-  dailyLabel.textContent = seed;
-
-  // Restore haptics setting
-  const storedHaptics = (localStorage.getItem(LS_KEYS.haptics) === "1");
-  setHaptics(storedHaptics);
-
-})();
+      await loadJokes();
+    })();
   </script>
 </body>
 </html>
-
