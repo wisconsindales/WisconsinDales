@@ -350,38 +350,56 @@
             </p>
 
             <form
-              id="punPlungeForm"
-              action="https://formspree.io/f/xnjbjdzr"
-              method="POST"
-              class="pun-plunge-form"
-            >
-              <!-- Honeypot anti-spam -->
-              <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" />
+  id="punPlungeForm"
+  action="https://formspree.io/f/xnjbjdzr"
+  method="POST"
+  class="pun-plunge-form"
+>
+  <!-- Honeypot anti-spam -->
+  <input
+    type="text"
+    name="_gotcha"
+    class="hp"
+    tabindex="-1"
+    autocomplete="off"
+  />
 
-              <label>Your Comment will go exactly where it needs to go!</label>
-              <textarea
-                name="message"
-                id="punMessage"
-                required
-                maxlength="800"
-                placeholder="💦  Say your piece...  💦"
-              ></textarea>
+  <!-- Email Subject Line -->
+  <input
+    type="hidden"
+    name="_subject"
+    value="🚽 New Plunge Comment from Wisconsin Dales!"
+  />
 
-              <div class="pun-meta">
-                <span><span id="charCount">0</span>/800</span>
-              </div>
+  <label>Your Comment will go exactly where it needs to go!</label>
 
-              <!-- context -->
-              <input type="hidden" name="page" id="punPage" />
-              <input type="hidden" name="timestamp" id="punTime" />
-              <input type="hidden" name="site" value="wisconsindales.com" />
+  <!-- ✅ Comment Box -->
+  <textarea
+    name="comment"
+    id="punMessage"
+    required
+    maxlength="800"
+    placeholder="💦  Drop it here and we'll flush it to HQ...  💦"
+  ></textarea>
 
-              <button type="submit" id="punSubmit" class="pun-submit">
-                FLUSH 🌀
-              </button>
+  <!-- Character Counter -->
+  <div class="pun-meta">
+    <span><span id="charCount">0</span>/800</span>
+  </div>
 
-              <p class="pun-status" id="punStatus" aria-live="polite"></p>
-            </form>
+  <!-- Context Fields -->
+  <input type="hidden" name="page" id="punPage" />
+  <input type="hidden" name="timestamp" id="punTime" />
+  <input type="hidden" name="site" value="wisconsindales.com" />
+
+  <!-- Submit Button -->
+  <button type="submit" id="punSubmit" class="pun-submit">
+    FLUSH 🌀
+  </button>
+
+  <!-- Status Message -->
+  <p class="pun-status" id="punStatus" aria-live="polite"></p>
+</form>
         </div>
 
         <div class="pun-overlay" id="punOverlay" aria-hidden="true">
@@ -664,6 +682,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
