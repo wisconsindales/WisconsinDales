@@ -59,11 +59,12 @@
       transform: rotate(-2deg);
     }
 
+    /* ✅ FIXED: Banner is now BELOW image, not covering it */
     .hero-dales {
-      position:absolute;
-      left: 18px;
-      bottom: 16px;
-      right: 18px;
+      position: relative;
+      margin: 14px auto 0;
+      max-width: 80rem;
+
       display:flex;
       align-items:center;
       justify-content:center;
@@ -124,12 +125,11 @@
         <span class="opacity-95">Official-Style Announcement</span>
       </div>
 
-      <!-- Satire notice (clear + still stylish) -->
+      <!-- Satire notice -->
       <div class="max-w-5xl mx-auto -mt-2 mb-6">
         <div class="bg-white/90 text-gray-800 rounded-2xl px-5 py-3 shadow-lg border border-black/10">
           <span class="font-black text-[#b70036]">Satire Notice:</span>
-          This post is a <span class="font-black">fictional, for-fun Wisconsin Dales announcement</span> and is
-          <span class="font-black">not affiliated with the Green Bay Packers</span> or the NFL.
+          This post is fictional, for-fun, and not affiliated with the Green Bay Packers or the NFL.
         </div>
       </div>
 
@@ -141,32 +141,30 @@
 
       <p class="text-white/90 text-lg md:text-xl max-w-3xl mx-auto mb-10">
         A completely fictional (but extremely high-effort) event announcement designed to look like a real press drop.
-        Come for the polish. Stay because… Wisconsin Dales.
       </p>
 
-      <!-- Combined hero image -->
+      <!-- Hero image -->
       <div class="hero-combo max-w-5xl mx-auto lift">
         <div class="hero-packers">
-          <img src="packers-cheerleaders.png" alt="Green Bay Packers Cheerleaders (fictional announcement art)" />
+          <img src="packers-cheerleaders.png" alt="Fictional Cheerleaders Announcement" />
         </div>
+      </div>
 
-        <div class="hero-dales">
-          <img src="wisconsin-dales-wordmark.png" alt="Wisconsin Dales" />
-          <div class="text-[#b70036] font-black text-lg md:text-xl">
-            PRESS RELEASE • FOR FUN • VERY SERIOUSLY SILLY
-          </div>
+      <!-- Banner BELOW image -->
+      <div class="hero-dales">
+        <img src="wisconsin-dales-wordmark.png" alt="Wisconsin Dales" />
+        <div class="text-[#b70036] font-black text-lg md:text-xl">
+          PRESS RELEASE • VERY SERIOUSLY SILLY
         </div>
       </div>
 
       <!-- Tickets block -->
       <div class="max-w-5xl mx-auto mt-8 grid md:grid-cols-3 gap-6">
+
         <div class="bg-white/90 rounded-3xl p-6 shadow-xl lift">
           <div class="text-[#b70036] font-black text-xl mb-1">🎟️ Ticket “Sale” Date</div>
           <div class="text-gray-700 font-semibold text-lg">
             <span class="font-black">The Second Tuesday of Next Week</span>
-          </div>
-          <div class="text-gray-600 mt-2">
-            We’re keeping it wonderfully vague. Like a Midwest “we should get together sometime.”
           </div>
         </div>
 
@@ -175,13 +173,10 @@
           <div class="text-gray-900 font-black text-2xl md:text-3xl">
             7:07 PM – 9:09 PM
           </div>
-          <div class="text-gray-600 mt-2">
-            Doors open at <span class="font-bold">6:30 PM</span>. Midwest goodbyes begin at <span class="font-bold">9:10 PM</span>.
-          </div>
         </div>
 
         <div class="bg-white/90 rounded-3xl p-6 shadow-xl lift">
-          <div class="text-[#b70036] font-black text-xl mb-1">⏳ Countdown (For Fun)</div>
+          <div class="text-[#b70036] font-black text-xl mb-1">⏳ Countdown (Resets Weekly)</div>
           <div class="countdown text-3xl md:text-4xl font-black text-gray-900" id="countdown">
             Loading…
           </div>
@@ -190,106 +185,48 @@
             class="mt-4 w-full bg-[#00bcd4] text-white px-5 py-3 rounded-2xl font-black hover:opacity-90 transition">
             Notify Me 🔔
           </button>
-
-          <div class="text-gray-600 mt-2 text-sm">
-            (This button just scrolls you to The Plunge so you can leave a comment.)
-          </div>
         </div>
+
       </div>
 
     </div>
   </header>
-
-  <!-- DETAILS -->
-  <main class="max-w-6xl mx-auto px-6 pb-16">
-    <section class="bg-white rounded-3xl shadow-xl p-10 border-t-4 border-[#00bcd4]">
-      <h2 class="text-4xl font-black text-[#b70036] mb-4">Press Release Details</h2>
-
-      <p class="text-gray-700 text-lg leading-relaxed max-w-4xl mx-auto">
-        Wisconsin Dales is proud to announce an upcoming appearance by the
-        <span class="font-black">“Green Bay Packers Cheerleaders”</span> — a totally fictional performance concept created for fun,
-        designed to deliver maximum hype with minimum reality.
-      </p>
-
-      <div class="grid md:grid-cols-3 gap-6 mt-8">
-        <div class="bg-[#fdf5e6] rounded-2xl p-6 shadow-md">
-          <div class="text-2xl">📣</div>
-          <h3 class="font-black text-xl text-[#b70036] mt-2 mb-2">High-Energy Vibes</h3>
-          <p class="text-gray-700">
-            Think “big show energy” with a splash of parody and a side of Wisconsin nice.
-          </p>
-        </div>
-
-        <div class="bg-[#fdf5e6] rounded-2xl p-6 shadow-md">
-          <div class="text-2xl">💦</div>
-          <h3 class="font-black text-xl text-[#b70036] mt-2 mb-2">Dales-Style Fun</h3>
-          <p class="text-gray-700">
-            The production looks official. The park is imaginary. The puns are non-negotiable.
-          </p>
-        </div>
-
-        <div class="bg-[#fdf5e6] rounded-2xl p-6 shadow-md">
-          <div class="text-2xl">🚽</div>
-          <h3 class="font-black text-xl text-[#b70036] mt-2 mb-2">Audience Participation</h3>
-          <p class="text-gray-700">
-            Got a better idea for the event? Drop it in The Plunge. We flush all feedback to HQ.
-          </p>
-        </div>
-      </div>
-
-      <div class="mt-10 p-6 rounded-2xl bg-[#00bcd4]/10 border border-[#00bcd4]/30">
-        <div class="font-black text-[#b70036] text-xl mb-1">Important Clarifier</div>
-        <p class="text-gray-700 font-semibold">
-          This page is <span class="font-black">satire / parody</span>. It is not an official announcement and is not affiliated with the Green Bay Packers or the NFL.
-        </p>
-      </div>
-    </section>
-
-    <section class="mt-10 text-center flex flex-col md:flex-row gap-4 justify-center">
-      <a href="/index.html"
-         class="inline-block bg-white text-[#b70036] px-10 py-4 rounded-full font-black text-xl shadow-xl hover:scale-105 transition-transform">
-        Back Home 💦
-      </a>
-
-      <a href="/gallery.html"
-         class="inline-block bg-[#b70036] text-white px-10 py-4 rounded-full font-black text-xl shadow-xl hover:opacity-90 transition">
-        Visit Splash Zone 💦
-      </a>
-    </section>
-  </main>
 
   <!-- FOOTER -->
   <footer class="bg-[#7c0d22] text-white py-10 text-center font-semibold">
     Wisconsin Dales — Extremely Official-Looking Fiction Since Today 🚀💦
   </footer>
 
+  <!-- ✅ FIXED SCRIPT -->
   <script>
-    // Interpreting “Second Tuesday of next week” as “Tuesday of next week” (2nd day of the week).
-    // We keep the wording on-page as requested and use a computed date for the fun countdown.
     function getNextWeekTuesday() {
       const now = new Date();
-      const dow = now.getDay(); // 0=Sun..6=Sat
+      const dow = now.getDay();
       const targetDow = 2; // Tuesday
+
       let daysUntil = (targetDow - dow + 7) % 7;
-      if (daysUntil === 0) daysUntil = 7; // if today is Tuesday, use next Tuesday
+      if (daysUntil === 0) daysUntil = 7;
+
       const d = new Date(now);
       d.setDate(now.getDate() + daysUntil);
-      d.setHours(10, 0, 0, 0); // 10:00 AM local for countdown anchor
+
+      // Target time: Tuesday 7:07 PM
+      d.setHours(19, 7, 0, 0);
+
       return d;
     }
 
-    const saleDate = getNextWeekTuesday();
     const countdownEl = document.getElementById("countdown");
-
-    function pad(n) { return String(n).padStart(2, "0"); }
+    let saleDate = getNextWeekTuesday();
 
     function tick() {
       const now = new Date();
-      const diff = saleDate - now;
+      let diff = saleDate - now;
 
+      // ✅ Reset every Tuesday forever
       if (diff <= 0) {
-        countdownEl.textContent = "LIVE-ish NOW!";
-        return;
+        saleDate = getNextWeekTuesday();
+        diff = saleDate - now;
       }
 
       const totalSeconds = Math.floor(diff / 1000);
@@ -298,13 +235,16 @@
       const mins = Math.floor((totalSeconds % 3600) / 60);
       const secs = totalSeconds % 60;
 
-      countdownEl.textContent = `${days}d ${pad(hours)}h ${pad(mins)}m ${pad(secs)}s`;
+      countdownEl.textContent =
+        `${days}d ${String(hours).padStart(2, "0")}h ` +
+        `${String(mins).padStart(2, "0")}m ` +
+        `${String(secs).padStart(2, "0")}s`;
     }
 
     tick();
     setInterval(tick, 1000);
 
-    // Notify button: route to The Plunge on the home page
+    // Notify button → goes to The Plunge
     document.getElementById("notifyBtn")?.addEventListener("click", () => {
       window.location.href = "/index.html#the-plunge";
     });
