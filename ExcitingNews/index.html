@@ -31,25 +31,21 @@
     }
 
     /* HERO IMAGE BOX */
-    .hero-combo {
-      position: relative;
-      overflow: hidden;
-      border-radius: 24px;
-      box-shadow: 0 22px 50px rgba(0,0,0,0.30);
-      border: 2px solid rgba(255,255,255,0.28);
-      background: linear-gradient(
-        135deg,
-        rgba(0,188,212,0.45),
-        rgba(255,121,169,0.25),
-        rgba(255,255,255,0.12)
-      );
-      background-size: 300% 300%;
-      animation: shimmer 8s ease infinite;
-      aspect-ratio: 16 / 9;
+    .hero-combo{
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  box-shadow: 0 22px 50px rgba(0,0,0,0.30);
+  border: 2px solid rgba(255,255,255,0.28);
+  background: linear-gradient(135deg, rgba(0,188,212,0.45), rgba(255,121,169,0.25), rgba(255,255,255,0.12));
+  background-size: 300% 300%;
+  animation: shimmer 8s ease infinite;
 
-      /* ✅ THIS SPACE PREVENTS OVERLAP */
-      margin-bottom: 40px;
-    }
+  /* ✅ remove aspect ratio crop */
+  aspect-ratio: auto;
+  padding: 22px;              /* gives breathing room */
+  margin-bottom: 40px;
+}
 
     .hero-combo::after {
       content:"";
@@ -63,21 +59,22 @@
     }
 
     /* PACKERS IMAGE */
-    .hero-packers {
-      position:absolute;
-      inset: 0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      opacity: 0.95;
-      filter: drop-shadow(0 18px 22px rgba(0,0,0,0.25));
-    }
+    .hero-packers{
+  position: relative;         /* ✅ not absolute */
+  inset: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.98;
+  filter: drop-shadow(0 18px 22px rgba(0,0,0,0.25));
+}
 
-    .hero-packers img {
-      width: min(540px, 80%);
-      height: auto;
-      transform: rotate(-2deg);
-    }
+.hero-packers img{
+  width: min(560px, 92%);
+  height: auto;               /* ✅ keeps full image */
+  display: block;
+  transform: none;            /* optional: remove tilt */
+}
 
     /* ✅ FINAL BANNER STYLE (NO OVERLAP EVER) */
     .hero-dales {
