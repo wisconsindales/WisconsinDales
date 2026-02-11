@@ -9,7 +9,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    body { margin: 0; font-family: sans-serif; background:#b70036; }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #b70036;
+    }
 
     @keyframes shimmer {
       0% { background-position: 0% 50%; }
@@ -17,19 +21,34 @@
       100% { background-position: 0% 50%; }
     }
 
-    .lift { transition: transform 160ms ease, box-shadow 160ms ease; }
-    .lift:hover { transform: translateY(-2px); box-shadow: 0 22px 44px rgba(0,0,0,0.22); }
+    .lift {
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
 
+    .lift:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 44px rgba(0,0,0,0.22);
+    }
+
+    /* HERO IMAGE BOX */
     .hero-combo {
       position: relative;
       overflow: hidden;
       border-radius: 24px;
       box-shadow: 0 22px 50px rgba(0,0,0,0.30);
       border: 2px solid rgba(255,255,255,0.28);
-      background: linear-gradient(135deg, rgba(0,188,212,0.45), rgba(255,121,169,0.25), rgba(255,255,255,0.12));
+      background: linear-gradient(
+        135deg,
+        rgba(0,188,212,0.45),
+        rgba(255,121,169,0.25),
+        rgba(255,255,255,0.12)
+      );
       background-size: 300% 300%;
       animation: shimmer 8s ease infinite;
       aspect-ratio: 16 / 9;
+
+      /* ✅ THIS SPACE PREVENTS OVERLAP */
+      margin-bottom: 40px;
     }
 
     .hero-combo::after {
@@ -43,6 +62,7 @@
       mix-blend-mode: overlay;
     }
 
+    /* PACKERS IMAGE */
     .hero-packers {
       position:absolute;
       inset: 0;
@@ -59,16 +79,17 @@
       transform: rotate(-2deg);
     }
 
-    /* ✅ FIXED: Banner is now BELOW image, not covering it */
+    /* ✅ FINAL BANNER STYLE (NO OVERLAP EVER) */
     .hero-dales {
-      position: relative;
-      margin: 14px auto 0;
+      position: static !important;
+      margin: 0 auto;
       max-width: 80rem;
 
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+
       padding: 14px 16px;
       border-radius: 18px;
       background: rgba(255,255,255,0.92);
@@ -88,7 +109,10 @@
       backdrop-filter: blur(8px);
     }
 
-    .countdown { font-variant-numeric: tabular-nums; letter-spacing: 0.5px; }
+    .countdown {
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.5px;
+    }
   </style>
 </head>
 
@@ -101,7 +125,9 @@
     <div class="flex gap-6 items-center">
       <a href="/index.html" class="font-bold text-gray-700 hover:text-[#b70036]">Home</a>
       <a href="/index.html#about" class="font-bold text-gray-700 hover:text-[#D81B60]">About</a>
-      <a href="/index.html#the-plunge" class="font-bold text-gray-700 hover:text-[#00bcd4] transition">Comment 🚽</a>
+      <a href="/index.html#the-plunge" class="font-bold text-gray-700 hover:text-[#00bcd4] transition">
+        Comment 🚽
+      </a>
 
       <a href="/ExcitingNews/"
          class="bg-[#00bcd4] text-white px-4 py-2 rounded-full font-bold hover:opacity-90 transition">
@@ -119,24 +145,23 @@
   <header class="text-center px-6 pt-16 pb-10">
     <div class="max-w-6xl mx-auto">
 
+      <!-- Header pill -->
       <div class="inline-flex items-center gap-2 ticket-pill text-white px-4 py-2 rounded-full font-black shadow-md mb-6">
-        <span>🗞️ BREAKING SPLASH NEWS</span>
-        <span class="opacity-90">•</span>
-        <span class="opacity-95">Official-Style Announcement</span>
+        🗞️ BREAKING SPLASH NEWS • Official-Style Announcement
       </div>
 
       <!-- Satire notice -->
-      <div class="max-w-5xl mx-auto -mt-2 mb-6">
+      <div class="max-w-5xl mx-auto mb-6">
         <div class="bg-white/90 text-gray-800 rounded-2xl px-5 py-3 shadow-lg border border-black/10">
           <span class="font-black text-[#b70036]">Satire Notice:</span>
           This post is fictional, for-fun, and not affiliated with the Green Bay Packers or the NFL.
         </div>
       </div>
 
+      <!-- Title -->
       <h1 class="text-white text-5xl md:text-6xl font-black leading-tight mb-4">
-        “Packers Cheerleaders”<br class="hidden md:block" />
-        <span class="text-white/90">performing at</span>
-        <span class="underline decoration-white/40">Wisconsin Dales</span>
+        “Packers Cheerleaders”<br />
+        performing at <span class="underline decoration-white/40">Wisconsin Dales</span>
       </h1>
 
       <p class="text-white/90 text-lg md:text-xl max-w-3xl mx-auto mb-10">
@@ -150,33 +175,37 @@
         </div>
       </div>
 
-      <!-- Banner BELOW image -->
+      <!-- Banner BELOW -->
       <div class="hero-dales">
         <img src="wisconsin-dales-wordmark.png" alt="Wisconsin Dales" />
         <div class="text-[#b70036] font-black text-lg md:text-xl">
-          PRESS RELEASE • VERY SERIOUSLY SILLY
+          PRESS RELEASE • FOR FUN • VERY SERIOUSLY SILLY
         </div>
       </div>
 
-      <!-- Tickets block -->
-      <div class="max-w-5xl mx-auto mt-8 grid md:grid-cols-3 gap-6">
+      <!-- Ticket cards -->
+      <div class="max-w-5xl mx-auto mt-10 grid md:grid-cols-3 gap-6">
 
+        <!-- Date -->
         <div class="bg-white/90 rounded-3xl p-6 shadow-xl lift">
           <div class="text-[#b70036] font-black text-xl mb-1">🎟️ Ticket “Sale” Date</div>
           <div class="text-gray-700 font-semibold text-lg">
-            <span class="font-black">The Second Tuesday of Next Week</span>
+            The Second Tuesday of Next Week
           </div>
         </div>
 
+        <!-- Showtime -->
         <div class="bg-white/90 rounded-3xl p-6 shadow-xl lift">
           <div class="text-[#b70036] font-black text-xl mb-1">🕖 Showtime Window</div>
-          <div class="text-gray-900 font-black text-2xl md:text-3xl">
+          <div class="text-gray-900 font-black text-3xl">
             7:07 PM – 9:09 PM
           </div>
         </div>
 
+        <!-- Countdown -->
         <div class="bg-white/90 rounded-3xl p-6 shadow-xl lift">
           <div class="text-[#b70036] font-black text-xl mb-1">⏳ Countdown (Resets Weekly)</div>
+
           <div class="countdown text-3xl md:text-4xl font-black text-gray-900" id="countdown">
             Loading…
           </div>
@@ -197,7 +226,7 @@
     Wisconsin Dales — Extremely Official-Looking Fiction Since Today 🚀💦
   </footer>
 
-  <!-- ✅ FIXED SCRIPT -->
+  <!-- SCRIPT -->
   <script>
     function getNextWeekTuesday() {
       const now = new Date();
@@ -210,7 +239,7 @@
       const d = new Date(now);
       d.setDate(now.getDate() + daysUntil);
 
-      // Target time: Tuesday 7:07 PM
+      // Target time: Tuesday at 7:07 PM
       d.setHours(19, 7, 0, 0);
 
       return d;
@@ -223,7 +252,7 @@
       const now = new Date();
       let diff = saleDate - now;
 
-      // ✅ Reset every Tuesday forever
+      // Reset every Tuesday forever
       if (diff <= 0) {
         saleDate = getNextWeekTuesday();
         diff = saleDate - now;
@@ -244,7 +273,6 @@
     tick();
     setInterval(tick, 1000);
 
-    // Notify button → goes to The Plunge
     document.getElementById("notifyBtn")?.addEventListener("click", () => {
       window.location.href = "/index.html#the-plunge";
     });
