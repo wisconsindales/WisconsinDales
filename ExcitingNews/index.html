@@ -185,41 +185,68 @@
       </div>
 
       <!-- Ticket cards -->
-      <div class="max-w-5xl mx-auto mt-10 grid md:grid-cols-3 gap-6">
+      <div class="bg-white/95 rounded-3xl p-6 shadow-xl lift border-t-4 border-[#203731]">
 
-        <!-- Date -->
-        <div class="bg-white/90 rounded-3xl p-6 shadow-xl lift">
-          <div class="text-[#b70036] font-black text-xl mb-1">🎟️ Ticket “Sale” Date</div>
-          <div class="text-gray-700 font-semibold text-lg">
-            The Second Tuesday of Next Week
-          </div>
-        </div>
+  <div class="text-[#203731] font-black text-xl mb-1 flex items-center gap-2">
+    🎟️ Ticket “Sale” Date
+  </div>
+
+  <div class="text-gray-800 font-semibold text-lg">
+    The Second Tuesday of Next Week
+  </div>
+
+  <div class="text-sm text-gray-600 mt-2 italic">
+    (Extremely well scheduled.)
+  </div>
+
+</div>
 
         <!-- Showtime -->
-        <div class="bg-white/90 rounded-3xl p-6 shadow-xl lift">
-          <div class="text-[#b70036] font-black text-xl mb-1">🕖 Showtime Window</div>
-          <div class="text-gray-900 font-black text-3xl">
-            7:07 PM – 7:09 PM
-          </div>
-        </div>
+        <div class="bg-white/95 rounded-3xl p-6 shadow-xl lift border-t-4 border-[#FFB612]">
+
+  <div class="text-[#203731] font-black text-xl mb-1 flex items-center gap-2">
+    🕖 Showtime Window
+  </div>
+
+  <div class="text-gray-900 font-black text-3xl drop-shadow-[0_0_8px_rgba(255,182,18,0.35)]">
+    7:07 PM – 7:09 PM
+  </div>
+
+  <div class="text-gray-600 mt-2">
+    Doors open at <span class="font-bold text-[#203731]">6:30 PM</span><br />
+    Midwest goodbyes begin at <span class="font-bold text-[#203731]">7:10 PM</span>.
+  </div>
+
+</div>
 
         <!-- Countdown -->
-        <div class="bg-white/90 rounded-3xl p-6 shadow-xl lift">
-          <div class="text-[#b70036] font-black text-xl mb-1">⏳ Countdown (Resets Weekly)</div>
+        <div class="bg-white/95 rounded-3xl p-6 shadow-xl lift border-t-4 border-[#203731]">
 
-          <div class="countdown text-3xl md:text-4xl font-black text-gray-900" id="countdown">
-            Loading…
-          </div>
+  <div class="text-[#203731] font-black text-xl mb-1 flex items-center gap-2">
+    ⏳ Countdown (Resets Weekly)
+  </div>
 
-          <button id="notifyBtn"
-            class="mt-4 w-full bg-[#00bcd4] text-white px-5 py-3 rounded-2xl font-black hover:opacity-90 transition">
-            Notify Me 🔔
-          </button>
-        </div>
+  <!-- Countdown Display -->
+  <div id="countdown"
+       class="countdown text-3xl md:text-4xl font-black text-[#203731]
+              drop-shadow-[0_0_10px_rgba(255,182,18,0.55)] mt-2">
+    Loading…
+  </div>
 
-      </div>
+  <!-- Notify Button -->
+  <button id="notifyBtn"
+    class="mt-5 w-full bg-[#203731] text-[#FFB612]
+           px-5 py-3 rounded-2xl font-black
+           hover:opacity-90 hover:scale-[1.02] transition">
 
-    </div>
+    Notify Me 🔔
+  </button>
+
+  <div class="text-gray-600 mt-2 text-sm italic">
+    (This button just sends you to The Plunge 🚽)
+  </div>
+
+</div>
   </header>
 
   <!-- FOOTER -->
