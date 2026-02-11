@@ -109,6 +109,147 @@
         50% { transform: scale(1.1); }
         100% { transform: scale(1); }
     }
+
+    /* ===========================
+       THE PLUNGE (COMMENTS)
+       =========================== */
+
+    .pun-plunge-wrap {
+        max-width: 920px;
+        margin: 40px auto 0;
+        padding: 0 16px 40px;
+        position: relative;
+    }
+
+    .pun-plunge-card {
+        background: #6fd6e8;
+        border-radius: 24px;
+        box-shadow: 0 16px 34px rgba(0,0,0,0.14);
+        border-top: 6px solid #b70036;
+        padding: 26px 22px;
+        transform-origin: center center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pun-plunge-title {
+        font-size: 2rem;
+        font-weight: 900;
+        color: #b70036;
+        margin: 0 0 6px;
+    }
+
+    .pun-plunge-sub {
+        color: #555;
+        margin: 0 0 18px;
+        font-weight: 600;
+    }
+
+    .pun-plunge-form textarea {
+    min-height: 100px;
+    }
+
+    .pun-plunge-form label {
+        display: block;
+        font-weight: 900;
+        color: #7c0d22;
+        margin: 10px 0 6px;
+    }
+
+    .pun-plunge-form textarea {
+        width: 100%;
+        border: 2px solid rgba(0,0,0,0.10);
+        border-radius: 16px;
+        padding: 12px 12px;
+        font-size: 1rem;
+        outline: none;
+        min-height: 140px;
+        resize: vertical;
+    }
+
+    .pun-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 8px;
+        color: #666;
+        font-weight: 700;
+        font-size: 0.95rem;
+        justify-content: flex-end;
+    }
+
+    .pun-submit {
+        margin-top: 14px;
+        width: 100%;
+        border: none;
+        border-radius: 18px;
+        padding: 14px 16px;
+        font-size: 1.1rem;
+        font-weight: 900;
+        cursor: pointer;
+        color: white;
+        background: linear-gradient(135deg, #00bcd4, #ff5aa5);
+        box-shadow: 0 14px 26px rgba(0,0,0,0.16);
+        transition: transform 140ms ease, filter 140ms ease;
+    }
+
+    .pun-submit:hover { transform: translateY(-1px); filter: brightness(1.03); }
+    .pun-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .pun-status {
+        min-height: 1.3em;
+        margin: 10px 0 0;
+        font-weight: 900;
+        color: #7c0d22;
+        text-align: center;
+    }
+
+    /* Honeypot */
+    .hp { display: none !important; }
+
+    /* Drain animation */
+    .drain-spin {
+        animation: drainSpin 1.15s ease-in forwards;
+    }
+
+    @keyframes drainSpin {
+        0%   { transform: rotate(0deg) scale(1); opacity: 1; filter: blur(0px); }
+        60%  { transform: rotate(540deg) scale(0.72); opacity: 0.85; filter: blur(0.4px); }
+        100% { transform: rotate(920deg) scale(0.06); opacity: 0; filter: blur(1.4px); }
+    }
+
+    /* Overlay while draining */
+    .pun-overlay {
+        position: absolute;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+    }
+
+    .pun-overlay.show { display: flex; }
+
+    .pun-overlay-card {
+        background: rgba(0,0,0,0.78);
+        color: white;
+        border-radius: 22px;
+        padding: 18px 18px;
+        text-align: center;
+        max-width: 420px;
+        box-shadow: 0 18px 34px rgba(0,0,0,0.35);
+        font-weight: 800;
+    }
+
+    .swirl {
+        font-size: 2.3rem;
+        margin-bottom: 6px;
+        animation: swirl 700ms linear infinite;
+    }
+
+    @keyframes swirl {
+        to { transform: rotate(360deg); }
+    }
 </style>
 </head>
 <body>
@@ -119,6 +260,7 @@
     <div class="flex gap-6 items-center">
         <a href="#" class="font-bold text-gray-700 hover:text-[#b70036]">Home</a>
         <a href="#about" class="font-bold text-gray-700 hover:text-[#D81B60]">About</a>
+	<a href="#the-plunge" class="font-bold text-gray-700 hover:text-[#00bcd4] transition">Comment</a> 
         <a href="gallery.html" class="bg-[#b70036] text-white px-4 py-2 rounded-full font-bold hover:opacity-90 transition">
             Visit Splash Zone
         </a>
@@ -139,7 +281,7 @@
         <a href="#pun"
            class="inline-block bg-white text-[#b70036] px-12 py-4 rounded-full font-black text-2xl shadow-xl
               hover:scale-105 transition-transform">
-        ENTER THE SPLASH ZONE 💦
+        💦 ENTER THE SPLASH ZONE 💦
     </a>
 
         <a href="gallery.html"
@@ -162,7 +304,7 @@
 
         <button id="punBtn"
             class="bg-[#b70036] text-white px-10 py-4 rounded-full font-black text-xl shadow-lg hover:scale-105 transition-transform splash-btn">
-            SPLASH ME ANOTHER 💦
+             💦 SPLASH ME ANOTHER 💦
         </button>
 
     </section>
@@ -173,7 +315,7 @@
         <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#b70036]" id="about">
             <h2 class="text-2xl font-bold text-[#b70036] mb-4">The Vision</h2>
             <p class="text-gray-600">
-                Quality PUN, relaxed vibes, and 99.999% fewer crowds than the Dells.
+                Quality PUN, relaxed vibes, and 1000% fewer crowds.
             </p>
         </section>
 
@@ -189,8 +331,63 @@
 
     </div>
 
+    <!-- ===========================
+         THE PLUNGE (COMMENTS)
+         =========================== -->
+    <section class="pun-plunge-wrap" id="the-plunge">
+
+        <div class="pun-plunge-card" id="punPlungeCard">
+            <h3 class="pun-plunge-title">🚽 THE PLUNGE ZONE 🚽</h3>
+            <p class="pun-plunge-sub">
+                Drop iT! Plop it! & <span style="font-weight:900;color:#b70036;">DON'T FORGET TO FLUSH!</span>
+            </p>
+
+            <form
+              id="punPlungeForm"
+              action="https://formspree.io/f/xnjbjdzr"
+              method="POST"
+              class="pun-plunge-form"
+            >
+              <!-- Honeypot anti-spam -->
+              <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" />
+
+              <label>Your Comment will go exactly where it needs to go!</label>
+              <textarea
+                name="message"
+                id="punMessage"
+                required
+                maxlength="800"
+                placeholder="💦  Say your piece...  💦"
+              ></textarea>
+
+              <div class="pun-meta">
+                <span><span id="charCount">0</span>/800</span>
+              </div>
+
+              <!-- context -->
+              <input type="hidden" name="page" id="punPage" />
+              <input type="hidden" name="timestamp" id="punTime" />
+              <input type="hidden" name="site" value="wisconsindales.com" />
+
+              <button type="submit" id="punSubmit" class="pun-submit">
+                FLUSH 🌀
+              </button>
+
+              <p class="pun-status" id="punStatus" aria-live="polite"></p>
+            </form>
+        </div>
+
+        <div class="pun-overlay" id="punOverlay" aria-hidden="true">
+            <div class="pun-overlay-card">
+                <div class="swirl">🌀</div>
+                WHOOSH! DON'T FORGET TO WIPE!!!
+            </div>
+        </div>
+
+    </section>
+
 </main>
-    
+
 <section class="bg-white p-6 rounded-2xl shadow-lg mt-10 mb-10 max-w-3xl mx-auto">
   <h3 class="text-2xl font-bold text-[#b70036] mb-2">
      App Arriving Soon
@@ -205,14 +402,17 @@
     Download APP
   </a>
 </section>
-    
+
 <!-- FOOTER -->
 <footer class="bg-[#7c0d22] text-white py-10 text-center font-semibold">
     Wisconsin Dales — Come for the pun. Stay cause you clicked.
 </footer>
-    
+
 <!-- Splash Sound -->
 <audio id="splashSound" src="splash.wav" preload="auto"></audio>
+
+<!-- Flush Sound (ADD THIS FILE: flush.wav) -->
+<audio id="flushSound" src="flush.wav" preload="auto"></audio>
 
 <!-- SCRIPT -->
 <script>
@@ -297,34 +497,150 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Splash effect + button pop
     btn?.addEventListener("click", (e) => {
-    // Play splash sound
-    const audio = document.getElementById("splashSound");
-    if (audio) {
-        audio.currentTime = 0; // restart if already playing
-        audio.play();
+        // Play splash sound
+        const audio = document.getElementById("splashSound");
+        if (audio) {
+            audio.currentTime = 0;
+            audio.play();
+        }
+
+        // Splash animation
+        const splash = document.createElement("span");
+        const rect = btn.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+
+        splash.style.width = splash.style.height = `${size}px`;
+        splash.style.left = `${e.clientX - rect.left - size/2}px`;
+        splash.style.top = `${e.clientY - rect.top - size/2}px`;
+
+        btn.appendChild(splash);
+
+        setTimeout(() => {
+            splash.remove();
+        }, 600);
+
+        // Button pop
+        btn.style.animation = "buttonPop 0.3s ease";
+        setTimeout(() => btn.style.animation = "", 300);
+    });
+
+    nextPun();
+
+    /* ===========================
+       THE PLUNGE (COMMENTS) LOGIC
+       =========================== */
+
+    const form = document.getElementById("punPlungeForm");
+    const card = document.getElementById("punPlungeCard");
+    const overlay = document.getElementById("punOverlay");
+    const statusEl = document.getElementById("punStatus");
+    const submitBtn = document.getElementById("punSubmit");
+    const msg = document.getElementById("punMessage");
+    const charCount = document.getElementById("charCount");
+    const flushSound = document.getElementById("flushSound");
+
+    // Fill context fields
+    document.getElementById("punPage").value = window.location.href;
+    document.getElementById("punTime").value = new Date().toISOString();
+
+    const updateCount = () => { charCount.textContent = String(msg.value.length); };
+    msg.addEventListener("input", updateCount);
+    updateCount();
+
+    const wait = (ms) => new Promise(r => setTimeout(r, ms));
+
+    async function playFlush() {
+        try {
+            flushSound.currentTime = 0;
+            await flushSound.play();
+        } catch (e) {}
     }
 
-    // Splash animation
-    const splash = document.createElement("span");
-    const rect = btn.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    
-    splash.style.width = splash.style.height = `${size}px`;
-    splash.style.left = `${e.clientX - rect.left - size/2}px`;
-    splash.style.top = `${e.clientY - rect.top - size/2}px`;
+    function setDisabled(disabled) {
+        submitBtn.disabled = disabled;
+        msg.disabled = disabled;
+    }
 
-    btn.appendChild(splash);
+    function randomFlushLabel() {
+        const labels = [
+            "🌀 FLUSH 🌀",
+            "🚽 SEND IT DOWN 🚽",
+            "💦  PLUNGE IT 💦",
+            "TO HQ! 📬",
+            "WHOOSH! 🌊"
+        ];
+        return labels[Math.floor(Math.random() * labels.length)];
+    }
 
-    setTimeout(() => {
-        splash.remove();
-    }, 600);
+    async function drainEffect() {
+        overlay.classList.add("show");
+        overlay.setAttribute("aria-hidden", "false");
+        card.classList.add("drain-spin");
 
-    // Button pop
-    btn.style.animation = "buttonPop 0.3s ease";
-    setTimeout(() => btn.style.animation = "", 300);
-});
-    
-    nextPun();
+        await wait(1150);
+        await wait(5000 - 1150);
+
+        card.classList.remove("drain-spin");
+        card.style.opacity = "1";
+        card.style.transform = "none";
+        overlay.classList.remove("show");
+        overlay.setAttribute("aria-hidden", "true");
+    }
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        statusEl.textContent = "";
+
+        if (!msg.value.trim()) {
+            statusEl.textContent = "Drop a comment before you flush. 😄";
+            return;
+        }
+
+        setDisabled(true);
+
+        // Change button text each flush (simple fun)
+        submitBtn.textContent = randomFlushLabel();
+
+        playFlush();
+        const drainPromise = drainEffect();
+
+        try {
+            const formData = new FormData(form);
+
+            // honeypot check
+            if (formData.get("_gotcha")) {
+                await drainPromise;
+                form.reset();
+                updateCount();
+                statusEl.textContent = "Flushed! (Nice try, robot.) 🤖🚽";
+                setDisabled(false);
+                submitBtn.textContent = "FLUSH 🌀";
+                return;
+            }
+
+            const res = await fetch(form.action, {
+                method: "POST",
+                body: formData,
+                headers: { "Accept": "application/json" }
+            });
+
+            await drainPromise;
+
+            if (res.ok) {
+                form.reset();
+                updateCount();
+                statusEl.textContent = "Flushed & delivered to HQ. 🌊📬";
+            } else {
+                statusEl.textContent = "Uh-oh… the pipes clogged. Try again. 🪠";
+            }
+        } catch (err) {
+            await drainPromise;
+            statusEl.textContent = "Network splash-out. Try again. 💦";
+        } finally {
+            setDisabled(false);
+            submitBtn.textContent = "FLUSH 🌀";
+        }
+    });
 });
 </script>
 
@@ -341,27 +657,3 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
