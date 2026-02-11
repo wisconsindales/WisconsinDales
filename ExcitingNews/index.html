@@ -31,21 +31,28 @@
     }
 
     /* HERO IMAGE BOX */
-    .hero-combo{
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-  box-shadow: 0 22px 50px rgba(0,0,0,0.30);
-  border: 2px solid rgba(255,255,255,0.28);
-  background: linear-gradient(135deg, rgba(0,188,212,0.45), rgba(255,121,169,0.25), rgba(255,255,255,0.12));
-  background-size: 300% 300%;
-  animation: shimmer 8s ease infinite;
+    .hero-combo {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      box-shadow: 0 22px 50px rgba(0,0,0,0.30);
+      border: 2px solid rgba(255,255,255,0.28);
 
-  /* ✅ remove aspect ratio crop */
-  aspect-ratio: auto;
-  padding: 22px;              /* gives breathing room */
-  margin-bottom: 40px;
-}
+      /* ✅ Packers Green + Gold shimmer */
+      background: linear-gradient(
+        135deg,
+        rgba(32, 55, 49, 0.75),   /* Packers Green */
+        rgba(255, 182, 18, 0.35), /* Packers Gold */
+        rgba(255, 255, 255, 0.10)
+      );
+      background-size: 300% 300%;
+      animation: shimmer 8s ease infinite;
+
+      /* ✅ no crop */
+      aspect-ratio: auto;
+      padding: 22px;
+      margin-bottom: 26px;
+    }
 
     .hero-combo::after {
       content:"";
@@ -59,24 +66,23 @@
     }
 
     /* PACKERS IMAGE */
-    .hero-packers{
-  position: relative;         /* ✅ not absolute */
-  inset: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.98;
-  filter: drop-shadow(0 18px 22px rgba(0,0,0,0.25));
-}
+    .hero-packers {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.98;
+      filter: drop-shadow(0 18px 22px rgba(0,0,0,0.25));
+    }
 
-.hero-packers img{
-  width: min(560px, 92%);
-  height: auto;               /* ✅ keeps full image */
-  display: block;
-  transform: none;            /* optional: remove tilt */
-}
+    .hero-packers img {
+      width: min(560px, 92%);
+      height: auto;
+      display: block;
+      transform: none;
+    }
 
-    /* ✅ FINAL BANNER STYLE (NO OVERLAP EVER) */
+    /* BANNER BELOW */
     .hero-dales {
       position: static !important;
       margin: 0 auto;
@@ -122,9 +128,7 @@
     <div class="flex gap-6 items-center">
       <a href="/index.html" class="font-bold text-gray-700 hover:text-[#b70036]">Home</a>
       <a href="/index.html#about" class="font-bold text-gray-700 hover:text-[#D81B60]">About</a>
-      <a href="/index.html#the-plunge" class="font-bold text-gray-700 hover:text-[#00bcd4] transition">
-        Comment 🚽
-      </a>
+      <a href="/index.html#the-plunge" class="font-bold text-gray-700 hover:text-[#00bcd4] transition">Comment 🚽</a>
 
       <a href="/ExcitingNews/"
          class="bg-[#00bcd4] text-white px-4 py-2 rounded-full font-bold hover:opacity-90 transition">
@@ -148,26 +152,18 @@
       </div>
 
       <!-- Title -->
-     <h1 class="text-5xl md:text-6xl font-black leading-tight mb-4">
-
-  <!-- Packers Green + Gold Glow -->
-  <span class="text-[#203731] drop-shadow-[0_0_14px_rgba(255,182,18,0.85)]">
-    “Green Bay Packers Cheerleaders”
-  </span>
-
-  <br />
-
-  <!-- Softer white subtitle -->
-  <span class="text-[#203731] drop-shadow-[0_0_14px_rgba(255,182,18,0.85)]">
-    performing at
-  </span>
-
-  <!-- Wisconsin Dales stays bright + underlined -->
-  <span class="text-[#203731] drop-shadow-[0_0_14px_rgba(255,182,18,0.85)]">
-    WisconsinDales
-  </span>
-
-</h1>
+      <h1 class="text-5xl md:text-6xl font-black leading-tight mb-6">
+        <span class="text-[#203731] drop-shadow-[0_0_14px_rgba(255,182,18,0.85)]">
+          “Green Bay Packers Cheerleaders”
+        </span>
+        <br />
+        <span class="text-[#203731] drop-shadow-[0_0_14px_rgba(255,182,18,0.85)]">
+          performing at
+        </span>
+        <span class="underline decoration-white/40 text-[#203731] drop-shadow-[0_0_14px_rgba(255,182,18,0.85)]">
+          Wisconsin Dales
+        </span>
+      </h1>
 
       <!-- Hero image -->
       <div class="hero-combo max-w-5xl mx-auto lift">
@@ -177,76 +173,73 @@
       </div>
 
       <!-- Banner BELOW -->
-      <div class="hero-dales">
+      <div class="hero-dales max-w-5xl mx-auto">
         <img src="wisconsin-dales-wordmark.png" alt="Wisconsin Dales" />
         <div class="text-[#b70036] font-black text-lg md:text-xl">
           PRESS RELEASE
         </div>
       </div>
 
-      <!-- Ticket cards -->
-      <div class="bg-white/95 rounded-3xl p-6 shadow-xl lift border-t-4 border-[#203731]">
+      <!-- Ticket cards row wrapper -->
+      <div class="max-w-5xl mx-auto mt-10 grid md:grid-cols-3 gap-6">
 
-  <div class="text-[#203731] font-black text-xl mb-1 flex items-center gap-2">
-    🎟️ Ticket “Sale” Date
-  </div>
+        <!-- Ticket “Sale” Date -->
+        <div class="bg-white/95 rounded-3xl p-6 shadow-xl lift border-t-4 border-[#203731]">
+          <div class="text-[#203731] font-black text-xl mb-1 flex items-center gap-2">
+            🎟️ Ticket “Sale” Date
+          </div>
 
-  <div class="text-gray-800 font-semibold text-lg">
-    The Second Tuesday of Next Week
-  </div>
+          <div class="text-gray-800 font-semibold text-lg">
+            The Second Tuesday of Next Week
+          </div>
 
-  <div class="text-sm text-gray-600 mt-2 italic">
-    (Extremely well scheduled.)
-  </div>
-
-</div>
+          <div class="text-sm text-gray-600 mt-2 italic">
+            (Extremely well scheduled.)
+          </div>
+        </div>
 
         <!-- Showtime -->
         <div class="bg-white/95 rounded-3xl p-6 shadow-xl lift border-t-4 border-[#FFB612]">
+          <div class="text-[#203731] font-black text-xl mb-1 flex items-center gap-2">
+            🕖 Showtime Window
+          </div>
 
-  <div class="text-[#203731] font-black text-xl mb-1 flex items-center gap-2">
-    🕖 Showtime Window
-  </div>
+          <div class="text-gray-900 font-black text-3xl drop-shadow-[0_0_8px_rgba(255,182,18,0.35)]">
+            7:07 PM – 9:09 PM
+          </div>
 
-  <div class="text-gray-900 font-black text-3xl drop-shadow-[0_0_8px_rgba(255,182,18,0.35)]">
-    7:07 PM – 7:09 PM
-  </div>
-
-  <div class="text-gray-600 mt-2">
-    Doors open at <span class="font-bold text-[#203731]">6:30 PM</span><br />
-    Midwest goodbyes begin at <span class="font-bold text-[#203731]">7:10 PM</span>.
-  </div>
-
-</div>
+          <div class="text-gray-600 mt-2">
+            Doors open at <span class="font-bold text-[#203731]">6:30 PM</span><br />
+            Midwest goodbyes begin at <span class="font-bold text-[#203731]">9:10 PM</span>.
+          </div>
+        </div>
 
         <!-- Countdown -->
         <div class="bg-white/95 rounded-3xl p-6 shadow-xl lift border-t-4 border-[#203731]">
+          <div class="text-[#203731] font-black text-xl mb-1 flex items-center gap-2">
+            ⏳ Countdown (Resets Weekly)
+          </div>
 
-  <div class="text-[#203731] font-black text-xl mb-1 flex items-center gap-2">
-    ⏳ Countdown (Resets Weekly)
-  </div>
+          <div id="countdown"
+               class="countdown text-3xl md:text-4xl font-black text-[#203731]
+                      drop-shadow-[0_0_10px_rgba(255,182,18,0.55)] mt-2">
+            Loading…
+          </div>
 
-  <!-- Countdown Display -->
-  <div id="countdown"
-       class="countdown text-3xl md:text-4xl font-black text-[#203731]
-              drop-shadow-[0_0_10px_rgba(255,182,18,0.55)] mt-2">
-    Loading…
-  </div>
+          <button id="notifyBtn"
+            class="mt-5 w-full bg-[#203731] text-[#FFB612]
+                   px-5 py-3 rounded-2xl font-black
+                   hover:opacity-90 hover:scale-[1.02] transition">
+            Notify Me 🔔
+          </button>
 
-  <!-- Notify Button -->
-  <button id="notifyBtn"
-    class="mt-5 w-full bg-[#203731] text-[#FFB612]
-           px-5 py-3 rounded-2xl font-black
-           hover:opacity-90 hover:scale-[1.02] transition">
+          <div class="text-gray-600 mt-2 text-sm italic">
+            (This button just sends you to The Plunge 🚽)
+          </div>
+        </div>
 
-    Notify Me 🔔
-  </button>
-
-  <div class="text-gray-600 mt-2 text-sm italic">
-    (This button just sends you to The Plunge 🚽)
-  </div>
-
-</div>
+      </div>
+    </div>
   </header>
 
   <!-- FOOTER -->
@@ -280,7 +273,6 @@
       const now = new Date();
       let diff = saleDate - now;
 
-      // Reset every Tuesday forever
       if (diff <= 0) {
         saleDate = getNextWeekTuesday();
         diff = saleDate - now;
