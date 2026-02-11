@@ -1,22 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Exciting News | Wisconsin Dales</title>
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      background-color: #b70036;
+      font-family: sans-serif;
+      margin: 0;
+      text-align: center;
+    }
+
+    /* Floating animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .floaty {
+      animation: float 4s ease-in-out infinite;
+    }
+
+    /* Splashy headline glow */
+    .glow {
+      text-shadow: 0 0 18px rgba(255,255,255,0.45);
+    }
+
+    /* Bubble background */
+    .bubble {
+      position: absolute;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.15);
+      animation: bubbleFloat 7s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes bubbleFloat {
+      0%, 100% { transform: translateY(0); opacity: 0.6; }
+      50% { transform: translateY(-14px); opacity: 0.95; }
+    }
+  </style>
 </head>
-<body class="bg-[#b70036] text-white text-center p-20">
 
-  <h1 class="text-5xl font-black mb-6">🚀Exciting News🚀</h1>
-  <p class="text-xl opacity-90 mb-10">
-    Something splashy is coming soon...
-  </p>
+<body>
 
-  <a href="/index.html"
-   class="bg-white text-[#b70036] px-8 py-4 rounded-full font-bold hover:opacity-90 transition">
-   Back to Home 💦
-</a>
+  <!-- NAV -->
+  <nav class="bg-white p-5 border-b flex justify-around items-center sticky top-0 z-50 shadow-sm">
+    
+    <div class="font-bold text-[#b70036] text-xl">WI DALES</div>
+
+    <div class="flex gap-6 items-center">
+
+      <a href="/index.html" class="font-bold text-gray-700 hover:text-[#b70036]">
+        Home
+      </a>
+
+      <a href="/index.html#about" class="font-bold text-gray-700 hover:text-[#D81B60]">
+        About
+      </a>
+
+      <a href="/index.html#the-plunge" class="font-bold text-gray-700 hover:text-[#00bcd4] transition">
+        Comment 🚽
+      </a>
+
+      <a href="/ExcitingNews/"
+         class="bg-[#00bcd4] text-white px-4 py-2 rounded-full font-bold hover:opacity-90 transition">
+        🚀 Exciting News 🚀
+      </a>
+
+      <a href="/gallery.html"
+         class="bg-[#b70036] text-white px-4 py-2 rounded-full font-bold hover:opacity-90 transition">
+        Visit Splash Zone 💦
+      </a>
+
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="relative py-20 px-6 overflow-hidden">
+
+    <!-- bubbles -->
+    <div class="bubble" style="width:140px;height:140px;top:30px;left:40px;"></div>
+    <div class="bubble" style="width:90px;height:90px;bottom:40px;right:60px;animation-duration:9s;"></div>
+    <div class="bubble" style="width:60px;height:60px;top:120px;right:160px;animation-duration:6s;"></div>
+
+    <h1 class="text-6xl font-black text-white glow mb-6 floaty">
+      🚀 Exciting News
+    </h1>
+
+    <p class="text-xl text-white/90 max-w-2xl mx-auto mb-10">
+      Breaking Splash Bulletin from Wisconsin Dales HQ…
+      Something <span class="font-bold">ridiculously fun</span> is brewing.
+    </p>
+
+    <a href="#news"
+       class="inline-block bg-white text-[#b70036] px-10 py-4 rounded-full font-black text-xl shadow-xl hover:scale-105 transition-transform">
+      Dive Into The News 💦
+    </a>
+
+  </header>
+
+  <!-- MAIN NEWS -->
+  <main id="news" class="max-w-5xl mx-auto px-6 pb-20">
+
+    <!-- Announcement Card -->
+    <section class="bg-white rounded-3xl shadow-xl p-10 border-t-4 border-[#00bcd4] mb-12">
+
+      <h2 class="text-4xl font-black text-[#b70036] mb-4">
+        🌊 Big Things Are Coming…
+      </h2>
+
+      <p class="text-gray-700 text-lg leading-relaxed max-w-2xl mx-auto">
+        We’re cooking up new splashy projects, new pun zones,
+        and possibly a few attractions that are 100% imaginary…
+        but 1000% hilarious.
+      </p>
+
+      <div class="mt-8 grid md:grid-cols-3 gap-6">
+
+        <div class="bg-[#fdf5e6] rounded-2xl p-6 shadow-md">
+          <h3 class="font-black text-xl text-[#b70036] mb-2">📱 App Updates</h3>
+          <p class="text-gray-600">
+            The Wisconsin Dales app is getting funnier, splashier, and more ridiculous.
+          </p>
+        </div>
+
+        <div class="bg-[#fdf5e6] rounded-2xl p-6 shadow-md">
+          <h3 class="font-black text-xl text-[#b70036] mb-2">🎨 New Creations</h3>
+          <p class="text-gray-600">
+            More CNC designs, more chaos, and more Midwestern energy.
+          </p>
+        </div>
+
+        <div class="bg-[#fdf5e6] rounded-2xl p-6 shadow-md">
+          <h3 class="font-black text-xl text-[#b70036] mb-2">🚽 More Plunges</h3>
+          <p class="text-gray-600">
+            Expect more interactive nonsense. The pipes are wide open.
+          </p>
+        </div>
+
+      </div>
+
+      <p class="mt-10 text-gray-700 font-bold text-lg">
+        Got ideas? Drop them in <a href="/index.html#the-plunge" class="text-[#00bcd4] underline">
+        The Plunge</a>.
+      </p>
+
+    </section>
+
+    <!-- Fun Teaser -->
+    <section class="bg-[#00bcd4] text-white rounded-3xl shadow-xl p-10">
+
+      <h2 class="text-3xl font-black mb-4">
+        🎉 Official Statement From Dales Management
+      </h2>
+
+      <p class="text-lg max-w-2xl mx-auto">
+        “We have no idea what we’re doing… but we’re doing it with confidence,
+        dad jokes, and the spirit of a waterpark that technically does not exist.”
+      </p>
+
+      <a href="/index.html"
+         class="inline-block mt-8 bg-white text-[#00bcd4] px-10 py-4 rounded-full font-black text-xl hover:opacity-90 transition">
+        Back Home 💦
+      </a>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#7c0d22] text-white py-10 text-center font-semibold">
+    Wisconsin Dales — Excitement Pending… Stay Tuned 🚀
+  </footer>
 
 </body>
 </html>
