@@ -1,7 +1,6 @@
-const CACHE_NAME = "dales-cache-v2"; // bump version to force update
+const CACHE_NAME = "dales-cache-v3"; // bump version to force update
 const ASSETS = [
   "/",                 // ok for basic offline entry
-  "/index.html",
   "/manifest.json",
   "/icon-192.png",
   "/icon-512.png"
@@ -64,3 +63,4 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+
