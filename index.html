@@ -620,7 +620,14 @@ document.addEventListener("DOMContentLoaded", () => {
             statusEl.textContent = "Drop a comment before you flush. 😄";
             return;
         }
+// ✅ Update context fields right before submit
+document.getElementById("punPage").value = window.location.href;
+document.getElementById("punTime").value = new Date().toISOString();
 
+// ✅ Capture the comment BEFORE disabling fields
+const formData = new FormData(form);
+
+		// Now disable UI
         setDisabled(true);
 
         // Change button text each flush (simple fun)
@@ -630,8 +637,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const drainPromise = drainEffect();
 
         try {
-            const formData = new FormData(form);
-
             // honeypot check
             if (formData.get("_gotcha")) {
                 await drainPromise;
@@ -682,6 +687,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
