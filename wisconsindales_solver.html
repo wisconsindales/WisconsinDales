@@ -435,7 +435,7 @@
     </div>
     <h1>Da Punzle Zone</h1>
     <div class="sub">
-      A playful <strong>Wisconsin Dales</strong> spin on the daily calendar puzzle. Pick a date, make a splash, and the solver will find a layout that leaves the month and day visible — with hints ready when you want a little extra help.
+      A playful <strong>Wisconsin Dales</strong> spin on the daily calendar punzle. Pick a date, make a splash, and the solver will find a layout that leaves the month and day visible — with hints ready when you want a little extra help.
     </div>
 
     <div class="hero-links">
@@ -485,14 +485,14 @@
         </div>
 
         <div class="note">
-          The piece list is still plain JavaScript near the top of the script, so you can swap colors, shapes, or names whenever your puzzle evolves.
+          The piece list is still plain JavaScript near the top of the script, so you can swap colors, shapes, or names whenever your punzle evolves.
         </div>
       </div>
 
       <div class="board-wrap">
         <div class="panel" id="hintSection">
           <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; flex-wrap:wrap;">
-            <h2 style="margin:0;">Puzzle pieces</h2>
+            <h2 style="margin:0;">Punzle pieces</h2>
             <button id="hintBtn" class="ghost splash-hint" style="width:auto; white-space:nowrap;">Splash me a hint</button>
           </div>
           <div class="pieces" id="piecesPreview"></div>
@@ -973,7 +973,7 @@ splashAudio.preload = "auto";
           setStatus(`<strong>Found ${currentSolutions.length} splash layout${currentSolutions.length === 1 ? "" : "s"}.</strong> Search completed in ${ms} ms.`);
         } else {
           renderBoard();
-          setStatus(`<strong>No layout found.</strong> Search completed in ${ms} ms. If your physical puzzle uses slightly different pieces, edit the <code>PIECES</code> array in the script.`);
+          setStatus(`<strong>No layout found.</strong> Search completed in ${ms} ms. If your physical punzle uses slightly different pieces, edit the <code>PIECES</code> array in the script.`);
         }
       });
     }
