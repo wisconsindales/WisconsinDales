@@ -466,7 +466,7 @@
         </div>
 
         <div class="row">
-          <button id="solveBtn">:Splash the Solution</button>
+          <button id="solveBtn">Splash the Solution</button>
           <button id="todayBtn" class="secondary">Use today</button>
         </div>
 
@@ -477,14 +477,6 @@
 
         <div class="status" id="statusBox">
           <strong>Ready to splash.</strong> Pick a date, then press and hold <strong>:Splash the Solution</strong> or grab a hint.
-        </div>
-
-        <div class="note">
-          Shareable URL support is built in, so you can link straight to a date. Example: <code>?date=12-25</code>
-        </div>
-
-        <div class="note">
-          The piece list is still plain JavaScript near the top of the script, so you can swap colors, shapes, or names whenever your puzzle evolves.
         </div>
       </div>
 
@@ -1070,7 +1062,7 @@ splashAudio.preload = "auto";
       holdActive = false;
       solveBtn.classList.remove("hold-active");
       renderBoard();
-      setStatus("<strong>Peek hidden.</strong> Press and hold <strong>:Splash the Solution</strong> any time to take another quick look.");
+      setStatus("");
     }
 
     function handleSolveHoldStart(event) {
