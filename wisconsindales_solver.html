@@ -435,7 +435,7 @@
     </div>
     <h1>Da Punzle Zone</h1>
     <div class="sub">
-      A playful <strong>Wisconsin Dales</strong> spin on the daily calendar punzle. Pick a date, make a splash, and the solver will find a layout that leaves the month and day visible — with hints ready when you want a little extra help.
+      A playful <strong>Wisconsin Dales</strong> spin on the daily calendar puzzle. Pick a date, make a splash, and the solver will find a layout that leaves the month and day visible — with hints ready when you want a little extra help.
     </div>
 
     <div class="hero-links">
@@ -461,13 +461,12 @@
           </label>
         </div>
 
-        <div class="inline-check">
-          <input type="checkbox" id="flipToggle" checked />
-          <span>Allow splashy flips</span>
+        <div class="note" id="solutionCountBox">
+          <strong>Possible layouts for this day:</strong> Calculating…
         </div>
 
         <div class="row">
-          <button id="solveBtn">Splash the Solution</button>
+          <button id="solveBtn">:Splash the Solution</button>
           <button id="todayBtn" class="secondary">Use today</button>
         </div>
 
@@ -481,43 +480,33 @@
         </div>
 
         <div class="note">
-          Shareable URL support is built in, so you can link straight to a date. Example: <code>?date=12-25&flip=1</code>
+          Shareable URL support is built in, so you can link straight to a date. Example: <code>?date=12-25</code>
         </div>
 
         <div class="note">
-          The piece list is still plain JavaScript near the top of the script, so you can swap colors, shapes, or names whenever your punzle evolves.
+          The piece list is still plain JavaScript near the top of the script, so you can swap colors, shapes, or names whenever your puzzle evolves.
         </div>
       </div>
 
       <div class="board-wrap">
-        <div class="panel" id="hintSection">
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; flex-wrap:wrap;">
-            <h2 style="margin:0;">Punzle pieces</h2>
-      <button id="hintBtn" class="ghost splash-hint" style="width:auto; white-space:nowrap;">Splash me a hint</button>
-    </div>
-    <div class="pieces" id="piecesPreview"></div>
-    <div class="footer-note">Wisconsin Dales — come for the puns, stay because you clicked.</div>
-  </div>
-
-  <!-- BOARD -->
-  <div class="panel">
-    <div id="board"></div>
-  </div>
-
-  <!-- LEGEND -->
-  <div id="legend"></div>
-
-</div>
-
         <div class="panel">
           <div class="panel-title">
             <h2 style="margin:0;">Daily board</h2>
-            <button type="button" class="panel-kicker confused-link" id="confusedBtn">Still confused after Splash Hints?  Splash Solution?</button>
+            <button type="button" class="panel-kicker confused-link" id="confusedBtn">Are you confused?</button>
           </div>
           <div class="board" id="board"></div>
         </div>
 
         <div class="legend" id="legend"></div>
+
+        <div class="panel" id="hintSection">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; flex-wrap:wrap;">
+            <h2 style="margin:0;">Puzzle pieces</h2>
+            <button id="hintBtn" class="ghost splash-hint" style="width:auto; white-space:nowrap;">Splash me a hint</button>
+          </div>
+          <div class="pieces" id="piecesPreview"></div>
+          <div class="footer-note">Wisconsin Dales — come for the puns, stay because you clicked.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -532,15 +521,15 @@
     // Classic 7x7 calendar board shape: 12 month cells + 31 day cells = 43 cells.
     // Two cells remain open (selected month + selected day), so pieces must cover 41 cells total.
     const PIECES = [
-  { name: "W", color: COLORS[0], cells: [[0,0],[1,0],[2,0],[3,0],[4,0]] },
-  { name: "I", color: COLORS[1], cells: [[0,0],[1,0],[2,0],[3,0],[0,1]] },
-  { name: "S", color: COLORS[2], cells: [[0,0],[1,0],[2,0],[3,0],[1,1]] },
-  { name: "C", color: COLORS[3], cells: [[0,0],[1,0],[2,0],[0,1],[1,1]] },
-  { name: "O", color: COLORS[4], cells: [[0,0],[1,0],[2,0],[0,1],[2,1]] },
-  { name: "P", color: COLORS[5], cells: [[0,0],[1,0],[2,0],[0,1],[0,2]] },
-  { name: "U", color: COLORS[6], cells: [[0,0],[1,0],[2,0],[1,1],[1,2]] },
-  { name: "N", color: COLORS[7], cells: [[0,0],[1,0],[2,0],[3,0],[4,0],[0,1]] }
-];
+      { name: "W", color: COLORS[0], cells: [[0,0],[1,0],[2,0],[3,0],[4,0]] },
+      { name: "I", color: COLORS[1], cells: [[0,0],[1,0],[2,0],[3,0],[0,1]] },
+      { name: "S", color: COLORS[2], cells: [[0,0],[1,0],[2,0],[3,0],[1,1]] },
+      { name: "C", color: COLORS[3], cells: [[0,0],[1,0],[2,0],[0,1],[1,1]] },
+      { name: "O", color: COLORS[4], cells: [[0,0],[1,0],[2,0],[0,1],[2,1]] },
+      { name: "P", color: COLORS[5], cells: [[0,0],[1,0],[2,0],[0,1],[0,2]] },
+      { name: "U", color: COLORS[6], cells: [[0,0],[1,0],[2,0],[1,1],[1,2]] },
+      { name: "N", color: COLORS[7], cells: [[0,0],[1,0],[2,0],[3,0],[4,0],[0,1]] }
+    ];
 
 let splashAudio = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
 splashAudio.loop = true;
@@ -552,7 +541,7 @@ splashAudio.preload = "auto";
     const monthSelect = document.getElementById("monthSelect");
     const daySelect = document.getElementById("daySelect");
     const dateInput = document.getElementById("dateInput");
-    const flipToggle = document.getElementById("flipToggle");
+    const solutionCountBox = document.getElementById("solutionCountBox");
     const statusBox = document.getElementById("statusBox");
     const legendEl = document.getElementById("legend");
     const piecesPreviewEl = document.getElementById("piecesPreview");
@@ -904,6 +893,15 @@ splashAudio.preload = "auto";
       statusBox.innerHTML = html;
     }
 
+    function refreshSolutionsForCurrentDate() {
+      const month = Number(monthSelect.value || 1);
+      const day = Number(daySelect.value || 1);
+      currentSolutions = solve(month, day, true);
+      currentIndex = 0;
+      solutionCountBox.innerHTML = `<strong>Possible layouts for this day:</strong> ${currentSolutions.length}`;
+      return currentSolutions;
+    }
+
     function clearHints() {
       revealedHintPieces = new Set();
       renderPiecesPreview();
@@ -912,7 +910,7 @@ splashAudio.preload = "auto";
     function showHint() {
       const monthNum = Number(monthSelect.value);
       const dayNum = Number(daySelect.value);
-      const allowFlip = flipToggle.checked;
+      const allowFlip = true;
 
       if (!currentSolutions.length) {
         setStatus("<strong>Finding a hidden hint…</strong> Solving in the background without showing the full solution.");
@@ -953,7 +951,7 @@ splashAudio.preload = "auto";
       if (!currentSolutions.length) {
         renderBoard();
         renderPiecesPreview();
-        setStatus("<strong>No layout found.</strong> Try turning on splashy flips or adjusting the piece definitions.");
+        setStatus("<strong>No layout found.</strong> Try a different date or adjust the piece definitions.");
         return;
       }
       const month = MONTHS[Number(monthSelect.value) - 1];
@@ -966,7 +964,7 @@ splashAudio.preload = "auto";
     function runSolve() {
       const month = Number(monthSelect.value);
       const day = Number(daySelect.value);
-      const allowFlip = flipToggle.checked;
+      const allowFlip = true;
 
       setStatus("<strong>Making a splash…</strong> Searching valid placements in your browser.");
       renderBoard();
@@ -983,7 +981,7 @@ splashAudio.preload = "auto";
           setStatus(`<strong>Found ${currentSolutions.length} splash layout${currentSolutions.length === 1 ? "" : "s"}.</strong> Search completed in ${ms} ms.`);
         } else {
           renderBoard();
-          setStatus(`<strong>No layout found.</strong> Search completed in ${ms} ms. If your physical punzle uses slightly different pieces, edit the <code>PIECES</code> array in the script.`);
+          setStatus(`<strong>No layout found.</strong> Search completed in ${ms} ms. If your physical puzzle uses slightly different pieces, edit the <code>PIECES</code> array in the script.`);
         }
       });
     }
@@ -993,7 +991,6 @@ splashAudio.preload = "auto";
       const day = String(daySelect.value).padStart(2, "0");
       const params = new URLSearchParams();
       params.set("date", `${month}-${day}`);
-      params.set("flip", flipToggle.checked ? "1" : "0");
       history.replaceState({}, "", `${location.pathname}?${params.toString()}`);
     }
 
@@ -1051,17 +1048,13 @@ splashAudio.preload = "auto";
 
     function ensureSolutionsReady() {
       if (currentSolutions.length) return true;
-      const month = Number(monthSelect.value);
-      const day = Number(daySelect.value);
-      const allowFlip = flipToggle.checked;
-      currentSolutions = solve(month, day, allowFlip);
-      currentIndex = 0;
+      refreshSolutionsForCurrentDate();
       return currentSolutions.length > 0;
     }
 
     function showHeldSolution() {
       if (!ensureSolutionsReady()) {
-        setStatus("<strong>No layout found.</strong> Try a different date or allow splashy flips.");
+        setStatus("<strong>No layout found.</strong> Try a different date or adjust the pieces.");
         return;
       }
       holdActive = true;
@@ -1094,9 +1087,6 @@ splashAudio.preload = "auto";
     function readUrlState() {
       const params = new URLSearchParams(location.search);
       const date = params.get("date");
-      const flip = params.get("flip");
-      if (flip === "0") flipToggle.checked = false;
-      if (flip === "1") flipToggle.checked = true;
 
       if (date && /^\d{2}-\d{2}$/.test(date)) {
         const [m, d] = date.split("-").map(Number);
@@ -1113,10 +1103,10 @@ splashAudio.preload = "auto";
     hintBtn.addEventListener("click", showHint);
     document.getElementById("todayBtn").addEventListener("click", () => {
       setToday();
-      currentSolutions = [];
-      currentIndex = 0;
       clearHints();
       hideHeldSolution();
+      refreshSolutionsForCurrentDate();
+      updateUrl();
     });
     document.getElementById("prevBtn").addEventListener("click", () => {
 
@@ -1152,30 +1142,28 @@ splashAudio.preload = "auto";
 });
 
     dateInput.addEventListener("change", () => {
-      currentSolutions = [];
-      currentIndex = 0;
       clearHints();
       hideHeldSolution();
       syncFromDateInput();
+      refreshSolutionsForCurrentDate();
+      updateUrl();
     });
     monthSelect.addEventListener("change", () => {
-      currentSolutions = [];
-      currentIndex = 0;
       clearHints();
       hideHeldSolution();
       syncDateInputFromSelectors();
       renderBoard();
+      refreshSolutionsForCurrentDate();
+      updateUrl();
     });
     daySelect.addEventListener("change", () => {
-      currentSolutions = [];
-      currentIndex = 0;
       clearHints();
       hideHeldSolution();
       syncDateInputFromSelectors();
       renderBoard();
+      refreshSolutionsForCurrentDate();
+      updateUrl();
     });
-    flipToggle.addEventListener("change", updateUrl);
-
 
    solveBtn.addEventListener("mousedown", () => {
   showHeldSolution();
@@ -1220,6 +1208,8 @@ solveBtn.addEventListener("touchend", () => {
     readUrlState();
     renderPiecesPreview();
     renderBoard();
+    refreshSolutionsForCurrentDate();
+    updateUrl();
   </script>
 </body>
 </html>
