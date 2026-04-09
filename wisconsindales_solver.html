@@ -450,14 +450,6 @@
 .floaty {
   animation: float 4s ease-in-out infinite;
 }
-    #confusedBtn {
-  font-size: 1.2rem;
-  padding: 8px 14px;
-  transition: transform 0.2s ease;
-}
-    #confusedBtn.bump {
-  transform: scale(1.2) rotate(-1deg);
-}
   </style>
 </head>
 <body>
@@ -977,9 +969,6 @@ splashAudio.preload = "auto";
       if (!confusedBtn) return;
       confusedLineIndex = (confusedLineIndex + 1) % CONFUSED_LINES.length;
       confusedBtn.textContent = CONFUSED_LINES[confusedLineIndex];
-      confusedBtn.classList.remove("bump");
-void confusedBtn.offsetWidth;
-confusedBtn.classList.add("bump");
     }
 
     function playSplashOnce() {
