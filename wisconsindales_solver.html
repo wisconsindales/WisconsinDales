@@ -239,6 +239,22 @@
       min-width: 0;
     }
 
+    .piece-card.hinted-piece {
+      cursor: pointer;
+      border-color: rgba(253, 230, 138, 0.45);
+      box-shadow: 0 0 0 1px rgba(253, 230, 138, 0.14) inset;
+    }
+
+    .piece-card.hinted-piece:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .piece-card.hinted-piece.preview-active {
+      border-color: rgba(34, 211, 238, 0.7);
+      box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.22), 0 10px 20px rgba(0,0,0,0.2);
+    }
+
     .piece-title {
       display: flex;
       align-items: center;
@@ -483,6 +499,8 @@
           <strong>Possible layouts for this day:</strong> Calculating…
         </div>
 
+        <div class="status" id="statusBox"></div>
+
         <div class="row">
           <button id="solveBtn">Splash the Solution</button>
           <button id="todayBtn" class="secondary">Use today</button>
@@ -537,9 +555,10 @@
       { name: "N", color: COLORS[7], cells: [[0,0],[1,0],[2,0],[3,0],[4,0],[0,1]] }
     ];
 
-let splashAudio = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
+const SPLASH_SOUND = "splash.wav";
+let splashAudio = new Audio(SPLASH_SOUND);
 splashAudio.loop = true;
-splashAudio.volume = 0.35;
+splashAudio.volume = 0.4;
 splashAudio.preload = "auto";
 
 
@@ -559,6 +578,7 @@ splashAudio.preload = "auto";
     let currentSolutions = [];
     let currentIndex = 0;
     let revealedHintPieces = new Set();
+    let heldHintPieceName = null;
 
     const BOARD_CELLS = [];
     const LABELS = new Map();
@@ -790,7 +810,7 @@ splashAudio.preload = "auto";
       return solutions;
     }
 
-    function renderBoard(solution = null) {
+    function renderBoard(solution = null, previewPieceName = null) {
       boardEl.innerHTML = "";
       legendEl.innerHTML = "";
 
@@ -798,6 +818,7 @@ splashAudio.preload = "auto";
       const day = Number(daySelect.value || 1);
       const blocked = getBlockedCells(month, day);
       const solutionMap = new Map();
+      const previewMap = new Map();
 
       if (solution) {
         solution.forEach((placement) => {
@@ -805,6 +826,15 @@ splashAudio.preload = "auto";
             solutionMap.set(cellKey(r, c), placement);
           });
         });
+      }
+
+      if (previewPieceName && currentSolutions.length) {
+        const previewPlacement = currentSolutions[currentIndex].find((p) => p.piece === previewPieceName);
+        if (previewPlacement) {
+          previewPlacement.cells.forEach(([r, c]) => {
+            previewMap.set(cellKey(r, c), previewPlacement);
+          });
+        }
       }
 
       for (let r = 0; r < 7; r++) {
@@ -825,6 +855,10 @@ splashAudio.preload = "auto";
             el.classList.add("open-date");
           } else if (solutionMap.has(key)) {
             const p = solutionMap.get(key);
+            el.classList.add("covered");
+            el.style.background = p.color;
+          } else if (previewMap.has(key)) {
+            const p = previewMap.get(key);
             el.classList.add("covered");
             el.style.background = p.color;
           } else {
@@ -859,12 +893,16 @@ splashAudio.preload = "auto";
     function renderPiecesPreview() {
       piecesPreviewEl.innerHTML = "";
       PIECES.forEach((piece) => {
+        const isHinted = revealedHintPieces.has(piece.name);
+        const isPreviewActive = heldHintPieceName === piece.name;
         const card = document.createElement("div");
-        card.className = "piece-card";
+        card.className = `piece-card${isHinted ? " hinted-piece" : ""}${isPreviewActive ? " preview-active" : ""}`;
+        card.dataset.piece = piece.name;
+
         const title = document.createElement("div");
         title.className = "piece-title";
 
-        const hintMark = revealedHintPieces.has(piece.name)
+        const hintMark = isHinted
           ? `<span class="hint-mark" title="Hint shown">*</span>`
           : "";
         title.innerHTML = `<span class="dot" style="background:${piece.color}"></span>${piece.name}${hintMark}`;
@@ -889,6 +927,15 @@ splashAudio.preload = "auto";
           }
         }
 
+        if (isHinted) {
+          const startPreview = (event) => handleHintPieceHoldStart(event, piece.name);
+          card.addEventListener("mousedown", startPreview);
+          card.addEventListener("touchstart", startPreview, { passive: false });
+          card.addEventListener("mouseleave", (event) => {
+            if ((event.buttons & 1) === 0) hideHeldHintPiece();
+          });
+        }
+
         card.appendChild(title);
         card.appendChild(grid);
         piecesPreviewEl.appendChild(card);
@@ -896,7 +943,43 @@ splashAudio.preload = "auto";
     }
 
     function setStatus(html) {
+      if (!statusBox) return;
       statusBox.innerHTML = html;
+    }
+
+    function playSplashOnce() {
+      const audio = new Audio(SPLASH_SOUND);
+      audio.volume = 0.4;
+      audio.play().catch(() => {});
+    }
+
+    function showHeldHintPiece(pieceName) {
+      if (!revealedHintPieces.has(pieceName)) return;
+      if (!ensureSolutionsReady()) {
+        setStatus("<strong>No layout found.</strong> Try a different date or adjust the pieces.");
+        return;
+      }
+
+      heldHintPieceName = pieceName;
+      hideHeldSolution();
+      renderBoard(null, pieceName);
+      renderPiecesPreview();
+      const month = MONTHS[Number(monthSelect.value) - 1];
+      const day = Number(daySelect.value);
+      setStatus(`<strong>Peek mode on.</strong> Holding piece <strong>${pieceName}</strong> shows where it goes for ${month} ${day}. Let go and it disappears.`);
+    }
+
+    function hideHeldHintPiece() {
+      if (!heldHintPieceName) return;
+      heldHintPieceName = null;
+      renderBoard();
+      renderPiecesPreview();
+      setStatus("");
+    }
+
+    function handleHintPieceHoldStart(event, pieceName) {
+      if (event) event.preventDefault();
+      showHeldHintPiece(pieceName);
     }
 
     function refreshSolutionsForCurrentDate() {
@@ -909,6 +992,7 @@ splashAudio.preload = "auto";
     }
 
     function clearHints() {
+      heldHintPieceName = null;
       revealedHintPieces = new Set();
       renderPiecesPreview();
     }
@@ -979,6 +1063,7 @@ splashAudio.preload = "auto";
         const started = performance.now();
         currentSolutions = solve(month, day, allowFlip);
         currentIndex = 0;
+        heldHintPieceName = null;
         revealedHintPieces = new Set();
         const ms = Math.round(performance.now() - started);
 
@@ -1063,9 +1148,11 @@ splashAudio.preload = "auto";
         setStatus("<strong>No layout found.</strong> Try a different date or adjust the pieces.");
         return;
       }
+      heldHintPieceName = null;
       holdActive = true;
       solveBtn.classList.add("hold-active");
       renderBoard(currentSolutions[currentIndex]);
+      renderPiecesPreview();
       const month = MONTHS[Number(monthSelect.value) - 1];
       const day = Number(daySelect.value);
       setStatus(`<strong>Peek mode on.</strong> Holding the button shows the solution for ${month} ${day}. Let go and it disappears.`);
@@ -1076,6 +1163,7 @@ splashAudio.preload = "auto";
       holdActive = false;
       solveBtn.classList.remove("hold-active");
       renderBoard();
+      renderPiecesPreview();
       setStatus("");
     }
 
@@ -1106,6 +1194,8 @@ splashAudio.preload = "auto";
       syncDateInputFromSelectors();
     }
 
+    hintBtn.addEventListener("mousedown", playSplashOnce);
+    hintBtn.addEventListener("touchstart", playSplashOnce, { passive: true });
     hintBtn.addEventListener("click", showHint);
     document.getElementById("todayBtn").addEventListener("click", () => {
       setToday();
@@ -1201,6 +1291,11 @@ solveBtn.addEventListener("touchend", () => {
   splashAudio.pause();
   splashAudio.currentTime = 0;
 });
+
+
+    document.addEventListener("mouseup", hideHeldHintPiece);
+    document.addEventListener("touchend", hideHeldHintPiece);
+    document.addEventListener("touchcancel", hideHeldHintPiece);
 
     confusedBtn.addEventListener("click", () => {
       hintSection.scrollIntoView({ behavior: "smooth", block: "center" });
