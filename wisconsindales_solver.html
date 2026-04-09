@@ -579,6 +579,24 @@ splashAudio.preload = "auto";
     let currentIndex = 0;
     let revealedHintPieces = new Set();
     let heldHintPieceName = null;
+    const CONFUSED_LINES = [
+      "Are you confused?",
+      "Need a hint, puzzle wizard?",
+      "That board winning the argument?",
+      "Go ahead, bully the hint button.",
+      "Still stuck? Bold strategy.",
+      "Press it again. Pride is overrated.",
+      "Even the pieces are judging you.",
+      "Turns out guessing was not a system.",
+      "Need another clue, captain obvious?",
+      "You're one splash away from dignity.",
+      "This puzzle has you in a headlock.",
+      "Confused? Shocking. Tap the button.",
+      "The board called. It said 'nice try.'",
+      "You vs. seven pieces. Tight race.",
+      "One more hint and we tell nobody."
+    ];
+    let confusedLineIndex = 0;
 
     const BOARD_CELLS = [];
     const LABELS = new Map();
@@ -947,6 +965,12 @@ splashAudio.preload = "auto";
       statusBox.innerHTML = html;
     }
 
+    function cycleConfusedText() {
+      if (!confusedBtn) return;
+      confusedLineIndex = (confusedLineIndex + 1) % CONFUSED_LINES.length;
+      confusedBtn.textContent = CONFUSED_LINES[confusedLineIndex];
+    }
+
     function playSplashOnce() {
       const audio = new Audio(SPLASH_SOUND);
       audio.volume = 0.4;
@@ -998,6 +1022,7 @@ splashAudio.preload = "auto";
     }
 
     function showHint() {
+      cycleConfusedText();
       const monthNum = Number(monthSelect.value);
       const dayNum = Number(daySelect.value);
       const allowFlip = true;
@@ -1144,6 +1169,7 @@ splashAudio.preload = "auto";
     }
 
     function showHeldSolution() {
+      cycleConfusedText();
       if (!ensureSolutionsReady()) {
         setStatus("<strong>No layout found.</strong> Try a different date or adjust the pieces.");
         return;
@@ -1261,41 +1287,39 @@ splashAudio.preload = "auto";
       updateUrl();
     });
 
-   solveBtn.addEventListener("mousedown", () => {
-  showHeldSolution();
-  splashAudio.currentTime = 0;
-  splashAudio.play().catch(err => console.log("Splash audio failed:", err));
-});
+    function stopSolveHold() {
+      hideHeldSolution();
+      splashAudio.pause();
+      splashAudio.currentTime = 0;
+    }
 
-solveBtn.addEventListener("mouseup", () => {
-  hideHeldSolution();
-  splashAudio.pause();
-  splashAudio.currentTime = 0;
-});
+    solveBtn.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      showHeldSolution();
+      splashAudio.currentTime = 0;
+      splashAudio.play().catch(err => console.log("Splash audio failed:", err));
+    });
 
-solveBtn.addEventListener("mouseleave", () => {
-  hideHeldSolution();
-  splashAudio.pause();
-  splashAudio.currentTime = 0;
-});
-
-solveBtn.addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  showHeldSolution();
-  splashAudio.currentTime = 0;
-  splashAudio.play().catch(err => console.log("Splash audio failed:", err));
-});
-
-solveBtn.addEventListener("touchend", () => {
-  hideHeldSolution();
-  splashAudio.pause();
-  splashAudio.currentTime = 0;
-});
+    solveBtn.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      showHeldSolution();
+      splashAudio.currentTime = 0;
+      splashAudio.play().catch(err => console.log("Splash audio failed:", err));
+    }, { passive: false });
 
 
-    document.addEventListener("mouseup", hideHeldHintPiece);
-    document.addEventListener("touchend", hideHeldHintPiece);
-    document.addEventListener("touchcancel", hideHeldHintPiece);
+    document.addEventListener("mouseup", () => {
+      hideHeldHintPiece();
+      stopSolveHold();
+    });
+    document.addEventListener("touchend", () => {
+      hideHeldHintPiece();
+      stopSolveHold();
+    });
+    document.addEventListener("touchcancel", () => {
+      hideHeldHintPiece();
+      stopSolveHold();
+    });
 
     confusedBtn.addEventListener("click", () => {
       hintSection.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -1309,6 +1333,7 @@ solveBtn.addEventListener("touchend", () => {
     readUrlState();
     renderPiecesPreview();
     renderBoard();
+    if (confusedBtn) confusedBtn.textContent = CONFUSED_LINES[confusedLineIndex];
     refreshSolutionsForCurrentDate();
     updateUrl();
   </script>
