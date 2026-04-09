@@ -370,7 +370,7 @@
       border-radius: 999px;
       background: rgba(255,255,255,0.06);
       color: var(--accent-3);
-      font-size: .72rem;
+      font-size: 0.72rem;
       font-weight: 800;
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -449,10 +449,6 @@
 
 .floaty {
   animation: float 4s ease-in-out infinite;
-}
-#confusedBtn {
-  font-size: 1.1rem;
-  padding: 6px 12px;
 }
   </style>
 </head>
@@ -1174,18 +1170,19 @@ splashAudio.preload = "auto";
 
     function showHeldSolution() {
       cycleConfusedText();
-      if (!ensureSolutionsReady()) {
-        setStatus("<strong>No layout found.</strong> Try a different date or adjust the pieces.");
-        return;
-      }
       heldHintPieceName = null;
       holdActive = true;
       solveBtn.classList.add("hold-active");
-      renderBoard(currentSolutions[currentIndex]);
+      renderBoard();
       renderPiecesPreview();
-      const month = MONTHS[Number(monthSelect.value) - 1];
-      const day = Number(daySelect.value);
-      setStatus(`<strong>Peek mode on.</strong> Holding the button shows the solution for ${month} ${day}. Let go and it disappears.`);
+      setStatus(`
+        <strong>Hint survival guide.</strong><br>
+        • Smash <strong>Splash me a hint</strong> to reveal one rotated piece.<br>
+        • Any piece with a <strong>*</strong> is now unlocked for your struggling fingertips.<br>
+        • Press and hold that starred piece to see exactly where it goes on the board.<br>
+        • Let go and it vanishes again, because commitment is hard.<br><br>
+        Keep poking the puzzle. It's adorable that you think you're close.
+      `);
     }
 
     function hideHeldSolution() {
