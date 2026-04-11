@@ -443,3 +443,10 @@
 .floaty {
   animation: float 4s ease-in-out infinite;
 }
+
+#floatingPiece {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  display: none;
+}
