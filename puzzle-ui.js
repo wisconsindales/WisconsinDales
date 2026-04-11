@@ -391,10 +391,7 @@ splashAudio.preload = "auto";
           const startPreview = (event) => handleHintPieceHoldStart(event, piece.name);
           card.addEventListener("mousedown", startPreview);
           card.addEventListener("touchstart", startPreview, { passive: false });
-          card.addEventListener("mouseleave", (event) => {
-            if ((event.buttons & 1) === 0) hideHeldHintPiece();
-          });
-        }
+   }
 
         card.appendChild(title);
         card.appendChild(grid);
