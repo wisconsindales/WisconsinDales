@@ -388,12 +388,11 @@ splashAudio.preload = "auto";
         }
 
         if (isHinted) {
-          const startPreview = (event) => handleHintPieceHoldStart(event, piece.name);
-          card.addEventListener("mousedown", startPreview);
-          card.addEventListener("touchstart", startPreview, { passive: false });
-          card.addEventListener("touchend", hideHeldHintPiece);
-          card.addEventListener("touchcancel", hideHeldHintPiece);
-   }
+  const startPreview = (event) => handleHintPieceHoldStart(event, piece.name);
+  card.addEventListener("pointerdown", startPreview);
+  card.addEventListener("pointerup", hideHeldHintPiece);
+  card.addEventListener("pointercancel", hideHeldHintPiece);
+}
 
         card.appendChild(title);
         card.appendChild(grid);
