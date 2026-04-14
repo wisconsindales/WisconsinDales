@@ -468,7 +468,7 @@ function setConfusedText(poolOrText, holdMs = 0) {
   void confusedBtn.offsetWidth;
   confusedBtn.classList.add("hint-pulse");
 
-  if (holdMs > 0) {
+  if (false) {
     confusedResetTimer = setTimeout(() => {
       confusedBtn.textContent = pickConfusedLine(CONFUSED_LINES.idle);
       confusedResetTimer = null;
