@@ -452,7 +452,7 @@ function pickConfusedLine(pool) {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-function setConfusedText(poolOrText, holdMs = 2600) {
+function setConfusedText(poolOrText, holdMs = 0) {
   if (!confusedBtn) return;
 
   if (confusedResetTimer) {
