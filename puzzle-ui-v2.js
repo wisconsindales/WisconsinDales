@@ -533,8 +533,13 @@ function setStatus(html) {
   statusBox.innerHTML = html;
 }
 
+let confusedLineCounter = 0;
+
 function pickConfusedLine(pool) {
-  return pool[Math.floor(Math.random() * pool.length)];
+  if (!pool || !pool.length) return "Are you confused?";
+  const line = pool[confusedLineCounter % pool.length];
+  confusedLineCounter += 1;
+  return line;
 }
 
 function setConfusedText(poolOrText, holdMs = 8000) {
