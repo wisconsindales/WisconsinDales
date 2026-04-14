@@ -27,80 +27,147 @@ let confusedResetTimer = null;
 const CONFUSED_LINES = {
   idle: [
     "Are you confused?",
-    "You're actually closer than your face suggests.",
-"Look at you, accidentally making progress.",
-"That was almost competent. Keep going.",
-"Suspiciously decent move.",
-"You're not lost. You're exploring badly.",
     "You look lost already.",
-    "Keep poking it. Something useful might happen.",
-"That looked smarter than usual.",
-"One more good move and I'll act impressed.",
-"You're warming up. Try not to ruin it.",
-"Progress. Ugly, but real.",
     "Confidence is doing a lot of heavy lifting here.",
-    "Fine. That was a decent move.",
-"You may not be hopeless after all.",
-"I hate to admit it, but that helped.",
-"Keep going. The puzzle is starting to fear you a little.",
-"You're doing better than your strategy deserves.",
-"Somehow, against the odds, that worked.",
     "That board has you in a headlock.",
-    "Take your time. Wrong slowly if you need to."
+    "Take your time. Wrong slowly if you need to.",
+    "You're not lost. You're exploring badly.",
+    "Keep poking it. Something useful might happen.",
+    "You're warming up. Try not to ruin it.",
+    "Progress. Ugly, but real.",
+    "Suspiciously decent effort so far."
   ],
+
   click: [
     "Yes. Obviously. The hint button is right there.",
     "Need adult supervision? Scroll down.",
-    "Keep flailing. You're hitting useful things now.",
     "Try the hint button, champion.",
     "Down there. The hint button. Even you can find it.",
-    "Go press the help button and call it strategy."
+    "Go press the help button and call it strategy.",
+    "You seem overwhelmed. Adorable.",
+    "The hint button is waiting for your dramatic entrance.",
+    "Go ahead. Ask for help like the rest of us.",
+    "You clicked this instead of solving it. Bold.",
+    "Scroll down, puzzle warrior. Salvation is lower."
   ],
+
   firstHint: [
     "Fine. One pity hint.",
     "There. A tiny crumb of competence.",
     "One starred piece. Try not to waste it.",
     "I helped once. Let's not make this a lifestyle.",
-    "Enjoy your starter hint, puzzle goblin."
+    "Enjoy your starter hint, puzzle goblin.",
+    "Okay, now do something useful with it.",
+    "There. I helped. Try not to waste my generosity.",
+    "Now you have a fighting chance. Tiny, but real.",
+    "One clue. No excuses.",
+    "Use the starred piece like you've seen a puzzle before."
   ],
+
   moreHints: [
     "Another hint? Stunning.",
     "At this point I'm basically playing too.",
-    "The board still hates you, but slightly less.",
     "You're not solving it. You're collecting charity.",
     "This puzzle is in a toxic relationship with your hint button.",
-    "Keep pressing it. Dignity was never the plan."
+    "Keep pressing it. Dignity was never the plan.",
+    "You may not be hopeless after all.",
+    "Keep going. The puzzle is starting to fear you a little.",
+    "Somehow, against the odds, that worked.",
+    "You're stumbling in the correct direction.",
+    "Fine. That was a decent move."
   ],
+
+  encouragement: [
+    "You're actually closer than your face suggests.",
+    "Look at you, accidentally making progress.",
+    "That was almost competent. Keep going.",
+    "That looked smarter than usual.",
+    "One more good move and I'll act impressed.",
+    "I hate to admit it, but that helped.",
+    "You're doing better than your strategy deserves.",
+    "I expected worse. Congratulations.",
+    "That was almost elegant. Don't get cocky.",
+    "Even chaos can be effective, apparently."
+  ],
+
+  meanEncouragement: [
+    "You're still a mess, but now a productive one.",
+    "Keep flailing. You're hitting useful things now.",
+    "That move had actual brain cells in it.",
+    "You're improving, which is honestly annoying.",
+    "Gross. That was kind of smart.",
+    "Fine. You've earned one tiny shred of respect.",
+    "Keep going, puzzle goblin. You're less embarrassing now.",
+    "That wasn't luck. Probably.",
+    "You've upgraded from confused to dangerous.",
+    "The board still hates you, but slightly less."
+  ],
+
+  close: [
+    "You're one good move away from pretending this was skill.",
+    "You're close enough to start acting smug.",
+    "Don't panic now. This is the smart part.",
+    "You're hovering near competence. Stay there.",
+    "One more move and you can lie about solving it cleanly.",
+    "The answer is practically tripping over you now.",
+    "You're so close it's irritating.",
+    "Keep it together. This almost looks intentional.",
+    "You can absolutely finish this, assuming you don't get weird.",
+    "The board is wobbling. Push."
+  ],
+
   allHints: [
     "That's all of them. Figure it out, hero.",
     "No more mystery. Only your decisions remain.",
     "Every piece is starred now. The rest is on your shaky shoulders.",
     "You have all the crumbs. Bake your own answer.",
-    "I've done enough. Embarrass yourself without assistance."
+    "I've done enough. Embarrass yourself without assistance.",
+    "The training wheels are off now.",
+    "You have all the help you're getting. Terrifying, I know.",
+    "Everything useful has been handed to you already.",
+    "No more hints. Just consequences.",
+    "Time to find out whether any of this sank in."
   ],
+
   piecePeek: [
     "There. That's where it goes. Try pretending you knew that.",
     "Look closely. I will not draw you a map in crayon.",
     "That starred piece finally found a purpose.",
     "Memorize it before you let go and panic again.",
-    "See? Even the piece has better instincts than you."
+    "See? Even the piece has better instincts than you.",
+    "There you go. A brief visit from competence.",
+    "Study it quickly before the mystery comes back.",
+    "That piece seems smarter than the person holding it.",
+    "You get a peek, not a full rescue.",
+    "Try remembering that location with your best remaining brain cell."
   ],
+
   solutionHold: [
     "Hold to peek. Release to resume the lie.",
     "Ah yes, learning through aggressive peeking.",
     "Cheating, but make it interactive.",
     "Borrow the answer all you want. It still isn't your idea.",
-    "Look fast. Competence expires on release."
+    "Look fast. Competence expires on release.",
+    "There it is. The whole thing. Try not to act innocent.",
+    "Enjoy your temporary honesty.",
+    "You're not solving it, but you are observing it intensely.",
+    "A bold educational strategy: staring.",
+    "This is less 'solving' and more 'borrowing confidence.'"
   ],
+
   noSolution: [
     "Even the solver gave up on that one.",
     "No layout found. Congratulations, you found chaos.",
     "That date is fighting back harder than you are.",
     "Nothing works there. Impressive choice.",
-    "Not solvable. Finally, something that's not your fault."
+    "Not solvable. Finally, something that's not your fault.",
+    "For once, the puzzle is the problem.",
+    "You broke nothing. That one just stinks.",
+    "The board said no, and honestly it seemed personal.",
+    "No solution there. A rare excuse for your confusion.",
+    "Even I can't roast you for this one."
   ]
 };
-
 const BOARD_CELLS = [];
 const LABELS = new Map();
 const MONTH_POSITIONS = new Map();
