@@ -578,7 +578,7 @@ function showHint() {
 
   if (!remainingPieces.length) {
     setStatus("<strong>All hint orientations are already shown.</strong> Each starred piece below the calendar is rotated to the correct solution orientation.");
-    setConfusedText(CONFUSED_LINES.allHints, 3200);
+    setConfusedText(CONFUSED_LINES.allHints, 8200);
     return;
   }
 
@@ -606,7 +606,7 @@ function showHint() {
         `I handed you ${nextPiece}. What more do you want, a parade?`
       ];
 
-  setConfusedText(linePool, 3200);
+  setConfusedText(linePool, 8200);
 }
 
 function showCurrentSolution() {
@@ -725,7 +725,7 @@ function showHeldSolution() {
   renderBoard();
   renderPiecesPreview();
 
-  setConfusedText(CONFUSED_LINES.solutionHold, 3200);
+  setConfusedText(CONFUSED_LINES.solutionHold, 8200);
 
   setStatus(`
     <strong>Hint survival guide.</strong><br>
