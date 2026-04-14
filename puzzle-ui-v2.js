@@ -452,7 +452,7 @@ function pickConfusedLine(pool) {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-function setConfusedText(poolOrText, holdMs = 0) {
+function setConfusedText(poolOrText, holdMs = 8000) {
   if (!confusedBtn) return;
 
   if (confusedResetTimer) {
@@ -468,7 +468,7 @@ function setConfusedText(poolOrText, holdMs = 0) {
   void confusedBtn.offsetWidth;
   confusedBtn.classList.add("hint-pulse");
 
-  if (false) {
+  if (holdMs > 0) {
     confusedResetTimer = setTimeout(() => {
       confusedBtn.textContent = pickConfusedLine(CONFUSED_LINES.idle);
       confusedResetTimer = null;
@@ -497,7 +497,7 @@ function showHeldHintPiece(pieceName) {
   if (!revealedHintPieces.has(pieceName)) return;
   if (!ensureSolutionsReady()) {
     setStatus("<strong>No layout found.</strong> Try a different date or adjust the pieces.");
-    setConfusedText(CONFUSED_LINES.noSolution, 3200);
+    setConfusedText(CONFUSED_LINES.noSolution, 8200);
     return;
   }
 
@@ -565,7 +565,7 @@ function showHint() {
       renderBoard();
       renderPiecesPreview();
       setStatus(`<strong>No solution found.</strong> Background hint search completed in ${ms} ms.`);
-      setConfusedText(CONFUSED_LINES.noSolution, 3200);
+      setConfusedText(CONFUSED_LINES.noSolution, 8200);
       return;
     }
 
@@ -871,7 +871,7 @@ document.addEventListener("touchcancel", () => {
 });
 
 confusedBtn.addEventListener("click", () => {
-  setConfusedText(CONFUSED_LINES.click, 2400);
+  setConfusedText(CONFUSED_LINES.click, 8400);
   hintSection.scrollIntoView({ behavior: "smooth", block: "center" });
   hintBtn.classList.remove("hint-pulse");
   void hintBtn.offsetWidth;
