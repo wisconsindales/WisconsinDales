@@ -366,8 +366,8 @@ code {
 .panel-title {
   margin: 0 0 12px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-start;
+  justify-content: flex-start;
   gap: 12px;
   flex-wrap: wrap;
 }
@@ -401,6 +401,9 @@ code {
     inset 0 -3px 0 rgba(0,0,0,0.14);
   transform: rotate(-3deg);
   transform-origin: center;
+
+  flex-basis: 100%;
+  margin: 6px auto 4px;
 }
 
 #confusedBtn.confused-link {
