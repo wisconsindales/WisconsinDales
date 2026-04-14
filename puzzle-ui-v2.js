@@ -27,14 +27,31 @@ let confusedResetTimer = null;
 const CONFUSED_LINES = {
   idle: [
     "Are you confused?",
+    "You're actually closer than your face suggests.",
+"Look at you, accidentally making progress.",
+"That was almost competent. Keep going.",
+"Suspiciously decent move.",
+"You're not lost. You're exploring badly.",
     "You look lost already.",
+    "Keep poking it. Something useful might happen.",
+"That looked smarter than usual.",
+"One more good move and I'll act impressed.",
+"You're warming up. Try not to ruin it.",
+"Progress. Ugly, but real.",
     "Confidence is doing a lot of heavy lifting here.",
+    "Fine. That was a decent move.",
+"You may not be hopeless after all.",
+"I hate to admit it, but that helped.",
+"Keep going. The puzzle is starting to fear you a little.",
+"You're doing better than your strategy deserves.",
+"Somehow, against the odds, that worked.",
     "That board has you in a headlock.",
     "Take your time. Wrong slowly if you need to."
   ],
   click: [
     "Yes. Obviously. The hint button is right there.",
     "Need adult supervision? Scroll down.",
+    "Keep flailing. You're hitting useful things now.",
     "Try the hint button, champion.",
     "Down there. The hint button. Even you can find it.",
     "Go press the help button and call it strategy."
@@ -49,6 +66,7 @@ const CONFUSED_LINES = {
   moreHints: [
     "Another hint? Stunning.",
     "At this point I'm basically playing too.",
+    "The board still hates you, but slightly less.",
     "You're not solving it. You're collecting charity.",
     "This puzzle is in a toxic relationship with your hint button.",
     "Keep pressing it. Dignity was never the plan."
