@@ -497,7 +497,7 @@ function showHeldHintPiece(pieceName) {
   if (!revealedHintPieces.has(pieceName)) return;
   if (!ensureSolutionsReady()) {
     setStatus("<strong>No layout found.</strong> Try a different date or adjust the pieces.");
-    setConfusedText(CONFUSED_LINES.noSolution, 8200);
+    setConfusedText(CONFUSED_LINES.noSolution, 16000);
     return;
   }
 
@@ -565,7 +565,7 @@ function showHint() {
       renderBoard();
       renderPiecesPreview();
       setStatus(`<strong>No solution found.</strong> Background hint search completed in ${ms} ms.`);
-      setConfusedText(CONFUSED_LINES.noSolution, 8200);
+      setConfusedText(CONFUSED_LINES.noSolution, 16000);
       return;
     }
 
@@ -578,7 +578,7 @@ function showHint() {
 
   if (!remainingPieces.length) {
     setStatus("<strong>All hint orientations are already shown.</strong> Each starred piece below the calendar is rotated to the correct solution orientation.");
-    setConfusedText(CONFUSED_LINES.allHints, 8200);
+    setConfusedText(CONFUSED_LINES.allHints, 16000);
     return;
   }
 
@@ -606,7 +606,7 @@ function showHint() {
         `I handed you ${nextPiece}. What more do you want, a parade?`
       ];
 
-  setConfusedText(linePool, 8200);
+  setConfusedText(linePool, 16000);
 }
 
 function showCurrentSolution() {
@@ -725,7 +725,7 @@ function showHeldSolution() {
   renderBoard();
   renderPiecesPreview();
 
-  setConfusedText(CONFUSED_LINES.solutionHold, 8200);
+  setConfusedText(CONFUSED_LINES.solutionHold, 16000);
 
   setStatus(`
     <strong>Hint survival guide.</strong><br>
