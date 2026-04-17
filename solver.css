@@ -328,13 +328,17 @@ code {
   justify-content: flex-start;
 }
 
+.logo-wrap a {
+  display: inline-block;
+}
 .solver-logo {
   display: block;
-  width: 100%;
-  max-width: 280px;
+  width: 280px;
+  max-width: 100%;
   height: auto;
   margin: 0 auto;
 }
+
 
 .site-logo {
   width: min(100%, 250px);
