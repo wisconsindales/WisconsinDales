@@ -27,23 +27,23 @@ let confusedResetTimer = null;
 const CONFUSED_LINES = {
   idle: [
     "Are you confused?",
-    "You look lost already.",
+    "You can't be lost already.",
     "Confidence is doing a lot of heavy lifting here.",
-    "That board has you in a headlock.",
-    "Take your time. Wrong slowly if you need to.",
+    "Does That board have you in a headlock.",
+    "Take your time & postpone the failure.",
     "You're not lost. You're exploring badly.",
     "Keep poking it. Something useful might happen.",
     "You're warming up. Try not to ruin it.",
-    "Progress. Ugly, but real.",
+    "Progress?  As long as you think so!",
     "Suspiciously decent effort so far."
   ],
 
   click: [
     "Yes. Obviously. The hint button is right there.",
     "Need adult supervision? Scroll down.",
-    "Try the hint button, champion.",
-    "Down there. The hint button. Even you can find it.",
-    "Go press the help button and call it strategy.",
+    "Another hint GEANYUS?
+    "You got that hint button over worked",
+    "Press it again, call it a strategy.",
     "You seem overwhelmed. Adorable.",
     "The hint button is waiting for your dramatic entrance.",
     "Go ahead. Ask for help like the rest of us.",
@@ -125,13 +125,12 @@ const CONFUSED_LINES = {
     "The training wheels are off now.",
     "You have all the help you're getting. Terrifying, I know.",
     "Everything useful has been handed to you already.",
-    "No more hints. Just consequences.",
-    "Time to find out whether any of this sank in."
+    "No more hints. Time to find out what your made of."
   ],
 
   piecePeek: [
     "There. That's where it goes. Try pretending you knew that.",
-    "Look closely. I will not draw you a map in crayon.",
+    "Look closely. I will not draw you a map.",
     "That starred piece finally found a purpose.",
     "Memorize it before you let go and panic again.",
     "See? Even the piece has better instincts than you.",
