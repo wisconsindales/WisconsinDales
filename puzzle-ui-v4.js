@@ -41,7 +41,7 @@ const CONFUSED_LINES = {
   click: [
     "Yes. Obviously. The hint button is right there.",
     "Need adult supervision? Scroll down.",
-    "Another hint GEANYUS?
+    "Another hint GEANYUS?",
     "You got that hint button over worked",
     "Press it again, call it a strategy.",
     "You seem overwhelmed. Adorable.",
@@ -125,7 +125,7 @@ const CONFUSED_LINES = {
     "The training wheels are off now.",
     "You have all the help you're getting. Terrifying, I know.",
     "Everything useful has been handed to you already.",
-    "No more hints. Time to find out what your made of."
+    "No more hints. Time to find out what you're made of."
   ],
 
   piecePeek: [
