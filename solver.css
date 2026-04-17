@@ -321,22 +321,27 @@ code {
   text-transform: uppercase;
 }
 
-.logo-wrap {
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
 .logo-wrap a {
   display: inline-block;
+  border: 4px solid rgba(255, 255, 255, 0.8);
+  border-radius: 24px;
+  padding: 12px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
+
+.logo-wrap a:hover {
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+}
+
 .solver-logo {
   display: block;
   width: 280px;
   max-width: 100%;
   height: auto;
   margin: 0 auto;
+  transition: filter 0.3s ease;
 }
 
 
