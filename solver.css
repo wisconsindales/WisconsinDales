@@ -328,6 +328,14 @@ code {
   justify-content: flex-start;
 }
 
+.solver-logo {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  margin: 0 auto;
+}
+
 .site-logo {
   width: min(100%, 250px);
   height: auto;
