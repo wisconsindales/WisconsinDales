@@ -343,6 +343,9 @@ code {
   transition: filter 0.3s ease, transform 0.3s ease;
 }
 
+html {
+  scroll-behavior: smooth;
+}
 
 .site-logo {
   width: min(100%, 250px);
