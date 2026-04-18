@@ -167,12 +167,15 @@ const CONFUSED_LINES = {
     "Even I can't roast you for this one."
   ]
 };
+
 const BOARD_CELLS = [];
 const LABELS = new Map();
 const MONTH_POSITIONS = new Map();
 const DAY_POSITIONS = new Map();
 
-function cellKey(r, c) { return `${r},${c}`; }
+function cellKey(r, c) {
+  return `${r},${c}`;
+}
 
 function buildBoardDefinition() {
   for (let r = 0; r < 7; r++) {
@@ -275,6 +278,7 @@ function getVariants(cells, allowFlip) {
   const seen = new Set();
   const out = [];
   const seeds = allowFlip ? [cells, flip(cells)] : [cells];
+
   for (const seed of seeds) {
     let cur = seed;
     for (let i = 0; i < 4; i++) {
@@ -287,6 +291,7 @@ function getVariants(cells, allowFlip) {
       cur = rotate(cur);
     }
   }
+
   return out;
 }
 
@@ -324,7 +329,9 @@ function getPlacements(piece, allowFlip, blocked) {
 
 function solve(month, day, allowFlip) {
   const blocked = getBlockedCells(month, day);
-  const remaining = new Set(BOARD_CELLS.map(([r, c]) => cellKey(r, c)).filter((k) => !blocked.has(k)));
+  const remaining = new Set(
+    BOARD_CELLS.map(([r, c]) => cellKey(r, c)).filter((k) => !blocked.has(k))
+  );
   const placementsByPiece = new Map();
   const cellToPlacements = new Map();
 
@@ -348,12 +355,13 @@ function solve(month, day, allowFlip) {
   function backtrack() {
     if (usedPieces.size === PIECES.length) {
       if (filled.size === remaining.size) {
-        solutions.push(path.map((p) => ({ ...p, cells: p.cells.map(([r, c]) => [r, c]) })));
+        solutions.push(
+          path.map((p) => ({ ...p, cells: p.cells.map(([r, c]) => [r, c]) }))
+        );
       }
       return;
     }
 
-    let bestCell = null;
     let bestOptions = null;
 
     for (const cell of remaining) {
@@ -367,7 +375,6 @@ function solve(month, day, allowFlip) {
       });
 
       if (!bestOptions || options.length < bestOptions.length) {
-        bestCell = cell;
         bestOptions = options;
         if (options.length === 0) break;
       }
@@ -378,13 +385,16 @@ function solve(month, day, allowFlip) {
     for (const placement of bestOptions) {
       usedPieces.add(placement.piece);
       path.push(placement);
+
       const added = [];
       for (const [r, c] of placement.cells) {
         const k = cellKey(r, c);
         filled.add(k);
         added.push(k);
       }
+
       backtrack();
+
       added.forEach((k) => filled.delete(k));
       path.pop();
       usedPieces.delete(placement.piece);
@@ -416,7 +426,9 @@ function renderBoard(solution = null, previewPieceName = null) {
   }
 
   if (previewPieceName && currentSolutions.length) {
-    const previewPlacement = currentSolutions[currentIndex].find((p) => p.piece === previewPieceName);
+    const previewPlacement = currentSolutions[currentIndex].find(
+      (p) => p.piece === previewPieceName
+    );
     if (previewPlacement) {
       previewPlacement.cells.forEach(([r, c]) => {
         previewMap.set(cellKey(r, c), previewPlacement);
@@ -429,6 +441,7 @@ function renderBoard(solution = null, previewPieceName = null) {
       const el = document.createElement("div");
       const key = cellKey(r, c);
       const valid = BOARD_CELLS.some(([br, bc]) => br === r && bc === c);
+
       if (!valid) {
         el.className = "cell off";
         boardEl.appendChild(el);
@@ -479,6 +492,7 @@ function getCurrentHintShape(piece) {
 
 function renderPiecesPreview() {
   piecesPreviewEl.innerHTML = "";
+
   PIECES.forEach((piece) => {
     const isHinted = revealedHintPieces.has(piece.name);
     const isPreviewActive = heldHintPieceName === piece.name;
@@ -492,6 +506,7 @@ function renderPiecesPreview() {
     const hintMark = isHinted
       ? `<span class="hint-mark" title="Hint shown">*</span>`
       : "";
+
     title.innerHTML = `<span class="dot" style="background:${piece.color}"></span>${piece.name}${hintMark}`;
 
     const shape = getCurrentHintShape(piece);
@@ -557,14 +572,15 @@ function setConfusedText(poolOrText, holdMs = 8000) {
   void confusedBtn.offsetWidth;
   confusedBtn.classList.add("hint-pulse");
 
- if (holdMs > 0) {
-  confusedResetTimer = setTimeout(() => {
-    confusedBtn.classList.remove("hint-pulse");
-    confusedBtn.textContent = pickConfusedLine(CONFUSED_LINES.idle);
-    confusedResetTimer = null;
-  }, holdMs);
+  if (holdMs > 0) {
+    confusedResetTimer = setTimeout(() => {
+      confusedBtn.classList.remove("hint-pulse");
+      confusedBtn.textContent = pickConfusedLine(CONFUSED_LINES.idle);
+      confusedResetTimer = null;
+    }, holdMs);
+  }
 }
-}
+
 function resetConfusedText() {
   if (!confusedBtn) return;
 
@@ -572,7 +588,8 @@ function resetConfusedText() {
     clearTimeout(confusedResetTimer);
     confusedResetTimer = null;
   }
-confusedBtn.classList.remove("hint-pulse");
+
+  confusedBtn.classList.remove("hint-pulse");
   confusedBtn.textContent = pickConfusedLine(CONFUSED_LINES.idle);
 }
 
@@ -584,6 +601,7 @@ function playSplashOnce() {
 
 function showHeldHintPiece(pieceName) {
   if (!revealedHintPieces.has(pieceName)) return;
+
   if (!ensureSolutionsReady()) {
     setStatus("<strong>No layout found.</strong> Try a different date or adjust the pieces.");
     setConfusedText(CONFUSED_LINES.noSolution, 16000);
@@ -598,14 +616,19 @@ function showHeldHintPiece(pieceName) {
   const month = MONTHS[Number(monthSelect.value) - 1];
   const day = Number(daySelect.value);
 
-  setStatus(`<strong>Peek mode on.</strong> Holding piece <strong>${pieceName}</strong> shows where it goes for ${month} ${day}. Let go and it disappears.`);
+  setStatus(
+    `<strong>Peek mode on.</strong> Holding piece <strong>${pieceName}</strong> shows where it goes for ${month} ${day}. Let go and it disappears.`
+  );
 
-  setConfusedText([
-    ...CONFUSED_LINES.piecePeek,
-    `${pieceName} goes there. Try to look surprised.`,
-    `That little starred menace is ${pieceName}. Memorize it.`,
-    `Yep, ${pieceName} belongs there. The puzzle had standards.`
-  ], 2800);
+  setConfusedText(
+    [
+      ...CONFUSED_LINES.piecePeek,
+      `${pieceName} goes there. Try to look surprised.`,
+      `That little starred menace is ${pieceName}. Memorize it.`,
+      `Yep, ${pieceName} belongs there. The puzzle had standards.`
+    ],
+    2800
+  );
 }
 
 function hideHeldHintPiece() {
@@ -630,12 +653,15 @@ function refreshSolutionsForCurrentDate() {
   return currentSolutions;
 }
 
-function clearHints() {
+function clearHints(resetMessage = false) {
   heldHintPieceName = null;
   revealedHintPieces = new Set();
   hintUseCount = 0;
   renderPiecesPreview();
-  resetConfusedText();
+
+  if (resetMessage) {
+    resetConfusedText();
+  }
 }
 
 function showHint() {
@@ -679,7 +705,9 @@ function showHint() {
   const month = MONTHS[monthNum - 1];
   const day = dayNum;
 
-  setStatus(`<strong>Hint shown.</strong> Piece <strong>${nextPiece}</strong> below the calendar was rotated to its correct orientation and marked with <strong>*</strong> for ${month} ${day}. The full board solution is still hidden.`);
+  setStatus(
+    `<strong>Hint shown.</strong> Piece <strong>${nextPiece}</strong> below the calendar was rotated to its correct orientation and marked with <strong>*</strong> for ${month} ${day}. The full board solution is still hidden.`
+  );
 
   const linePool = hintUseCount === 1
     ? [
@@ -705,11 +733,14 @@ function showCurrentSolution() {
     setStatus("<strong>No layout found.</strong> Try a different date or adjust the piece definitions.");
     return;
   }
+
   const month = MONTHS[Number(monthSelect.value) - 1];
   const day = Number(daySelect.value);
   renderBoard(currentSolutions[currentIndex]);
   renderPiecesPreview();
-  setStatus(`<strong>Showing splash layout ${currentIndex + 1} of ${currentSolutions.length}.</strong> ${month} ${day}`);
+  setStatus(
+    `<strong>Showing splash layout ${currentIndex + 1} of ${currentSolutions.length}.</strong> ${month} ${day}`
+  );
 }
 
 function runSolve() {
@@ -732,10 +763,14 @@ function runSolve() {
 
     if (currentSolutions.length) {
       showCurrentSolution();
-      setStatus(`<strong>Found ${currentSolutions.length} splash layout${currentSolutions.length === 1 ? "" : "s"}.</strong> Search completed in ${ms} ms.`);
+      setStatus(
+        `<strong>Found ${currentSolutions.length} splash layout${currentSolutions.length === 1 ? "" : "s"}.</strong> Search completed in ${ms} ms.`
+      );
     } else {
       renderBoard();
-      setStatus(`<strong>No layout found.</strong> Search completed in ${ms} ms. If your physical puzzle uses slightly different pieces, edit the <code>PIECES</code> array in the script.`);
+      setStatus(
+        `<strong>No layout found.</strong> Search completed in ${ms} ms. If your physical puzzle uses slightly different pieces, edit the <code>PIECES</code> array in the script.`
+      );
     }
 
     resetConfusedText();
@@ -859,6 +894,7 @@ function readUrlState() {
     monthSelect.value = String(now.getMonth() + 1);
     daySelect.value = String(now.getDate());
   }
+
   syncDateInputFromSelectors();
 }
 
@@ -868,8 +904,7 @@ hintBtn.addEventListener("click", showHint);
 
 document.getElementById("todayBtn").addEventListener("click", () => {
   setToday();
-  clearHints();
-  hideHeldSolution();
+  clearHints(false);
   refreshSolutionsForCurrentDate();
   updateUrl();
 });
@@ -877,38 +912,36 @@ document.getElementById("todayBtn").addEventListener("click", () => {
 document.getElementById("prevBtn").addEventListener("click", () => {
   const audio = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
   audio.volume = 0.4;
-  audio.play();
+  audio.play().catch(() => {});
 
   if (!currentSolutions.length) return;
 
   currentIndex = (currentIndex - 1 + currentSolutions.length) % currentSolutions.length;
-  clearHints();
+  clearHints(false);
   renderBoard();
 });
 
 document.getElementById("nextBtn").addEventListener("click", () => {
   const audio = new Audio("https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg");
   audio.volume = 0.4;
-  audio.play();
+  audio.play().catch(() => {});
 
   if (!currentSolutions.length) return;
 
   currentIndex = (currentIndex + 1) % currentSolutions.length;
-  clearHints();
+  clearHints(false);
   renderBoard();
 });
 
 dateInput.addEventListener("change", () => {
-  clearHints();
-  hideHeldSolution();
+  clearHints(false);
   syncFromDateInput();
   refreshSolutionsForCurrentDate();
   updateUrl();
 });
 
 monthSelect.addEventListener("change", () => {
-  clearHints();
-  hideHeldSolution();
+  clearHints(false);
   syncDateInputFromSelectors();
   renderBoard();
   refreshSolutionsForCurrentDate();
@@ -916,47 +949,31 @@ monthSelect.addEventListener("change", () => {
 });
 
 daySelect.addEventListener("change", () => {
-  clearHints();
-  hideHeldSolution();
+  clearHints(false);
   syncDateInputFromSelectors();
   renderBoard();
   refreshSolutionsForCurrentDate();
   updateUrl();
 });
 
-function stopSolveHold() {
-  hideHeldSolution();
-  splashAudio.pause();
-  splashAudio.currentTime = 0;
-}
-
-solveBtn.addEventListener("mousedown", (e) => {
+solveBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  showHeldSolution();
-  splashAudio.currentTime = 0;
-  splashAudio.play().catch(err => console.log("Splash audio failed:", err));
+  hintSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  hintBtn.classList.remove("hint-pulse");
+  void hintBtn.offsetWidth;
+  hintBtn.classList.add("hint-pulse");
 });
-
-solveBtn.addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  showHeldSolution();
-  splashAudio.currentTime = 0;
-  splashAudio.play().catch(err => console.log("Splash audio failed:", err));
-}, { passive: false });
 
 document.addEventListener("mouseup", () => {
   hideHeldHintPiece();
-  stopSolveHold();
 });
 
 document.addEventListener("touchend", () => {
   hideHeldHintPiece();
-  stopSolveHold();
 });
 
 document.addEventListener("touchcancel", () => {
   hideHeldHintPiece();
-  stopSolveHold();
 });
 
 confusedBtn.addEventListener("click", () => {
