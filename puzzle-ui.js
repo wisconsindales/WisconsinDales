@@ -649,7 +649,15 @@ function refreshSolutionsForCurrentDate() {
   const day = Number(daySelect.value || 1);
   currentSolutions = solve(month, day, true);
   currentIndex = 0;
-  solutionCountBox.innerHTML = `<strong>Possible layouts for this day:</strong> ${currentSolutions.length}`;
+
+  solutionCountBox.innerHTML =
+    `<strong>Possible layouts for this day:</strong> ${currentSolutions.length}`;
+
+  if (todaySolutionCountEl) {
+    todaySolutionCountEl.textContent =
+      `The Number of Solutions for Today is ${currentSolutions.length}`;
+  }
+
   return currentSolutions;
 }
 
