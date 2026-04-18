@@ -960,7 +960,6 @@ document.addEventListener("touchcancel", () => {
 });
 
 confusedBtn.addEventListener("click", () => {
-  setConfusedText(CONFUSED_LINES.click, 8400);
   hintSection.scrollIntoView({ behavior: "smooth", block: "center" });
   hintBtn.classList.remove("hint-pulse");
   void hintBtn.offsetWidth;
