@@ -16,6 +16,7 @@ const hintBtn = document.getElementById("hintBtn");
 const solveBtn = document.getElementById("solveBtn");
 const confusedBtn = document.getElementById("confusedBtn");
 const hintSection = document.getElementById("hintSection");
+const todaySolutionCountEl = document.getElementById("todaySolutionCount");
 
 let currentSolutions = [];
 let currentIndex = 0;
