@@ -557,14 +557,14 @@ function setConfusedText(poolOrText, holdMs = 8000) {
   void confusedBtn.offsetWidth;
   confusedBtn.classList.add("hint-pulse");
 
-  if (holdMs > 0) {
-    confusedResetTimer = setTimeout(() => {
-      confusedBtn.textContent = pickConfusedLine(CONFUSED_LINES.idle);
-      confusedResetTimer = null;
-    }, holdMs);
-  }
+ if (holdMs > 0) {
+  confusedResetTimer = setTimeout(() => {
+    confusedBtn.classList.remove("hint-pulse");
+    confusedBtn.textContent = pickConfusedLine(CONFUSED_LINES.idle);
+    confusedResetTimer = null;
+  }, holdMs);
 }
-
+}
 function resetConfusedText() {
   if (!confusedBtn) return;
 
@@ -572,7 +572,7 @@ function resetConfusedText() {
     clearTimeout(confusedResetTimer);
     confusedResetTimer = null;
   }
-
+confusedBtn.classList.remove("hint-pulse");
   confusedBtn.textContent = pickConfusedLine(CONFUSED_LINES.idle);
 }
 
