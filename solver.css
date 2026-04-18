@@ -391,36 +391,28 @@ html {
   flex-wrap: wrap;
 }
 
-/* Wisconsin Dales splash bubble for ONLY the confused button */
+/* idle look for the confused bar */
 #confusedBtn.panel-kicker {
   width: auto;
   max-width: min(100%, 420px);
-  min-height: 54px;
-  padding: 10px 18px;
+  min-height: 48px;
+  padding: 9px 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
-  border: 2px solid rgba(255,255,255,0.78);
-  background:
-    radial-gradient(circle at 25% 25%, rgba(255,255,255,0.30), transparent 26%),
-    radial-gradient(circle at 78% 30%, rgba(255,255,255,0.20), transparent 22%),
-    linear-gradient(135deg, #ff5fa2 0%, #d81b60 45%, #b70036 100%);
-  color: #fffdf8;
-  font-size: clamp(0.95rem, 1.35vw, 1.18rem);
-  font-weight: 900;
-  letter-spacing: 0.02em;
-  text-transform: none;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.04);
+  color: var(--accent-3);
+  font-size: clamp(0.92rem, 1.2vw, 1.02rem);
+  font-weight: 800;
+  letter-spacing: 0.01em;
   line-height: 1.15;
   text-align: center;
   white-space: normal;
-  box-shadow:
-    0 10px 22px rgba(183, 0, 54, 0.34),
-    inset 0 2px 0 rgba(255,255,255,0.35),
-    inset 0 -3px 0 rgba(0,0,0,0.14);
-  transform: rotate(-3deg);
+  box-shadow: none;
+  transform: none;
   transform-origin: center;
-
   flex-basis: 100%;
   margin: 6px auto 4px;
 }
@@ -436,44 +428,21 @@ html {
     background 0.18s ease;
 }
 
+/* remove bubble dots while idle */
 #confusedBtn.confused-link::before,
 #confusedBtn.confused-link::after {
-  content: "";
-  position: absolute;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.18);
-  pointer-events: none;
+  display: none;
 }
 
-#confusedBtn.confused-link::before {
-  width: 16px;
-  height: 16px;
-  top: 8px;
-  left: 20px;
-}
-
-#confusedBtn.confused-link::after {
-  width: 10px;
-  height: 10px;
-  top: 18px;
-  right: 26px;
-}
-
+/* simple idle hover */
 #confusedBtn.confused-link:hover {
-  transform: rotate(-4deg) translateY(-2px) scale(1.03);
-  filter: brightness(1.06);
-  box-shadow:
-    0 14px 28px rgba(183, 0, 54, 0.42),
-    inset 0 2px 0 rgba(255,255,255,0.4),
-    inset 0 -3px 0 rgba(0,0,0,0.14);
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+  box-shadow: none;
 }
 
 #confusedBtn.confused-link:active {
-  transform: rotate(-2deg) scale(0.98);
-}
-
-#confusedBtn.hint-pulse {
-  animation: confusedBubblePop 0.55s ease;
+  transform: scale(0.98);
 }
 
 @keyframes confusedBubblePop {
@@ -560,12 +529,12 @@ html {
   }
 
   #confusedBtn.panel-kicker {
-    font-size: 0.92rem;
-    padding: 9px 14px;
-    min-height: 48px;
-    max-width: 100%;
-    transform: rotate(-2deg);
-  }
+  font-size: 0.92rem;
+  padding: 9px 14px;
+  min-height: 48px;
+  max-width: 100%;
+  transform: none;
+}
 }
 
 @keyframes float {
