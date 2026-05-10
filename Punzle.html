@@ -186,6 +186,7 @@
       padding: 7px;
       box-shadow: 0 16px 48px rgba(0,0,0,0.5);
       width: min(380px, 92vw);
+      touch-action: none;
     }
     .pz-cell {
       aspect-ratio: 1;
@@ -224,7 +225,7 @@
       display: flex; flex-direction: column; align-items: center;
       overflow: hidden; cursor: pointer;
       transition: transform 0.1s, border-color 0.15s;
-      user-select: none; touch-action: none;
+      user-select: none;
     }
     .pz-card:hover { transform: translateY(-2px); }
     .pz-card-done { opacity: 0.55; cursor: default; }
