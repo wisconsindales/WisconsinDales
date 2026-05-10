@@ -218,30 +218,37 @@
       gap: 4px; width: 100%; max-width: 400px;
     }
     .pz-card {
-      width: 46px; height: 82px;
+      width: 46px;
       background: rgba(72,18,50,0.55);
       border-radius: 8px; border: 1.5px solid;
       display: flex; flex-direction: column; align-items: center;
       overflow: hidden; position: relative; cursor: pointer;
       transition: transform 0.1s, border-color 0.15s;
+      user-select: none;
     }
     .pz-card:hover { transform: translateY(-2px); }
     .pz-card-done { opacity: 0.55; cursor: default; }
     .pz-card-sel  { background: rgba(98,25,68,0.85); }
     .pz-card-bar  { width: 100%; height: 3px; flex-shrink: 0; }
-    .pz-card-check { font-size: 18px; flex: 1; display: flex; align-items: center; justify-content: center; }
+    .pz-card-check { font-size: 18px; height: 60px; display: flex; align-items: center; justify-content: center; width: 100%; }
+    .pz-card-body {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      width: 100%; padding: 4px 2px; min-height: 30px;
+    }
     .pz-card-name {
       font-size: 8px; font-weight: 900; color: #f3c5d8;
-      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px;
     }
     .pz-zone {
-      position: absolute; left: 0; right: 0; height: 26px;
+      width: 100%; height: 22px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      background: rgba(253,230,138,0.12);
+      background: rgba(253,230,138,0.15);
       font-size: 7px; font-weight: 900; color: #fde68a; letter-spacing: 0.2px;
+      cursor: pointer; border: none;
     }
-    .pz-zone-top { top: 3px; border-bottom: 1px solid rgba(253,230,138,0.2); border-radius: 6px 6px 0 0; }
-    .pz-zone-bot { bottom: 14px; border-top: 1px solid rgba(253,230,138,0.2); border-radius: 0 0 6px 6px; }
+    .pz-zone:hover { background: rgba(253,230,138,0.28); }
+    .pz-zone-top { border-bottom: 1px solid rgba(253,230,138,0.2); }
+    .pz-zone-bot { border-top: 1px solid rgba(253,230,138,0.2); }
 
     .pz-reset-btn {
       background: rgba(255,255,255,0.06);
