@@ -128,7 +128,7 @@ function renderPunzleTray() {
 }
 
 function renderMiniPiece(cells, color) {
-  const SZ  = 7;
+  const SZ  = 6;
   const GAP = 1;
   const STP = SZ + GAP;
   const maxR = Math.max(...cells.map(([r]) => r));
