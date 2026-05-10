@@ -123,11 +123,11 @@ const DRAG_THR     = 10;
 
 function onCardTouchStart(e, piece) {
   if (placedPieces.some(p => p.name === piece.name)) return;
+  e.preventDefault(); // claim the gesture immediately
   _touchPiece    = piece;
   _touchDragging = false;
   _touchStartX   = e.touches[0].clientX;
   _touchStartY   = e.touches[0].clientY;
-  // Don't preventDefault here — allow tap events to still fire
 }
 
 function _onTouchMove(e) {
