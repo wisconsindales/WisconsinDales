@@ -31,7 +31,6 @@
       overflow-x: hidden;
     }
 
-    /* ── Background glows ── */
     body::before {
       content: '';
       position: fixed;
@@ -51,7 +50,6 @@
       pointer-events: none; z-index: 0;
     }
 
-    /* ── Nav ── */
     nav {
       position: sticky; top: 0;
       background: rgba(26,16,33,0.92);
@@ -61,30 +59,14 @@
       display: flex; align-items: center; justify-content: space-between;
       z-index: 100;
     }
-    .nav-logo {
-      display: flex; align-items: center; gap: 10px;
-      text-decoration: none;
-    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
     .nav-logo img { height: 36px; }
     .nav-links { display: flex; gap: 16px; align-items: center; }
-    .nav-links a {
-      color: var(--muted); text-decoration: none;
-      font-size: 13px; font-weight: 700;
-      transition: color 0.2s;
-    }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 700; transition: color 0.2s; }
     .nav-links a:hover { color: var(--cyan); }
-    .nav-btn {
-      background: var(--accent);
-      color: white !important;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 13px !important;
-      font-weight: 900 !important;
-      transition: background 0.2s, transform 0.1s !important;
-    }
+    .nav-btn { background: var(--accent); color: white !important; padding: 8px 16px; border-radius: 20px; font-size: 13px !important; font-weight: 900 !important; transition: background 0.2s, transform 0.1s !important; }
     .nav-btn:hover { background: var(--accent2) !important; transform: scale(1.04); }
 
-    /* ── Hero ── */
     .hero {
       position: relative;
       min-height: 92vh;
@@ -94,261 +76,96 @@
       padding: 60px 24px 80px;
       z-index: 1;
     }
-    .hero-logo {
-      width: min(420px, 90vw);
-      margin-bottom: 24px;
-      animation: fadeDown 0.8s ease both;
-    }
-    .hero-tagline {
-      font-family: 'Boogaloo', cursive;
-      font-size: clamp(22px, 5vw, 38px);
-      color: var(--gold);
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-      animation: fadeDown 0.9s ease both;
-    }
-    .hero-sub {
-      font-size: clamp(14px, 2.5vw, 18px);
-      color: var(--muted);
-      font-weight: 600;
-      max-width: 520px;
-      line-height: 1.7;
-      margin-bottom: 36px;
-      animation: fadeDown 1s ease both;
-    }
-    .hero-btns {
-      display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
-      animation: fadeDown 1.1s ease both;
-    }
-    .btn-primary {
+    .hero-logo { width: min(420px, 90vw); margin-bottom: 24px; animation: fadeDown 0.8s ease both; }
+    .hero-tagline { font-family: 'Boogaloo', cursive; font-size: clamp(22px, 5vw, 38px); color: var(--gold); letter-spacing: 0.5px; margin-bottom: 12px; animation: fadeDown 0.9s ease both; }
+    .hero-sub { font-size: clamp(14px, 2.5vw, 18px); color: var(--muted); font-weight: 600; max-width: 520px; line-height: 1.7; margin-bottom: 36px; animation: fadeDown 1s ease both; }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; animation: fadeDown 1.1s ease both; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: white; text-decoration: none; padding: 14px 28px; border-radius: 14px; font-size: 16px; font-weight: 900; box-shadow: 0 8px 24px rgba(183,0,54,0.35); transition: transform 0.15s, box-shadow 0.15s; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(183,0,54,0.5); }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.06); color: var(--cyan); text-decoration: none; padding: 14px 28px; border-radius: 14px; font-size: 16px; font-weight: 900; border: 1.5px solid var(--cyan); transition: transform 0.15s, background 0.15s; }
+    .btn-secondary:hover { transform: translateY(-2px); background: rgba(34,211,238,0.1); }
+
+    .hero-board { margin-top: 48px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: min(320px, 80vw); background: #3d1540; border-radius: 16px; padding: 8px; box-shadow: 0 16px 48px rgba(0,0,0,0.5); animation: float 4s ease-in-out infinite, fadeDown 1.2s ease both; }
+    .board-cell { aspect-ratio: 1; border-radius: 5px; background: #fff8f5; }
+    .board-cell.gold { background: #fde68a; border: 2px solid #f59e0b; }
+    .board-cell.p1 { background: #ef4444; }
+    .board-cell.p2 { background: #f97316; }
+    .board-cell.p3 { background: #eab308; }
+    .board-cell.p4 { background: #22c55e; }
+    .board-cell.p5 { background: #06b6d4; }
+    .board-cell.p6 { background: #3b82f6; }
+    .board-cell.p7 { background: #8b5cf6; }
+    .board-cell.p8 { background: #ec4899; }
+    .board-cell.off { background: transparent; }
+
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+
+    section { position: relative; z-index: 1; padding: 80px 24px; max-width: 1100px; margin: 0 auto; }
+    .section-title { font-family: 'Boogaloo', cursive; font-size: clamp(28px, 5vw, 42px); color: var(--gold); text-align: center; margin-bottom: 12px; }
+    .section-sub { font-size: 15px; color: var(--muted); text-align: center; font-weight: 600; margin-bottom: 48px; line-height: 1.7; }
+    .divider { width: 100%; height: 1px; background: var(--outline); margin: 0 auto; }
+
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+    .feature-card { background: var(--panel); border: 1px solid var(--outline); border-radius: 18px; padding: 28px 24px; transition: transform 0.2s, border-color 0.2s; }
+    .feature-card:hover { transform: translateY(-4px); border-color: var(--cyan); }
+    .feature-emoji { font-size: 36px; margin-bottom: 14px; }
+    .feature-title { font-size: 17px; font-weight: 900; color: var(--text); margin-bottom: 8px; }
+    .feature-desc { font-size: 13px; color: var(--muted); line-height: 1.7; font-weight: 600; }
+
+    .shop-section { background: linear-gradient(135deg, var(--bg2) 0%, rgba(72,18,50,0.5) 100%); border-top: 1px solid var(--outline); border-bottom: 1px solid var(--outline); }
+    .shop-inner { max-width: 1100px; margin: 0 auto; padding: 80px 24px; }
+    .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; }
+    .product-card { background: rgba(255,255,255,0.04); border: 1.5px solid var(--outline); border-radius: 20px; overflow: hidden; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s; }
+    .product-card:hover { transform: translateY(-6px); border-color: var(--gold); box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
+    .product-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+    .product-img-placeholder { width: 100%; aspect-ratio: 4/3; background: linear-gradient(135deg, #2f1236, #1a1021); display: flex; align-items: center; justify-content: center; font-size: 64px; }
+    .product-info { padding: 20px; }
+    .product-name { font-size: 18px; font-weight: 900; color: var(--text); margin-bottom: 6px; }
+    .product-desc { font-size: 13px; color: var(--muted); line-height: 1.7; font-weight: 600; margin-bottom: 16px; }
+    .product-price { font-size: 22px; font-weight: 900; color: var(--gold); margin-bottom: 14px; }
+    .buy-btn {
       display: inline-flex; align-items: center; gap: 8px;
       background: var(--accent);
       color: white; text-decoration: none;
-      padding: 14px 28px; border-radius: 14px;
-      font-size: 16px; font-weight: 900;
-      box-shadow: 0 8px 24px rgba(183,0,54,0.35);
+      padding: 12px 24px; border-radius: 12px;
+      font-size: 15px; font-weight: 900;
+      box-shadow: 0 6px 20px rgba(183,0,54,0.35);
       transition: transform 0.15s, box-shadow 0.15s;
+      width: 100%; justify-content: center;
     }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(183,0,54,0.5); }
-    .btn-secondary {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(255,255,255,0.06);
-      color: var(--cyan); text-decoration: none;
-      padding: 14px 28px; border-radius: 14px;
-      font-size: 16px; font-weight: 900;
-      border: 1.5px solid var(--cyan);
-      transition: transform 0.15s, background 0.15s;
-    }
-    .btn-secondary:hover { transform: translateY(-2px); background: rgba(34,211,238,0.1); }
-
-    /* ── Floating puzzle board decoration ── */
-    .hero-board {
-      margin-top: 48px;
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
-      width: min(320px, 80vw);
-      background: #3d1540;
-      border-radius: 16px;
-      padding: 8px;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
-      animation: float 4s ease-in-out infinite, fadeDown 1.2s ease both;
-    }
-    .board-cell {
-      aspect-ratio: 1;
-      border-radius: 5px;
-      background: #fff8f5;
-    }
-    .board-cell.gold { background: #fde68a; border: 2px solid #f59e0b; }
-    .board-cell.p1   { background: #ef4444; }
-    .board-cell.p2   { background: #f97316; }
-    .board-cell.p3   { background: #eab308; }
-    .board-cell.p4   { background: #22c55e; }
-    .board-cell.p5   { background: #06b6d4; }
-    .board-cell.p6   { background: #3b82f6; }
-    .board-cell.p7   { background: #8b5cf6; }
-    .board-cell.p8   { background: #ec4899; }
-    .board-cell.off  { background: transparent; }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50%       { transform: translateY(-10px); }
-    }
-
-    /* ── Section shared ── */
-    section {
-      position: relative; z-index: 1;
-      padding: 80px 24px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .section-title {
-      font-family: 'Boogaloo', cursive;
-      font-size: clamp(28px, 5vw, 42px);
-      color: var(--gold);
+    .buy-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(183,0,54,0.5); }
+    .free-shipping-note { font-size: 11px; color: var(--muted); margin-top: 8px; text-align: center; font-weight: 600; }
+    .coupon-banner {
+      background: rgba(34,211,238,0.12);
+      border: 1.5px dashed var(--cyan);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px; font-weight: 800;
+      color: var(--cyan);
       text-align: center;
       margin-bottom: 12px;
     }
-    .section-sub {
-      font-size: 15px; color: var(--muted);
-      text-align: center; font-weight: 600;
-      margin-bottom: 48px; line-height: 1.7;
-    }
-    .divider {
-      width: 100%; height: 1px;
-      background: var(--outline);
-      margin: 0 auto;
-    }
+    .coupon-banner strong { color: var(--gold); font-size: 15px; letter-spacing: 1px; }
+    .coming-soon-badge { display: inline-block; background: rgba(253,230,138,0.15); border: 1.5px solid rgba(253,230,138,0.4); color: var(--gold); font-size: 12px; font-weight: 900; padding: 6px 14px; border-radius: 20px; letter-spacing: 0.5px; text-transform: uppercase; }
 
-    /* ── Features grid ── */
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
-    }
-    .feature-card {
-      background: var(--panel);
-      border: 1px solid var(--outline);
-      border-radius: 18px;
-      padding: 28px 24px;
-      transition: transform 0.2s, border-color 0.2s;
-    }
-    .feature-card:hover { transform: translateY(-4px); border-color: var(--cyan); }
-    .feature-emoji { font-size: 36px; margin-bottom: 14px; }
-    .feature-title {
-      font-size: 17px; font-weight: 900;
-      color: var(--text); margin-bottom: 8px;
-    }
-    .feature-desc { font-size: 13px; color: var(--muted); line-height: 1.7; font-weight: 600; }
-
-    /* ── Shop section ── */
-    .shop-section {
-      background: linear-gradient(135deg, var(--bg2) 0%, rgba(72,18,50,0.5) 100%);
-      border-top: 1px solid var(--outline);
-      border-bottom: 1px solid var(--outline);
-    }
-    .shop-inner {
-      max-width: 1100px; margin: 0 auto;
-      padding: 80px 24px;
-    }
-    .shop-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 28px;
-      margin-top: 0;
-    }
-    .product-card {
-      background: rgba(255,255,255,0.04);
-      border: 1.5px solid var(--outline);
-      border-radius: 20px;
-      overflow: hidden;
-      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-    }
-    .product-card:hover {
-      transform: translateY(-6px);
-      border-color: var(--gold);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
-    }
-    .product-img {
-      width: 100%; aspect-ratio: 4/3;
-      object-fit: cover;
-      display: block;
-    }
-    .product-img-placeholder {
-      width: 100%; aspect-ratio: 4/3;
-      background: linear-gradient(135deg, #2f1236, #1a1021);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 64px;
-    }
-    .product-info { padding: 20px; }
-    .product-name {
-      font-size: 18px; font-weight: 900;
-      color: var(--text); margin-bottom: 6px;
-    }
-    .product-desc {
-      font-size: 13px; color: var(--muted);
-      line-height: 1.7; font-weight: 600;
-      margin-bottom: 16px;
-    }
-    .coming-soon-badge {
-      display: inline-block;
-      background: rgba(253,230,138,0.15);
-      border: 1.5px solid rgba(253,230,138,0.4);
-      color: var(--gold);
-      font-size: 12px; font-weight: 900;
-      padding: 6px 14px; border-radius: 20px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    /* ── Download section ── */
-    .download-section {
-      text-align: center;
-    }
-    .download-card {
-      background: var(--panel);
-      border: 1.5px solid var(--outline);
-      border-radius: 24px;
-      padding: 48px 36px;
-      max-width: 560px;
-      margin: 0 auto;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.3);
-    }
-    .play-store-btn {
-      display: inline-flex; align-items: center; gap: 12px;
-      background: #01875f;
-      color: white; text-decoration: none;
-      padding: 14px 28px; border-radius: 14px;
-      font-size: 16px; font-weight: 900;
-      margin-top: 24px;
-      transition: transform 0.15s, background 0.15s;
-      box-shadow: 0 8px 24px rgba(1,135,95,0.35);
-    }
+    .download-section { text-align: center; }
+    .download-card { background: var(--panel); border: 1.5px solid var(--outline); border-radius: 24px; padding: 48px 36px; max-width: 560px; margin: 0 auto; box-shadow: 0 16px 48px rgba(0,0,0,0.3); }
+    .play-store-btn { display: inline-flex; align-items: center; gap: 12px; background: #01875f; color: white; text-decoration: none; padding: 14px 28px; border-radius: 14px; font-size: 16px; font-weight: 900; margin-top: 24px; transition: transform 0.15s, background 0.15s; box-shadow: 0 8px 24px rgba(1,135,95,0.35); }
     .play-store-btn:hover { transform: translateY(-2px); background: #016b4c; }
-    .play-store-note {
-      font-size: 11px; color: var(--muted);
-      margin-top: 12px; font-weight: 600;
-    }
+    .play-store-note { font-size: 11px; color: var(--muted); margin-top: 12px; font-weight: 600; }
 
-    /* ── About strip ── */
-    .about-strip {
-      text-align: center;
-      padding: 60px 24px;
-      border-top: 1px solid var(--outline);
-      position: relative; z-index: 1;
-    }
+    .about-strip { text-align: center; padding: 60px 24px; border-top: 1px solid var(--outline); position: relative; z-index: 1; }
     .about-logo { height: 60px; margin-bottom: 16px; }
-    .about-text {
-      font-size: 14px; color: var(--muted);
-      max-width: 480px; margin: 0 auto 20px;
-      line-height: 1.7; font-weight: 600;
-    }
-    .about-link {
-      color: var(--cyan); text-decoration: none;
-      font-weight: 700; font-size: 13px;
-    }
+    .about-text { font-size: 14px; color: var(--muted); max-width: 480px; margin: 0 auto 20px; line-height: 1.7; font-weight: 600; }
+    .about-link { color: var(--cyan); text-decoration: none; font-weight: 700; font-size: 13px; }
     .about-link:hover { text-decoration: underline; }
 
-    /* ── Footer ── */
-    footer {
-      background: rgba(0,0,0,0.3);
-      border-top: 1px solid var(--outline);
-      padding: 24px;
-      text-align: center;
-      font-size: 12px; color: #6b3a5a;
-      font-weight: 600;
-      position: relative; z-index: 1;
-    }
+    footer { background: rgba(0,0,0,0.3); border-top: 1px solid var(--outline); padding: 24px; text-align: center; font-size: 12px; color: #6b3a5a; font-weight: 600; position: relative; z-index: 1; }
     footer a { color: #6b3a5a; text-decoration: none; }
     footer a:hover { color: var(--muted); }
 
-    /* ── Animations ── */
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* ── Responsive ── */
     @media (max-width: 600px) {
       .hero-btns { flex-direction: column; align-items: center; }
       .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
@@ -359,7 +176,6 @@
 </head>
 <body>
 
-  <!-- ── Nav ── -->
   <nav>
     <a href="https://wisconsindales.com" class="nav-logo">
       <img src="wisconsin-dales-creations.png" alt="WisconsinDalesCreations" />
@@ -371,41 +187,30 @@
     </div>
   </nav>
 
-  <!-- ── Hero ── -->
   <div class="hero">
     <img src="punzle_feature_graphic_1024x500.png" alt="Punzle" class="hero-logo" />
     <p class="hero-tagline">A totally Pun Puzzle that changes Daley. 😄</p>
     <p class="hero-sub">
       Fit all 8 pieces on the board. Leave only today's month and day uncovered.
-      A new puzzle every single day — with Wisconsin Dales snark included.
+      A new puzzle every single day — puns included.
     </p>
     <div class="hero-btns">
       <a href="#download" class="btn-primary">📲 Download Free on Android</a>
       <a href="#shop" class="btn-secondary">🪵 Get the Real Thing</a>
     </div>
-
-    <!-- Mini animated board -->
     <div class="hero-board">
-      <!-- Row 0 -->
       <div class="board-cell p1"></div><div class="board-cell p1"></div><div class="board-cell p1"></div><div class="board-cell p2"></div><div class="board-cell gold"></div><div class="board-cell p3"></div><div class="board-cell off"></div>
-      <!-- Row 1 -->
       <div class="board-cell p1"></div><div class="board-cell p1"></div><div class="board-cell p2"></div><div class="board-cell p2"></div><div class="board-cell p3"></div><div class="board-cell p3"></div><div class="board-cell off"></div>
-      <!-- Row 2 -->
       <div class="board-cell p4"></div><div class="board-cell p4"></div><div class="board-cell p2"></div><div class="board-cell p5"></div><div class="board-cell p5"></div><div class="board-cell p3"></div><div class="board-cell p6"></div>
-      <!-- Row 3 -->
       <div class="board-cell p4"></div><div class="board-cell p7"></div><div class="board-cell p7"></div><div class="board-cell p5"></div><div class="board-cell p8"></div><div class="board-cell p8"></div><div class="board-cell p6"></div>
-      <!-- Row 4 -->
       <div class="board-cell p4"></div><div class="board-cell p7"></div><div class="board-cell p7"></div><div class="board-cell p5"></div><div class="board-cell p8"></div><div class="board-cell p6"></div><div class="board-cell p6"></div>
-      <!-- Row 5 -->
       <div class="board-cell p4"></div><div class="board-cell p7"></div><div class="board-cell gold"></div><div class="board-cell p5"></div><div class="board-cell p8"></div><div class="board-cell p8"></div><div class="board-cell p6"></div>
-      <!-- Row 6 -->
       <div class="board-cell p4"></div><div class="board-cell p7"></div><div class="board-cell p8"></div><div class="board-cell off"></div><div class="board-cell off"></div><div class="board-cell off"></div><div class="board-cell off"></div>
     </div>
   </div>
 
   <div class="divider"></div>
 
-  <!-- ── Features ── -->
   <section id="features">
     <h2 class="section-title">How It Works</h2>
     <p class="section-sub">Simple rules. Daily challenge. Endless puns.</p>
@@ -445,22 +250,26 @@
 
   <div class="divider"></div>
 
-  <!-- ── Shop ── -->
   <div class="shop-section" id="shop">
     <div class="shop-inner">
       <h2 class="section-title">🪵 Get the Real Thing</h2>
-      <p class="section-sub">crafted wooden puzzles — Designed and Created by WisconsinDalesCreations</p>
+      <p class="section-sub">Precision CNC crafted wooden puzzles — Designed and Created by WisconsinDalesCreations</p>
       <div class="shop-grid">
 
         <div class="product-card">
-          <img src="wooden_puzzle.jpg" alt="Wooden Calendar Puzzle" class="product-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          <img src="wooden_puzzle.jpg" alt="Wisconsin Calendar Puzzle" class="product-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
           <div class="product-img-placeholder" style="display:none;">🪵</div>
           <div class="product-info">
             <div class="product-name">Wisconsin Calendar Puzzle</div>
             <div class="product-desc">
-              The original crafted wooden calendar puzzle — shaped like Wisconsin and laser engraved with all 12 months and 31 days. The inspiration behind Punzle.
+              Precision CNC crafted wooden calendar puzzle shaped like Wisconsin. Includes 8 puzzle pieces and display stand. A new challenge every day — the inspiration behind the Punzle app.
             </div>
-            <span class="coming-soon-badge">🕐 Coming Soon</span>
+            <div class="product-price">$63.00 <span style="font-size:14px; color:var(--muted); font-weight:600;">or $43 with code</span></div>
+            <div class="coupon-banner">🎉 First order? Use code <strong>PUNZLE20</strong> for $20 off!</div>
+            <a href="https://buy.stripe.com/eVqaEWgQm9zbgEvdUKcwg00" class="buy-btn" target="_blank">
+              🛒 Buy Now — Free Shipping
+            </a>
+            <p class="free-shipping-note">✓ Free shipping · US orders only · Secure checkout via Stripe</p>
           </div>
         </div>
 
@@ -469,7 +278,7 @@
           <div class="product-info">
             <div class="product-name">More Puzzles Coming</div>
             <div class="product-desc">
-              New crafted wooden puzzle designs are in the works. Sign up to be notified when new products launch at WisconsinDalesCreations.
+              New CNC crafted wooden puzzle designs are in the works — including other states and a square version. Check back soon!
             </div>
             <span class="coming-soon-badge">🕐 Coming Soon</span>
           </div>
@@ -479,7 +288,6 @@
     </div>
   </div>
 
-  <!-- ── Download ── -->
   <section id="download" class="download-section">
     <h2 class="section-title">📲 Download Punzle Free</h2>
     <p class="section-sub">Available now on Android. Free to play. Daily challenge. No ads.</p>
@@ -499,16 +307,14 @@
 
   <div class="divider"></div>
 
-  <!-- ── About ── -->
   <div class="about-strip">
     <img src="wisconsin-dales-creations.png" alt="WisconsinDalesCreations" class="about-logo" onerror="this.style.display='none'" />
     <p class="about-text">
-      WisconsinDalesCreations is a small creative studio from the heart of Wisconsin, making crafted wooden puzzles and digital games with a whole lot of puns.
+      WisconsinDalesCreations is a small creative studio from the heart of Wisconsin, making precision crafted wooden puzzles and digital games with a whole lot of puns.
     </p>
     <a href="https://wisconsindales.com" class="about-link">← Back to WisconsinDales.com</a>
   </div>
 
-  <!-- ── Footer ── -->
   <footer>
     <p>© 2026 WisconsinDalesCreations · <a href="https://sites.google.com/view/punzle-privacy-policy/home">Privacy Policy</a> · <a href="https://wisconsindales.com">WisconsinDales.com</a></p>
   </footer>
