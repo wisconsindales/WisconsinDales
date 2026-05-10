@@ -220,13 +220,13 @@
       touch-action: none;
     }
     .pz-card {
-      width: 44px; height: 90px;
+      width: 48px;
       background: rgba(72,18,50,0.55);
       border-radius: 8px; border: 1.5px solid #1e1030;
       display: flex; flex-direction: column; align-items: center;
       overflow: hidden; cursor: pointer;
       transition: transform 0.1s, border-color 0.15s;
-      user-select: none; flex-shrink: 0;
+      user-select: none;
     }
     .pz-card:hover { transform: translateY(-2px); }
     .pz-card-done { opacity: 0.55; cursor: default; }
@@ -238,19 +238,19 @@
     }
     .pz-card-body {
       flex: 1; display: flex; align-items: center; justify-content: center;
-      width: 100%; overflow: hidden; padding: 2px;
+      width: 100%; padding: 3px 2px;
     }
     .pz-card-name {
-      font-size: 7px; font-weight: 900; color: #f3c5d8;
+      font-size: 8px; font-weight: 900; color: #f3c5d8;
       letter-spacing: 1px; text-transform: uppercase;
-      padding-bottom: 2px; flex-shrink: 0; line-height: 1;
+      padding-bottom: 2px; flex-shrink: 0;
     }
     .pz-zone {
-      width: 100%; height: 18px; flex-shrink: 0;
+      width: 100%; height: 20px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
       background: rgba(253,230,138,0.14);
-      font-size: 6px; font-weight: 900; color: #fde68a;
-      cursor: pointer; line-height: 1;
+      font-size: 7px; font-weight: 900; color: #fde68a;
+      cursor: pointer;
     }
     .pz-zone:active, .pz-zone:hover { background: rgba(253,230,138,0.30); }
     .pz-zone-flip { border-bottom: 1px solid rgba(253,230,138,0.2); }
