@@ -215,12 +215,12 @@
     }
 
     .pz-tray {
-      display: flex; flex-wrap: wrap; justify-content: center;
-      gap: 4px; width: 100%; max-width: 400px;
-      touch-action: none;
+      display: flex; flex-wrap: nowrap; justify-content: center;
+      gap: 3px; width: 100%; max-width: 420px;
+      touch-action: none; overflow-x: auto;
     }
     .pz-card {
-      width: 48px;
+      width: 44px;
       background: rgba(72,18,50,0.55);
       border-radius: 8px; border: 1.5px solid #1e1030;
       display: flex; flex-direction: column; align-items: center;
@@ -439,9 +439,9 @@
   </footer>
 
 
-  <script src="punzle-game.js?v=6"></script>
-  <script src="punzle-render.js?v=6"></script>
-  <script src="punzle-interact.js?v=6"></script>
+  <script src="punzle-game.js?v=7"></script>
+  <script src="punzle-render.js?v=7"></script>
+  <script src="punzle-interact.js?v=7"></script>
   <script>
     // Set date label
     const today = new Date();
