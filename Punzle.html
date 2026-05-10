@@ -164,6 +164,110 @@
     footer a { color: #6b3a5a; text-decoration: none; }
     footer a:hover { color: var(--muted); }
 
+
+    /* ── Punzle Game Styles ── */
+    .pz-game-wrap {
+      margin-top: 40px;
+      width: min(420px, 95vw);
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+    }
+    .pz-date-label {
+      font-family: 'Boogaloo', cursive;
+      font-size: 18px; color: var(--gold);
+      font-weight: 700; letter-spacing: 0.3px;
+    }
+    .pz-board-wrap { position: relative; }
+    .pz-board {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+      background: #3d1540;
+      border-radius: 14px;
+      padding: 7px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+      width: min(380px, 92vw);
+    }
+    .pz-cell {
+      aspect-ratio: 1;
+      border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: clamp(6px, 1.8vw, 11px);
+      font-weight: 700; color: #3f1635;
+      cursor: pointer;
+      transition: transform 0.1s, filter 0.1s;
+      user-select: none;
+    }
+    .pz-cell:hover:not(.pz-off):not(.pz-blocked) { filter: brightness(1.1); }
+    .pz-off      { background: transparent; pointer-events: none; }
+    .pz-empty    { background: #fff8f5; }
+    .pz-blocked  { background: #fde68a; border: 2px solid #f59e0b; color: #78350f; font-weight: 900; }
+    .pz-placed   { color: rgba(255,255,255,0.9); font-weight: 800; font-size: clamp(5px,1.6vw,10px); border: 1px solid rgba(255,255,255,0.2); }
+    .pz-preview  { transform: scale(1.05); border: 2px solid rgba(255,255,255,0.6); }
+    .pz-preview-bad { background: rgba(239,68,68,0.5) !important; }
+
+    .pz-sarcasm {
+      font-size: 12px; font-weight: 800; color: var(--muted);
+      font-style: italic; text-align: center;
+      background: var(--panel); border: 1px solid var(--outline);
+      border-radius: 10px; padding: 8px 14px;
+      width: 100%; max-width: 380px;
+    }
+
+    .pz-tray {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 4px; width: 100%; max-width: 400px;
+    }
+    .pz-card {
+      width: 46px; height: 82px;
+      background: rgba(72,18,50,0.55);
+      border-radius: 8px; border: 1.5px solid;
+      display: flex; flex-direction: column; align-items: center;
+      overflow: hidden; position: relative; cursor: pointer;
+      transition: transform 0.1s, border-color 0.15s;
+    }
+    .pz-card:hover { transform: translateY(-2px); }
+    .pz-card-done { opacity: 0.55; cursor: default; }
+    .pz-card-sel  { background: rgba(98,25,68,0.85); }
+    .pz-card-bar  { width: 100%; height: 3px; flex-shrink: 0; }
+    .pz-card-check { font-size: 18px; flex: 1; display: flex; align-items: center; justify-content: center; }
+    .pz-card-name {
+      font-size: 8px; font-weight: 900; color: #f3c5d8;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px;
+    }
+    .pz-zone {
+      position: absolute; left: 0; right: 0; height: 26px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(253,230,138,0.12);
+      font-size: 7px; font-weight: 900; color: #fde68a; letter-spacing: 0.2px;
+    }
+    .pz-zone-top { top: 3px; border-bottom: 1px solid rgba(253,230,138,0.2); border-radius: 6px 6px 0 0; }
+    .pz-zone-bot { bottom: 14px; border-top: 1px solid rgba(253,230,138,0.2); border-radius: 0 0 6px 6px; }
+
+    .pz-reset-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1.5px solid var(--outline);
+      color: var(--muted); font-size: 12px; font-weight: 800;
+      padding: 7px 18px; border-radius: 10px; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .pz-reset-btn:hover { background: rgba(255,255,255,0.12); }
+
+    .pz-win {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(26,16,33,0.95);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 10;
+    }
+    .pz-win-inner { text-align: center; padding: 20px; }
+    .pz-win-title { font-family: 'Boogaloo', cursive; font-size: 36px; color: var(--gold); margin-bottom: 8px; }
+    .pz-win-sub   { font-size: 14px; color: var(--muted); font-weight: 600; margin-bottom: 20px; }
+    .pz-win-btn   {
+      background: var(--accent); color: white; border: none;
+      padding: 12px 28px; border-radius: 12px; font-size: 15px;
+      font-weight: 900; cursor: pointer;
+    }
+
     @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 600px) {
@@ -198,14 +302,16 @@
       <a href="#download" class="btn-primary">📲 Download Free on Android</a>
       <a href="#shop" class="btn-secondary">🪵 Get the Real Thing</a>
     </div>
-    <div class="hero-board">
-      <div class="board-cell p1"></div><div class="board-cell p1"></div><div class="board-cell p1"></div><div class="board-cell p2"></div><div class="board-cell gold"></div><div class="board-cell p3"></div><div class="board-cell off"></div>
-      <div class="board-cell p1"></div><div class="board-cell p1"></div><div class="board-cell p2"></div><div class="board-cell p2"></div><div class="board-cell p3"></div><div class="board-cell p3"></div><div class="board-cell off"></div>
-      <div class="board-cell p4"></div><div class="board-cell p4"></div><div class="board-cell p2"></div><div class="board-cell p5"></div><div class="board-cell p5"></div><div class="board-cell p3"></div><div class="board-cell p6"></div>
-      <div class="board-cell p4"></div><div class="board-cell p7"></div><div class="board-cell p7"></div><div class="board-cell p5"></div><div class="board-cell p8"></div><div class="board-cell p8"></div><div class="board-cell p6"></div>
-      <div class="board-cell p4"></div><div class="board-cell p7"></div><div class="board-cell p7"></div><div class="board-cell p5"></div><div class="board-cell p8"></div><div class="board-cell p6"></div><div class="board-cell p6"></div>
-      <div class="board-cell p4"></div><div class="board-cell p7"></div><div class="board-cell gold"></div><div class="board-cell p5"></div><div class="board-cell p8"></div><div class="board-cell p8"></div><div class="board-cell p6"></div>
-      <div class="board-cell p4"></div><div class="board-cell p7"></div><div class="board-cell p8"></div><div class="board-cell off"></div><div class="board-cell off"></div><div class="board-cell off"></div><div class="board-cell off"></div>
+    <!-- ── Interactive Punzle Game ── -->
+    <div class="pz-game-wrap">
+      <div class="pz-date-label" id="pz-date-label"></div>
+      <div class="pz-board-wrap">
+        <div id="punzle-board" class="pz-board"></div>
+        <div id="punzle-win" class="pz-win" style="display:none;"></div>
+      </div>
+      <div class="pz-sarcasm" id="pz-sarcasm">Fit the pieces. Puns included. 😄</div>
+      <div id="punzle-tray" class="pz-tray"></div>
+      <button class="pz-reset-btn" onclick="resetPunzle()">↺ Reset</button>
     </div>
   </div>
 
@@ -253,7 +359,7 @@
   <div class="shop-section" id="shop">
     <div class="shop-inner">
       <h2 class="section-title">🪵 Get the Real Thing</h2>
-      <p class="section-sub">Precision crafted wooden puzzles — Designed and Created by WisconsinDalesCreations</p>
+      <p class="section-sub">Precision CNC crafted wooden puzzles — Designed and Created by WisconsinDalesCreations</p>
       <div class="shop-grid">
 
         <div class="product-card">
@@ -262,7 +368,7 @@
           <div class="product-info">
             <div class="product-name">Wisconsin Calendar Puzzle</div>
             <div class="product-desc">
-              Precision crafted wooden calendar puzzle shaped like Wisconsin. Includes 8 puzzle pieces and display stand. A new challenge every day — the inspiration behind the Punzle app.
+              Precision CNC crafted wooden calendar puzzle shaped like Wisconsin. Includes 8 puzzle pieces and display stand. A new challenge every day — the inspiration behind the Punzle app.
             </div>
             <div class="product-price">$63.00 <span style="font-size:14px; color:var(--muted); font-weight:600;">or $43 with code</span></div>
             <div class="coupon-banner">🎉 First order? Use code <strong>PUNZLE20</strong> for $20 off!</div>
@@ -278,7 +384,7 @@
           <div class="product-info">
             <div class="product-name">More Puzzles Coming</div>
             <div class="product-desc">
-              New puzzle designs are in the works — including other states and a square version. Check back soon!
+              New CNC crafted wooden puzzle designs are in the works — including other states and a square version. Check back soon!
             </div>
             <span class="coming-soon-badge">🕐 Coming Soon</span>
           </div>
@@ -317,6 +423,17 @@
   <footer>
     <p>© 2026 WisconsinDalesCreations · <a href="https://sites.google.com/view/punzle-privacy-policy/home">Privacy Policy</a> · <a href="https://wisconsindales.com">WisconsinDales.com</a></p>
   </footer>
+
+
+  <script src="punzle-game.js"></script>
+  <script src="punzle-render.js"></script>
+  <script src="punzle-interact.js"></script>
+  <script>
+    // Set date label
+    const today = new Date();
+    const dl = document.getElementById("pz-date-label");
+    if (dl) dl.textContent = today.toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" });
+  </script>
 
 </body>
 </html>
