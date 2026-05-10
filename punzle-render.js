@@ -95,7 +95,7 @@ function renderPunzleTray() {
       // ── Mini piece (center) ───────────────────────────────────────────────
       const body = document.createElement("div");
       body.className = "pz-card-body";
-      body.style.overflow = "hidden";
+
       const cells = isSelected ? selectedCells : normalize(piece.cells);
       body.appendChild(renderMiniPiece(cells, piece.color));
       body.addEventListener("click", e => {
@@ -128,7 +128,7 @@ function renderPunzleTray() {
 }
 
 function renderMiniPiece(cells, color) {
-  const SZ  = 5;
+  const SZ  = 7;
   const GAP = 1;
   const STP = SZ + GAP;
   const maxR = Math.max(...cells.map(([r]) => r));
