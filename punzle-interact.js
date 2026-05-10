@@ -127,6 +127,7 @@ function onCardTouchStart(e, piece) {
   _touchDragging = false;
   _touchStartX   = e.touches[0].clientX;
   _touchStartY   = e.touches[0].clientY;
+  // Don't preventDefault here — allow tap events to still fire
 }
 
 function _onTouchMove(e) {
@@ -137,13 +138,11 @@ function _onTouchMove(e) {
 
   if (!_touchDragging && (Math.abs(dx) > DRAG_THR || Math.abs(dy) > DRAG_THR)) {
     _touchDragging = true;
-    if (!selectedPiece || selectedPiece.name !== _touchPiece.name) {
-      selectedPiece = _touchPiece;
-      currentRot    = 0;
-      currentFlip   = false;
-      _rebuildCells();
-      refresh();
-    }
+    selectedPiece = _touchPiece;
+    currentRot    = 0;
+    currentFlip   = false;
+    _rebuildCells();
+    refresh();
     _createFloat(t.clientX, t.clientY);
   }
 
