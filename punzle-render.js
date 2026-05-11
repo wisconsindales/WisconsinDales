@@ -104,10 +104,9 @@ function renderPunzleTray() {
       const flipZone = document.createElement("div");
       flipZone.className   = "pz-zone pz-zone-flip";
       flipZone.textContent = "⇅ FLIP";
-      flipZone.addEventListener("click", e => {
-        e.stopPropagation();
-        doFlip(piece);
-      });
+      flipZone.addEventListener("click", e => { e.stopPropagation(); doFlip(piece); });
+      flipZone.addEventListener("touchstart", e => { e.stopPropagation(); e.preventDefault(); }, { passive: false });
+      flipZone.addEventListener("touchend",   e => { e.stopPropagation(); e.preventDefault(); doFlip(piece); }, { passive: false });
       card.appendChild(flipZone);
 
       // ── Hint star ──────────────────────────────────────────────────────────
@@ -124,20 +123,18 @@ function renderPunzleTray() {
 
       const cells = isSelected ? selectedCells : displayCells;
       body.appendChild(renderMiniPiece(cells, piece.color));
-      body.addEventListener("click", e => {
-        e.stopPropagation();
-        doSelect(piece);
-      });
+      body.addEventListener("click",      e => { e.stopPropagation(); doSelect(piece); });
+      body.addEventListener("touchstart", e => { e.stopPropagation(); }, { passive: true });
+      body.addEventListener("touchend",   e => { e.stopPropagation(); e.preventDefault(); doSelect(piece); }, { passive: false });
       card.appendChild(body);
 
       // ── ROTATE zone ───────────────────────────────────────────────────────
       const rotZone = document.createElement("div");
       rotZone.className   = "pz-zone pz-zone-rot";
       rotZone.textContent = "↻ ROTATE";
-      rotZone.addEventListener("click", e => {
-        e.stopPropagation();
-        doRotate(piece);
-      });
+      rotZone.addEventListener("click",      e => { e.stopPropagation(); doRotate(piece); });
+      rotZone.addEventListener("touchstart", e => { e.stopPropagation(); e.preventDefault(); }, { passive: false });
+      rotZone.addEventListener("touchend",   e => { e.stopPropagation(); e.preventDefault(); doRotate(piece); }, { passive: false });
       card.appendChild(rotZone);
     }
 
