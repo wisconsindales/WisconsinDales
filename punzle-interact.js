@@ -46,7 +46,6 @@ function pzShowHint() {
       return;
     }
     _hintSolution = compatible[Math.floor(Math.random() * compatible.length)];
-    console.log("Hint solution locked:", _hintSolution.map(p => p.piece + ":" + p.cells.map(([r,c])=>r+","+c).join(";")));
   }
 
   // Find unplaced, un-hinted pieces
