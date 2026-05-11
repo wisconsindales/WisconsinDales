@@ -46,6 +46,7 @@ function pzShowHint() {
       return;
     }
     _hintSolution = compatible[Math.floor(Math.random() * compatible.length)];
+    console.log("Hint solution locked:", _hintSolution.map(p => p.piece + ":" + p.cells.map(([r,c])=>r+","+c).join(";")));
   }
 
   // Find unplaced, un-hinted pieces
@@ -152,6 +153,23 @@ function _setSarcasm(msg) {
   if (el) el.textContent = msg;
 }
 
+// ── Apply hint shape if available, else reset to default ─────────────────────
+function _applyHintShape(piece) {
+  if (_hintSolution && _revealedHints.has(piece.name)) {
+    // Use exact cells from solution — same as _getHintShape
+    const placement = _hintSolution.find(p => p.piece === piece.name);
+    if (placement) {
+      selectedCells = normalize(placement.cells);
+      currentRot    = 0;
+      currentFlip   = false;
+      return;
+    }
+  }
+  currentRot   = 0;
+  currentFlip  = false;
+  _rebuild();
+}
+
 // ── Piece transform ───────────────────────────────────────────────────────────
 function _rebuild() {
   if (!selectedPiece) { selectedCells = []; return; }
@@ -168,7 +186,8 @@ function doSelect(piece) {
   if (selectedPiece && selectedPiece.name === piece.name) {
     selectedPiece = null; selectedCells = [];
   } else {
-    selectedPiece = piece; currentRot = 0; currentFlip = false; _rebuild();
+    selectedPiece = piece;
+    _applyHintShape(piece);
   }
   refresh();
 }
@@ -177,7 +196,8 @@ function doFlip(piece) {
   if (placedPieces.some(p => p.name === piece.name))
     placedPieces = placedPieces.filter(p => p.name !== piece.name);
   if (!selectedPiece || selectedPiece.name !== piece.name) {
-    selectedPiece = piece; currentRot = 0; currentFlip = false;
+    selectedPiece = piece;
+    _applyHintShape(piece);
   }
   currentFlip = !currentFlip;
   _rebuild(); refresh();
@@ -187,7 +207,8 @@ function doRotate(piece) {
   if (placedPieces.some(p => p.name === piece.name))
     placedPieces = placedPieces.filter(p => p.name !== piece.name);
   if (!selectedPiece || selectedPiece.name !== piece.name) {
-    selectedPiece = piece; currentRot = 0; currentFlip = false;
+    selectedPiece = piece;
+    _applyHintShape(piece);
   }
   currentRot = (currentRot + 90) % 360;
   _rebuild(); refresh();
@@ -202,7 +223,6 @@ function onCellClick(e) {
   if (existing) {
     _playRemove();
     placedPieces   = placedPieces.filter(p => p.name !== existing.name);
-    _hintSolution  = null; // recalculate on next hint
     _updateSolBadge();
     refresh(); return;
   }
@@ -233,7 +253,8 @@ function _onMouseMove(e) {
   if (!_dragging && (Math.abs(dx) > THR || Math.abs(dy) > THR)) {
     _dragging = true;
     if (!selectedPiece || selectedPiece.name !== _dragPiece.name) {
-      selectedPiece = _dragPiece; currentRot = 0; currentFlip = false; _rebuild();
+      selectedPiece = _dragPiece;
+      _applyHintShape(_dragPiece);
     }
     refresh(); _makeFloat();
   }
@@ -281,7 +302,8 @@ function _onTouchMove(e) {
   if (!_touchDragging && (Math.abs(dx) > THR || Math.abs(dy) > THR)) {
     _touchDragging = true;
     if (!selectedPiece || selectedPiece.name !== _touchPiece.name) {
-      selectedPiece = _touchPiece; currentRot = 0; currentFlip = false; _rebuild();
+      selectedPiece = _touchPiece;
+      _applyHintShape(_touchPiece);
     }
     refresh(); _makeFloat();
   }
@@ -381,7 +403,13 @@ function _place(cells) {
   _playPlace();
   placedPieces.push({ name:selectedPiece.name, color:selectedPiece.color, cells });
   selectedPiece = null; selectedCells = []; currentRot = 0; currentFlip = false;
-  _hintSolution = null; // recalculate compatible solution on next hint
+  // Only reset hint solution if placed piece is incompatible with it
+  if (_hintSolution) {
+    const sp = _hintSolution.find(s => s.piece === selectedPiece.name);
+    const spKeys = sp ? new Set(sp.cells.map(([r,c]) => cellKey(r,c))) : null;
+    const compatible = spKeys && cells.every(([r,c]) => spKeys.has(cellKey(r,c)));
+    if (!compatible) _hintSolution = null;
+  }
   refresh();
   _updateSolBadge();
   const needed = BOARD_CELLS.filter(([r,c])=>!blocked.has(cellKey(r,c)));
