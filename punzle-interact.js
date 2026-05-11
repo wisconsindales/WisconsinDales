@@ -90,7 +90,6 @@ function _dragStart(piece, x, y, isTouch) {
 
 function _dragMove(x, y) {
   if (!_dragPiece) return;
-  console.log("dragMove", x, y, "_dragging:", _dragging);
   const dx = x - _startX;
   const dy = y - _startY;
 
@@ -152,7 +151,6 @@ function _onTouchEnd(e) {
 
 // ── Mouse handlers ────────────────────────────────────────────────────────────
 function onCardMouseDown(e, piece) {
-  console.log("mousedown on piece:", piece.name);
   if (placedPieces.some(p => p.name === piece.name)) return;
   e.preventDefault();
   _dragStart(piece, e.clientX, e.clientY, false);
@@ -173,7 +171,7 @@ function _makeFloat() {
   _killFloat();
   if (!selectedPiece || !selectedCells.length) return;
   _floatEl = document.createElement("div");
-  _floatEl.style.cssText = "position:fixed;pointer-events:none;z-index:9999;display:grid;gap:2px;opacity:0.88;transform:translate(-50%,-120%);will-change:transform;";
+  _floatEl.style.cssText = "position:fixed;pointer-events:none;z-index:9999;display:grid;gap:2px;opacity:0.88;will-change:left,top;";
   const SZ   = 36;
   const maxR = Math.max(...selectedCells.map(([r])=>r));
   const maxC = Math.max(...selectedCells.map(([,c])=>c));
