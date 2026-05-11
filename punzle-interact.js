@@ -456,8 +456,11 @@ function _makeFloat() {
 
 function _moveFloat(x, y) {
   if (!_floatEl) return;
-  _floatEl.style.left = x + "px";
-  _floatEl.style.top  = y + "px";
+  requestAnimationFrame(() => {
+    if (!_floatEl) return;
+    _floatEl.style.left = x + "px";
+    _floatEl.style.top  = y + "px";
+  });
 }
 
 function _killFloat() {
