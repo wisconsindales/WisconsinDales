@@ -12,6 +12,116 @@ const MONTH   = _today.getMonth() + 1;
 const DAY     = _today.getDate();
 const blocked = getBlockedCells(MONTH, DAY);
 
+// ── Solutions & hints ────────────────────────────────────────────────────────
+let _allSolutions    = [];
+let _revealedHints   = new Set(); // piece names with correct orientation shown
+let _hintOrientations = {}; // { pieceName: { rot, flip } }
+
+function _initSolutions() {
+  // Run solver for today
+  const month = _today.getMonth() + 1;
+  const day   = _today.getDate();
+  setTimeout(() => {
+    _allSolutions = solve(month, day, true);
+    _updateSolBadge();
+  }, 100);
+}
+
+function _updateSolBadge() {
+  const badge  = document.getElementById("pz-sol-badge");
+  const numEl  = document.getElementById("pz-sol-num");
+  if (!numEl) return;
+
+  // Filter solutions compatible with current placed pieces
+  const compat = _allSolutions.filter(sol => {
+    for (const p of placedPieces) {
+      const sp = sol.find(s => s.piece === p.name);
+      if (!sp) return false;
+      const sk = new Set(sp.cells.map(([r,c]) => cellKey(r,c)));
+      if (!p.cells.every(([r,c]) => sk.has(cellKey(r,c)))) return false;
+    }
+    return true;
+  });
+
+  const n = placedPieces.length === 0 ? _allSolutions.length : compat.length;
+  numEl.textContent = n;
+
+  if (badge) {
+    if (n === 0) {
+      badge.style.borderColor = "#ef4444";
+      numEl.style.color = "#ef4444";
+    } else if (n <= 3) {
+      badge.style.borderColor = "#f97316";
+      numEl.style.color = "#f97316";
+    } else if (n <= 10) {
+      badge.style.borderColor = "#eab308";
+      numEl.style.color = "#eab308";
+    } else {
+      badge.style.borderColor = "#22c55e";
+      numEl.style.color = "#22c55e";
+    }
+  }
+}
+
+function pzShowHint() {
+  if (!_allSolutions.length) return;
+  // Pick a solution to base hints on
+  const sol = _allSolutions[0];
+
+  // Find unplaced, un-hinted pieces
+  const unplaced = PIECES.filter(p =>
+    !placedPieces.some(pp => pp.name === p.name) &&
+    !_revealedHints.has(p.name)
+  );
+
+  if (!unplaced.length) {
+    document.getElementById("pz-sarcasm").textContent = "All hints shown! You got this. Maybe.";
+    return;
+  }
+
+  // Pick random unplaced piece
+  const piece    = unplaced[Math.floor(Math.random() * unplaced.length)];
+  const solPiece = sol.find(s => s.piece === piece.name);
+  if (!solPiece) return;
+
+  // Find the rotation/flip that produces solution shape
+  let hintRot = 0, hintFlip = false;
+  outer:
+  for (const flipped of [false, true]) {
+    for (let rot = 0; rot < 360; rot += 90) {
+      let cells = piece.cells.map(([r,c]) => [r,c]);
+      if (flipped) cells = flip(cells);
+      const turns = rot / 90;
+      for (let i = 0; i < turns; i++) cells = rotate(cells);
+      const norm = normalize(cells);
+      const solCells = solPiece.cells;
+      const srMin = Math.min(...solCells.map(([r])=>r));
+      const scMin = Math.min(...solCells.map(([,c])=>c));
+      const solNorm = normalize(solCells.map(([r,c])=>[r-srMin,c-scMin]));
+      if (norm.map(([r,c])=>`${r},${c}`).join("|") === solNorm.map(([r,c])=>`${r},${c}`).join("|")) {
+        hintRot  = rot;
+        hintFlip = flipped;
+        break outer;
+      }
+    }
+  }
+
+  _revealedHints.add(piece.name);
+  _hintOrientations[piece.name] = { rot: hintRot, flip: hintFlip };
+
+  // If this piece is selected, update its orientation
+  if (selectedPiece && selectedPiece.name === piece.name) {
+    currentRot  = hintRot;
+    currentFlip = hintFlip;
+    _rebuild();
+  }
+
+  const sarcasm = document.getElementById("pz-sarcasm");
+  if (sarcasm) sarcasm.textContent = `★ Piece ${piece.name} oriented correctly. Try not to waste it.`;
+
+  refresh();
+}
+
 // ── Piece actions ─────────────────────────────────────────────────────────────
 function doSelect(piece) {
   if (placedPieces.some(p => p.name === piece.name))
@@ -249,6 +359,7 @@ function _place(cells) {
   placedPieces.push({ name:selectedPiece.name, color:selectedPiece.color, cells });
   selectedPiece = null; selectedCells = []; currentRot = 0; currentFlip = false;
   refresh();
+  _updateSolBadge();
   const needed = BOARD_CELLS.filter(([r,c])=>!blocked.has(cellKey(r,c)));
   const occ    = new Set(placedPieces.flatMap(p=>p.cells.map(([r,c])=>cellKey(r,c))));
   if (needed.every(([r,c])=>occ.has(cellKey(r,c)))) setTimeout(renderWin, 300);
@@ -257,8 +368,11 @@ function _place(cells) {
 function resetPunzle() {
   placedPieces = []; selectedPiece = null; selectedCells = [];
   currentRot = 0; currentFlip = false;
+  _revealedHints = new Set();
+  _hintOrientations = {};
   const win = document.getElementById("punzle-win");
   if (win) win.style.display = "none";
+  _updateSolBadge();
   refresh();
 }
 
@@ -272,6 +386,7 @@ function onCardDragStart(e) { e.preventDefault(); } // disable HTML5 drag
 // ── Init ──────────────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
   // Touch
+  _initSolutions();
   document.addEventListener("touchmove",   _onTouchMove,  { passive: false });
   document.addEventListener("touchend",    _onTouchEnd,   { passive: true });
   document.addEventListener("touchcancel", _onTouchEnd,   { passive: true });
