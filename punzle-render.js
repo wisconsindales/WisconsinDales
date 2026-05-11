@@ -1,12 +1,20 @@
-// punzle-render.js — Board and tray rendering
+// punzle-render.js — Board and tray rendering with solver-exact peek
 
 function renderPunzleBoard() {
   const boardEl = document.getElementById("punzle-board");
   if (!boardEl) return;
   boardEl.innerHTML = "";
 
-  const today = new Date();
-  const blk   = getBlockedCells(today.getMonth() + 1, today.getDate());
+  // Build peek map if a piece is being held
+  const peekMap = new Map();
+  if (_peekPieceName && _hintSolution) {
+    const placement = _hintSolution.find(p => p.piece === _peekPieceName);
+    if (placement) {
+      placement.cells.forEach(([r,c]) => {
+        peekMap.set(cellKey(r,c), placement);
+      });
+    }
+  }
 
   for (let r = 0; r < 7; r++) {
     for (let c = 0; c < 7; c++) {
@@ -24,16 +32,22 @@ function renderPunzleBoard() {
       el.dataset.c   = c;
       el.textContent = LABELS.get(key) || "";
 
-      if (blk.has(key)) {
+      if (blocked.has(key)) {
         el.className = "pz-cell pz-blocked";
       } else {
         const placed = placedPieces.find(p =>
           p.cells.some(([pr,pc]) => pr===r && pc===c)
         );
         if (placed) {
-          el.className       = "pz-cell pz-placed";
+          el.className        = "pz-cell pz-placed";
           el.style.background = placed.color;
-          el.dataset.piece   = placed.name;
+          el.dataset.piece    = placed.name;
+        } else if (peekMap.has(key)) {
+          // Peek preview — show where hinted piece goes
+          const p = peekMap.get(key);
+          el.className        = "pz-cell pz-peek";
+          el.style.background = p.color + "cc";
+          el.style.border     = `2px solid ${p.color}`;
         } else {
           el.className = "pz-cell pz-empty";
         }
@@ -56,78 +70,81 @@ function renderPunzleTray() {
     const isPlaced   = placedPieces.some(p => p.name === piece.name);
     const isSelected = selectedPiece && selectedPiece.name === piece.name;
     const isHinted   = _revealedHints && _revealedHints.has(piece.name);
-    // Apply hint orientation if piece is hinted but not selected
-    let displayCells = normalize(piece.cells);
-    if (isHinted && !isSelected && _hintOrientations[piece.name]) {
-      const ho = _hintOrientations[piece.name];
-      let cells = piece.cells.map(([r,c])=>[r,c]);
-      const turns = ho.rot / 90;
-      for (let i = 0; i < turns; i++) cells = rotate(cells);
-      if (ho.flip) cells = flip(cells);
-      displayCells = normalize(cells);
-    }
-    // Star only shows if current orientation matches hint orientation
-    const hintOrient = _hintOrientations && _hintOrientations[piece.name];
-    const isCorrectOrient = isHinted && hintOrient && (
-      isSelected
-        ? (currentRot === hintOrient.rot && currentFlip === hintOrient.flip)
-        : true // not selected — always showing hint orientation
-    );
+    const isPeeking  = _peekPieceName === piece.name;
 
-    // ── Card wrapper ──────────────────────────────────────────────────────────
+    // Get display shape — use solver's exact approach for hinted pieces
+    const displayCells = isSelected ? selectedCells : _getHintShape(piece);
+
+    // Star shows when hinted and not rotated away (selected pieces lose star if orientation changed)
+    const showStar = isHinted && !isPlaced;
+
     const card = document.createElement("div");
-    card.className   = `pz-card${isPlaced ? " pz-card-done" : ""}${isSelected ? " pz-card-sel" : ""}`;
-    card.dataset.piece = piece.name;
-    card.style.borderColor = isSelected ? "#22d3ee" : isCorrectOrient ? "rgba(253,230,138,0.6)" : isPlaced ? piece.color + "66" : "#1e1030";
+    card.className = `pz-card${isPlaced?" pz-card-done":""}${isSelected?" pz-card-sel":""}${isPeeking?" pz-card-peek":""}`;
+    card.style.borderColor = isPeeking ? "#22d3ee" : isSelected ? "#22d3ee" : isHinted ? "rgba(253,230,138,0.6)" : isPlaced ? piece.color+"66" : "#1e1030";
 
     if (!isPlaced) {
       card.draggable = true;
       card.addEventListener("mousedown", e => onCardMouseDown(e, piece));
     }
 
-    // ── Color bar ─────────────────────────────────────────────────────────────
+    // Color bar
     const bar = document.createElement("div");
-    bar.className       = "pz-card-bar";
-    bar.style.background = isPlaced ? piece.color + "66" : piece.color;
+    bar.className        = "pz-card-bar";
+    bar.style.background = isPlaced ? piece.color+"66" : piece.color;
     card.appendChild(bar);
 
     if (isPlaced) {
-      // ── Checkmark ──────────────────────────────────────────────────────────
       const check = document.createElement("div");
       check.className   = "pz-card-check";
       check.textContent = "✓";
       check.style.color = piece.color;
       card.appendChild(check);
     } else {
-      // ── FLIP zone ──────────────────────────────────────────────────────────
+      // FLIP zone
       const flipZone = document.createElement("div");
       flipZone.className   = "pz-zone pz-zone-flip";
       flipZone.textContent = "⇅ FLIP";
-      flipZone.addEventListener("click", e => { e.stopPropagation(); doFlip(piece); });
+      flipZone.addEventListener("click",      e => { e.stopPropagation(); doFlip(piece); });
       flipZone.addEventListener("touchstart", e => { e.stopPropagation(); e.preventDefault(); }, { passive: false });
       flipZone.addEventListener("touchend",   e => { e.stopPropagation(); e.preventDefault(); doFlip(piece); }, { passive: false });
       card.appendChild(flipZone);
 
-      // ── Hint star ──────────────────────────────────────────────────────────
-      if (isCorrectOrient) {
+      // Star badge
+      if (showStar) {
         const star = document.createElement("div");
-        star.style.cssText = "position:absolute;top:22px;right:3px;font-size:9px;font-weight:900;color:#fde68a;z-index:10;pointer-events:none;";
+        star.style.cssText = "position:absolute;top:22px;right:3px;font-size:10px;font-weight:900;color:#fde68a;pointer-events:none;z-index:5;";
         star.textContent = "★";
         card.appendChild(star);
       }
 
-      // ── Mini piece (center) ───────────────────────────────────────────────
+      // Mini piece
       const body = document.createElement("div");
       body.className = "pz-card-body";
-
-      const cells = isSelected ? selectedCells : displayCells;
-      body.appendChild(renderMiniPiece(cells, piece.color));
+      body.appendChild(renderMiniPiece(displayCells, piece.color));
       body.addEventListener("click",      e => { e.stopPropagation(); doSelect(piece); });
       body.addEventListener("touchstart", e => { onCardTouchStart(e, piece); }, { passive: false });
       body.addEventListener("touchend",   e => { e.stopPropagation(); e.preventDefault(); doSelect(piece); }, { passive: false });
       card.appendChild(body);
 
-      // ── ROTATE zone ───────────────────────────────────────────────────────
+      // Peek on hold — show where piece goes on board
+      if (isHinted) {
+        // Mouse: hold to peek
+        card.addEventListener("mousedown", e => {
+          if (e.button !== 0) return;
+          const timer = setTimeout(() => _startPeek(piece.name), 200);
+          const stop  = () => { clearTimeout(timer); _endPeek(); document.removeEventListener("mouseup", stop); };
+          document.addEventListener("mouseup", stop);
+        });
+        // Touch: hold to peek
+        card.addEventListener("touchstart", e => {
+          const timer = setTimeout(() => _startPeek(piece.name), 200);
+          const stop  = () => { clearTimeout(timer); _endPeek(); };
+          card.addEventListener("touchend",    stop, { once: true });
+          card.addEventListener("touchcancel", stop, { once: true });
+        }, { passive: true });
+      }
+
+      // ROTATE zone
       const rotZone = document.createElement("div");
       rotZone.className   = "pz-zone pz-zone-rot";
       rotZone.textContent = "↻ ROTATE";
@@ -137,12 +154,12 @@ function renderPunzleTray() {
       card.appendChild(rotZone);
     }
 
-    // ── Piece name ────────────────────────────────────────────────────────────
+    // Name
     const nameEl = document.createElement("div");
     nameEl.className   = "pz-card-name";
     nameEl.textContent = piece.name;
-    if (isSelected)    nameEl.style.color = piece.color;
-    else if (isPlaced) nameEl.style.color = piece.color + "88";
+    if (isSelected || isPeeking) nameEl.style.color = piece.color;
+    else if (isPlaced)           nameEl.style.color = piece.color+"88";
     card.appendChild(nameEl);
 
     trayEl.appendChild(card);
@@ -150,24 +167,16 @@ function renderPunzleTray() {
 }
 
 function renderMiniPiece(cells, color) {
-  const SZ  = 6;
-  const GAP = 1;
-  const STP = SZ + GAP;
-  const maxR = Math.max(...cells.map(([r]) => r));
-  const maxC = Math.max(...cells.map(([,c]) => c));
-  const set  = new Set(cells.map(([r,c]) => `${r},${c}`));
-
+  const SZ = 6, GAP = 1, STP = SZ + GAP;
+  const maxR = Math.max(...cells.map(([r])=>r));
+  const maxC = Math.max(...cells.map(([,c])=>c));
+  const set  = new Set(cells.map(([r,c])=>`${r},${c}`));
   const wrap = document.createElement("div");
   wrap.style.cssText = `position:relative;width:${(maxC+1)*STP-GAP}px;height:${(maxR+1)*STP-GAP}px;`;
-
   for (let r = 0; r <= maxR; r++) {
     for (let c = 0; c <= maxC; c++) {
       const cell = document.createElement("div");
-      cell.style.cssText = `
-        position:absolute;top:${r*STP}px;left:${c*STP}px;
-        width:${SZ}px;height:${SZ}px;border-radius:2px;
-        background:${set.has(`${r},${c}`) ? color : "transparent"};
-      `;
+      cell.style.cssText = `position:absolute;top:${r*STP}px;left:${c*STP}px;width:${SZ}px;height:${SZ}px;border-radius:2px;background:${set.has(`${r},${c}`)?color:"transparent"};`;
       wrap.appendChild(cell);
     }
   }
