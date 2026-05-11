@@ -146,46 +146,27 @@ function pzShowHint() {
   const sarcasm = document.getElementById("pz-sarcasm");
   if (sarcasm) sarcasm.textContent = `★ Piece ${piece.name} oriented correctly. Try not to waste it.`;
 
-  // Show Next Solution button when all pieces hinted
-  const allHinted = PIECES.every(p =>
-    placedPieces.some(pp => pp.name === p.name) || _revealedHints.has(p.name)
-  );
-  const nextBtn = document.getElementById("pz-next-btn");
-  if (nextBtn) nextBtn.style.display = allHinted ? "inline-flex" : "none";
-
   refresh();
 }
 
 function pzNextSolution() {
   if (!_allSolutions.length) return;
+  // Advance to next solution
   _hintSolIndex = (_hintSolIndex + 1) % _allSolutions.length;
   _hintSolution = _allSolutions[_hintSolIndex];
-  // Rebuild all hint orientations from new solution
-  _revealedHints.forEach(name => {
-    const piece    = PIECES.find(p => p.name === name);
-    const solPiece = _hintSolution.find(s => s.piece === name);
-    if (!piece || !solPiece) return;
-    const solCells = solPiece.cells;
-    const srMin    = Math.min(...solCells.map(([r])=>r));
-    const scMin    = Math.min(...solCells.map(([,c])=>c));
-    const solKey   = normalize(solCells.map(([r,c])=>[r-srMin,c-scMin])).map(([r,c])=>`${r},${c}`).join("|");
-    for (const flipped of [false, true]) {
-      let found = false;
-      for (let rot = 0; rot < 360; rot += 90) {
-        let cells = piece.cells.map(([r,c])=>[r,c]);
-        if (flipped) cells = flip(cells);
-        const turns = rot / 90;
-        for (let i = 0; i < turns; i++) cells = rotate(cells);
-        if (normalize(cells).map(([r,c])=>`${r},${c}`).join("|") === solKey) {
-          _hintOrientations[name] = { rot, flip: flipped };
-          found = true; break;
-        }
-      }
-      if (found) break;
-    }
-  });
+  // Full reset — clear board, hints, stars
+  placedPieces      = [];
+  selectedPiece     = null;
+  selectedCells     = [];
+  currentRot        = 0;
+  currentFlip       = false;
+  _revealedHints    = new Set();
+  _hintOrientations = {};
+  const win = document.getElementById("punzle-win");
+  if (win) win.style.display = "none";
+  _updateSolBadge();
   const sarcasm = document.getElementById("pz-sarcasm");
-  if (sarcasm) sarcasm.textContent = `Solution ${_hintSolIndex + 1} of ${_allSolutions.length} — try this one!`;
+  if (sarcasm) sarcasm.textContent = `Solution ${_hintSolIndex + 1} of ${_allSolutions.length} loaded. Good luck! 😄`;
   refresh();
 }
 
@@ -443,8 +424,7 @@ function resetPunzle() {
   _hintOrientations = {};
   _hintSolution = null;
   _hintSolIndex = 0;
-  const nextBtn = document.getElementById("pz-next-btn");
-  if (nextBtn) nextBtn.style.display = "none";
+
   const win = document.getElementById("punzle-win");
   if (win) win.style.display = "none";
   _updateSolBadge();
