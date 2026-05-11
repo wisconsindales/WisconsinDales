@@ -55,12 +55,23 @@ function renderPunzleTray() {
   PIECES.forEach(piece => {
     const isPlaced   = placedPieces.some(p => p.name === piece.name);
     const isSelected = selectedPiece && selectedPiece.name === piece.name;
+    const isHinted   = _revealedHints && _revealedHints.has(piece.name);
+    // Apply hint orientation if piece is hinted but not selected
+    let displayCells = normalize(piece.cells);
+    if (isHinted && !isSelected && _hintOrientations[piece.name]) {
+      const ho = _hintOrientations[piece.name];
+      let cells = piece.cells.map(([r,c])=>[r,c]);
+      if (ho.flip) cells = flip(cells);
+      const turns = ho.rot / 90;
+      for (let i = 0; i < turns; i++) cells = rotate(cells);
+      displayCells = normalize(cells);
+    }
 
     // ── Card wrapper ──────────────────────────────────────────────────────────
     const card = document.createElement("div");
     card.className   = `pz-card${isPlaced ? " pz-card-done" : ""}${isSelected ? " pz-card-sel" : ""}`;
     card.dataset.piece = piece.name;
-    card.style.borderColor = isSelected ? "#22d3ee" : isPlaced ? piece.color + "66" : "#1e1030";
+    card.style.borderColor = isSelected ? "#22d3ee" : isHinted ? "rgba(253,230,138,0.6)" : isPlaced ? piece.color + "66" : "#1e1030";
 
     if (!isPlaced) {
       card.draggable = true;
