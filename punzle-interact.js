@@ -398,7 +398,6 @@ function _dragEnd(x, y) {
 // ── Touch handlers ────────────────────────────────────────────────────────────
 function onCardTouchStart(e, piece) {
   if (placedPieces.some(p => p.name === piece.name)) return;
-  e.preventDefault();
   const t = e.touches[0];
   _dragStart(piece, t.clientX, t.clientY, true);
 }
@@ -406,8 +405,8 @@ function onCardTouchStart(e, piece) {
 function _onTouchMove(e) {
   if (!_dragPiece) return;
   const t = e.touches[0];
-  if (_dragging) e.preventDefault();
   _dragMove(t.clientX, t.clientY);
+  if (_dragging) e.preventDefault();
 }
 
 function _onTouchEnd(e) {
