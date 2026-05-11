@@ -329,6 +329,7 @@
     .pz-mobile-promo { display: none; }
     @media (max-width: 768px) {
       .pz-game-wrap { display: none !important; }
+      .hero { min-height: auto !important; padding-bottom: 40px !important; }
       .pz-mobile-promo {
         display: flex; flex-direction: column; align-items: center;
         gap: 16px; padding: 32px 24px; text-align: center;
@@ -408,7 +409,7 @@
         <button class="pz-reset-btn" onclick="resetPunzle()">↺ Reset</button>
       </div>
       <div id="punzle-tray" class="pz-tray"></div>
-      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=38</div>
+      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=39</div>
     </div>
   </div>
 
@@ -536,9 +537,9 @@
   </footer>
 
 
-  <script src="punzle-game.js?v=38"></script>
-  <script src="punzle-render.js?v=38"></script>
-  <script src="punzle-interact.js?v=38"></script>
+  <script src="punzle-game.js?v=39"></script>
+  <script src="punzle-render.js?v=39"></script>
+  <script src="punzle-interact.js?v=39"></script>
   <script>
     // Set date label
     const today = new Date();
