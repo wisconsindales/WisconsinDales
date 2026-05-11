@@ -184,9 +184,24 @@ let _hintSolIndex = 0;
 function pzShowHint() {
   if (!_allSolutions.length) return;
 
-  // Lock in one solution for all hints
+  // Lock in one solution — must be compatible with currently placed pieces
   if (!_hintSolution) {
-    _hintSolution = _allSolutions[Math.floor(Math.random() * _allSolutions.length)];
+    // Find solutions compatible with current board state
+    const compatible = _allSolutions.filter(sol => {
+      for (const p of placedPieces) {
+        const sp = sol.find(s => s.piece === p.name);
+        if (!sp) return false;
+        const sk = new Set(sp.cells.map(([r,c]) => cellKey(r,c)));
+        if (!p.cells.every(([r,c]) => sk.has(cellKey(r,c)))) return false;
+      }
+      return true;
+    });
+    if (!compatible.length) {
+      const sarcasm = document.getElementById("pz-sarcasm");
+      if (sarcasm) sarcasm.textContent = "No hints available — current placement has no solutions!";
+      return;
+    }
+    _hintSolution = compatible[Math.floor(Math.random() * compatible.length)];
   }
 
   // Find unplaced, un-hinted pieces
@@ -326,6 +341,7 @@ function onCellClick(e) {
   if (existing) {
     _playRemove();
     placedPieces = placedPieces.filter(p => p.name !== existing.name);
+    _hintSolution = null; // recalculate hint solution after removal
     _updateSolBadge();
     refresh(); return;
   }
@@ -520,6 +536,7 @@ function _place(cells) {
   _playPlace();
   placedPieces.push({ name:selectedPiece.name, color:selectedPiece.color, cells });
   selectedPiece = null; selectedCells = []; currentRot = 0; currentFlip = false;
+  _hintSolution = null; // recalculate hint solution after placement
   refresh();
   _updateSolBadge();
   const needed = BOARD_CELLS.filter(([r,c])=>!blocked.has(cellKey(r,c)));
