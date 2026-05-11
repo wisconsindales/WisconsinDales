@@ -412,7 +412,7 @@
         <button class="pz-reset-btn" onclick="resetPunzle()">↺ Reset</button>
       </div>
       <div id="punzle-tray" class="pz-tray"></div>
-      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=40</div>
+      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=41</div>
     </div>
   </div>
 
@@ -540,9 +540,24 @@
   </footer>
 
 
-  <script src="punzle-game.js?v=40"></script>
-  <script src="punzle-render.js?v=40"></script>
-  <script src="punzle-interact.js?v=40"></script>
+  <script src="punzle-game.js?v=41"></script>
+  <script src="punzle-render.js?v=41"></script>
+  <script src="punzle-interact.js?v=41"></script>
+  <script>
+    // JS mobile detection as backup to CSS media query
+    (function() {
+      const isMobile = window.innerWidth <= 768 ||
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      if (isMobile) {
+        document.addEventListener("DOMContentLoaded", function() {
+          const game  = document.querySelector(".pz-game-wrap");
+          const promo = document.querySelector(".pz-mobile-promo");
+          if (game)  game.style.display  = "none";
+          if (promo) promo.style.display = "flex";
+        });
+      }
+    })();
+  </script>
   <script>
     // Set date label
     const today = new Date();
