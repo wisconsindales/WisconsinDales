@@ -90,6 +90,7 @@ function _dragStart(piece, x, y, isTouch) {
 
 function _dragMove(x, y) {
   if (!_dragPiece) return;
+  console.log("dragMove", x, y, "_dragging:", _dragging);
   const dx = x - _startX;
   const dy = y - _startY;
 
@@ -151,6 +152,7 @@ function _onTouchEnd(e) {
 
 // ── Mouse handlers ────────────────────────────────────────────────────────────
 function onCardMouseDown(e, piece) {
+  console.log("mousedown on piece:", piece.name);
   if (placedPieces.some(p => p.name === piece.name)) return;
   e.preventDefault();
   _dragStart(piece, e.clientX, e.clientY, false);
