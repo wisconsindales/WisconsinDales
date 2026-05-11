@@ -1,4 +1,4 @@
-// punzle-interact.js — Game state, interactions, drag
+// punzle-interact.js — Game state, interactions, drag (touch + mouse)
 
 // ── State ─────────────────────────────────────────────────────────────────────
 let placedPieces  = [];
@@ -7,52 +7,44 @@ let selectedCells = [];
 let currentRot    = 0;
 let currentFlip   = false;
 
-const _today   = new Date();
-const MONTH    = _today.getMonth() + 1;
-const DAY      = _today.getDate();
-const blocked  = getBlockedCells(MONTH, DAY);
+const _today  = new Date();
+const MONTH   = _today.getMonth() + 1;
+const DAY     = _today.getDate();
+const blocked = getBlockedCells(MONTH, DAY);
 
-// ── Piece actions — called directly from render ───────────────────────────────
+// ── Piece actions ─────────────────────────────────────────────────────────────
 function doSelect(piece) {
-  if (placedPieces.some(p => p.name === piece.name)) {
+  if (placedPieces.some(p => p.name === piece.name))
     placedPieces = placedPieces.filter(p => p.name !== piece.name);
-  }
   if (selectedPiece && selectedPiece.name === piece.name) {
     selectedPiece = null; selectedCells = [];
   } else {
-    selectedPiece = piece;
-    currentRot    = 0;
-    currentFlip   = false;
-    _rebuildCells();
+    selectedPiece = piece; currentRot = 0; currentFlip = false; _rebuild();
   }
   refresh();
 }
 
 function doFlip(piece) {
-  if (placedPieces.some(p => p.name === piece.name)) {
+  if (placedPieces.some(p => p.name === piece.name))
     placedPieces = placedPieces.filter(p => p.name !== piece.name);
-  }
   if (!selectedPiece || selectedPiece.name !== piece.name) {
     selectedPiece = piece; currentRot = 0; currentFlip = false;
   }
   currentFlip = !currentFlip;
-  _rebuildCells();
-  refresh();
+  _rebuild(); refresh();
 }
 
 function doRotate(piece) {
-  if (placedPieces.some(p => p.name === piece.name)) {
+  if (placedPieces.some(p => p.name === piece.name))
     placedPieces = placedPieces.filter(p => p.name !== piece.name);
-  }
   if (!selectedPiece || selectedPiece.name !== piece.name) {
     selectedPiece = piece; currentRot = 0; currentFlip = false;
   }
   currentRot = (currentRot + 90) % 360;
-  _rebuildCells();
-  refresh();
+  _rebuild(); refresh();
 }
 
-function _rebuildCells() {
+function _rebuild() {
   if (!selectedPiece) { selectedCells = []; return; }
   let cells = selectedPiece.cells.map(([r,c]) => [r,c]);
   if (currentFlip) cells = flip(cells);
@@ -61,158 +53,156 @@ function _rebuildCells() {
   selectedCells = normalize(cells);
 }
 
-// ── Cell click — place or remove ──────────────────────────────────────────────
+// ── Cell click ────────────────────────────────────────────────────────────────
 function onCellClick(e) {
   const r   = parseInt(e.currentTarget.dataset.r);
   const c   = parseInt(e.currentTarget.dataset.c);
   const key = cellKey(r, c);
-
-  // Remove placed piece
-  const existing = placedPieces.find(p =>
-    p.cells.some(([pr,pc]) => pr===r && pc===c)
-  );
+  const existing = placedPieces.find(p => p.cells.some(([pr,pc]) => pr===r && pc===c));
   if (existing) {
     placedPieces = placedPieces.filter(p => p.name !== existing.name);
     refresh(); return;
   }
-
-  // Place selected piece
   if (!selectedPiece || blocked.has(key)) return;
   const anchor  = _anchor(selectedCells);
   const shifted = selectedCells.map(([sr,sc]) => [r+sr-anchor[0], c+sc-anchor[1]]);
-  if (_validPlacement(shifted)) _place(shifted);
+  if (_valid(shifted)) _place(shifted);
 }
 
-// ── Mouse drag ────────────────────────────────────────────────────────────────
-function onCardDragStart(e, piece) {
-  if (placedPieces.some(p => p.name === piece.name)) { e.preventDefault(); return; }
-  selectedPiece = piece; currentRot = 0; currentFlip = false; _rebuildCells();
-  e.dataTransfer.effectAllowed = "move";
-  e.dataTransfer.setData("text/plain", piece.name);
-  refresh();
-}
+// ── Drag state ────────────────────────────────────────────────────────────────
+let _dragPiece   = null;
+let _dragging    = false;
+let _startX      = 0;
+let _startY      = 0;
+let _floatEl     = null;
+let _isTouch     = false;
+const THR        = 8;
 
-function onCellDragOver(e) {
-  e.preventDefault();
-  e.dataTransfer.dropEffect = "move";
-  _clearPreview();
-  if (!selectedPiece) return;
-  const r = parseInt(e.currentTarget.dataset.r);
-  const c = parseInt(e.currentTarget.dataset.c);
-  _showPreview(r, c);
-}
-
-function onCellDrop(e) {
-  e.preventDefault();
-  _clearPreview();
-  if (!selectedPiece) return;
-  const r = parseInt(e.currentTarget.dataset.r);
-  const c = parseInt(e.currentTarget.dataset.c);
-  const anchor  = _anchor(selectedCells);
-  const shifted = selectedCells.map(([sr,sc]) => [r+sr-anchor[0], c+sc-anchor[1]]);
-  if (_validPlacement(shifted)) _place(shifted);
-}
-
-// ── Touch drag ────────────────────────────────────────────────────────────────
-let _touchPiece    = null;
-let _touchDragging = false;
-let _touchStartX   = 0;
-let _touchStartY   = 0;
-let _floatEl       = null;
-const DRAG_THR     = 10;
-
-function onCardTouchStart(e, piece) {
+// ── Shared drag start ─────────────────────────────────────────────────────────
+function _dragStart(piece, x, y, isTouch) {
   if (placedPieces.some(p => p.name === piece.name)) return;
-  e.preventDefault(); // claim the gesture immediately
-  _touchPiece    = piece;
-  _touchDragging = false;
-  _touchStartX   = e.touches[0].clientX;
-  _touchStartY   = e.touches[0].clientY;
+  _dragPiece = piece;
+  _dragging  = false;
+  _startX    = x;
+  _startY    = y;
+  _isTouch   = isTouch;
 }
 
-function _onTouchMove(e) {
-  if (!_touchPiece) return;
-  const t  = e.touches[0];
-  const dx = t.clientX - _touchStartX;
-  const dy = t.clientY - _touchStartY;
+function _dragMove(x, y) {
+  if (!_dragPiece) return;
+  const dx = x - _startX;
+  const dy = y - _startY;
 
-  if (!_touchDragging && (Math.abs(dx) > DRAG_THR || Math.abs(dy) > DRAG_THR)) {
-    _touchDragging = true;
-    selectedPiece = _touchPiece;
+  if (!_dragging && (Math.abs(dx) > THR || Math.abs(dy) > THR)) {
+    _dragging     = true;
+    selectedPiece = _dragPiece;
     currentRot    = 0;
     currentFlip   = false;
-    _rebuildCells();
+    _rebuild();
     refresh();
-    _createFloat(t.clientX, t.clientY);
+    _makeFloat();
   }
 
-  if (_touchDragging) {
-    e.preventDefault();
-    _moveFloat(t.clientX, t.clientY);
+  if (_dragging) {
+    _moveFloat(x, y);
     _clearPreview();
-    const target = _cellAtPoint(t.clientX, t.clientY);
+    const target = _cellAt(x, y);
     if (target) _showPreview(parseInt(target.dataset.r), parseInt(target.dataset.c));
   }
 }
 
-function _onTouchEnd(e) {
-  if (_touchDragging && _touchPiece) {
-    const t      = e.changedTouches[0];
-    const target = _cellAtPoint(t.clientX, t.clientY);
-    if (target && selectedPiece) {
+function _dragEnd(x, y) {
+  if (_dragging && _dragPiece && selectedPiece) {
+    const target = _cellAt(x, y);
+    if (target) {
       const r       = parseInt(target.dataset.r);
       const c       = parseInt(target.dataset.c);
       const anchor  = _anchor(selectedCells);
       const shifted = selectedCells.map(([sr,sc]) => [r+sr-anchor[0], c+sc-anchor[1]]);
-      if (_validPlacement(shifted)) _place(shifted);
+      if (_valid(shifted)) _place(shifted);
     }
   }
-  _destroyFloat();
+  _killFloat();
   _clearPreview();
-  _touchPiece    = null;
-  _touchDragging = false;
+  _dragPiece = null;
+  _dragging  = false;
 }
 
-function _createFloat(x, y) {
-  _destroyFloat();
+// ── Touch handlers ────────────────────────────────────────────────────────────
+function onCardTouchStart(e, piece) {
+  if (placedPieces.some(p => p.name === piece.name)) return;
+  e.preventDefault();
+  const t = e.touches[0];
+  _dragStart(piece, t.clientX, t.clientY, true);
+}
+
+function _onTouchMove(e) {
+  if (!_dragPiece) return;
+  const t = e.touches[0];
+  if (_dragging) e.preventDefault();
+  _dragMove(t.clientX, t.clientY);
+}
+
+function _onTouchEnd(e) {
+  if (!_dragPiece) return;
+  const t = e.changedTouches[0];
+  _dragEnd(t.clientX, t.clientY);
+}
+
+// ── Mouse handlers ────────────────────────────────────────────────────────────
+function onCardMouseDown(e, piece) {
+  if (placedPieces.some(p => p.name === piece.name)) return;
+  e.preventDefault();
+  _dragStart(piece, e.clientX, e.clientY, false);
+}
+
+function _onMouseMove(e) {
+  if (!_dragPiece) return;
+  _dragMove(e.clientX, e.clientY);
+}
+
+function _onMouseUp(e) {
+  if (!_dragPiece) return;
+  _dragEnd(e.clientX, e.clientY);
+}
+
+// ── Float ghost ───────────────────────────────────────────────────────────────
+function _makeFloat() {
+  _killFloat();
+  if (!selectedPiece || !selectedCells.length) return;
   _floatEl = document.createElement("div");
-  _floatEl.style.cssText = "position:fixed;pointer-events:none;z-index:9999;display:grid;gap:2px;opacity:0.9;transform:translate(-50%,-120%);";
-  const SZ   = 34;
-  const cells = selectedCells.length ? selectedCells : normalize(_touchPiece.cells);
-  const maxR  = Math.max(...cells.map(([r])=>r));
-  const maxC  = Math.max(...cells.map(([,c])=>c));
+  _floatEl.style.cssText = "position:fixed;pointer-events:none;z-index:9999;display:grid;gap:2px;opacity:0.88;transform:translate(-50%,-120%);will-change:transform;";
+  const SZ   = 36;
+  const maxR = Math.max(...selectedCells.map(([r])=>r));
+  const maxC = Math.max(...selectedCells.map(([,c])=>c));
   _floatEl.style.gridTemplateColumns = `repeat(${maxC+1},${SZ}px)`;
   for (let r = 0; r <= maxR; r++) {
     for (let c = 0; c <= maxC; c++) {
+      const on   = selectedCells.some(([sr,sc])=>sr===r&&sc===c);
       const cell = document.createElement("div");
-      const on   = cells.some(([sr,sc]) => sr===r && sc===c);
-      cell.style.cssText = `width:${SZ}px;height:${SZ}px;border-radius:5px;background:${on ? selectedPiece.color : "transparent"};${on ? "border:1.5px solid rgba(255,255,255,0.3);" : ""}`;
+      cell.style.cssText = `width:${SZ}px;height:${SZ}px;border-radius:6px;background:${on?selectedPiece.color:"transparent"};${on?"border:2px solid rgba(255,255,255,0.4);box-shadow:0 4px 12px rgba(0,0,0,0.4);":""}`;
       _floatEl.appendChild(cell);
     }
   }
   document.body.appendChild(_floatEl);
-  _moveFloat(x, y);
 }
 
 function _moveFloat(x, y) {
-  if (_floatEl) { _floatEl.style.left = x+"px"; _floatEl.style.top = y+"px"; }
+  if (!_floatEl) return;
+  _floatEl.style.left = x + "px";
+  _floatEl.style.top  = y + "px";
 }
 
-function _destroyFloat() {
+function _killFloat() {
   if (_floatEl) { _floatEl.remove(); _floatEl = null; }
 }
 
-function _cellAtPoint(x, y) {
-  return document.elementsFromPoint(x, y)
-    .find(el => el.classList && el.classList.contains("pz-cell") && el.dataset.r !== undefined);
-}
-
-// ── Preview highlight ─────────────────────────────────────────────────────────
+// ── Preview ───────────────────────────────────────────────────────────────────
 function _showPreview(r, c) {
-  if (!selectedPiece) return;
+  if (!selectedPiece || !selectedCells.length) return;
   const anchor  = _anchor(selectedCells);
   const shifted = selectedCells.map(([sr,sc]) => [r+sr-anchor[0], c+sc-anchor[1]]);
-  const valid   = _validPlacement(shifted);
+  const valid   = _valid(shifted);
   shifted.forEach(([pr,pc]) => {
     const el = document.querySelector(`.pz-cell[data-r="${pr}"][data-c="${pc}"]`);
     if (el) {
@@ -230,6 +220,11 @@ function _clearPreview() {
   });
 }
 
+function _cellAt(x, y) {
+  const els = document.elementsFromPoint(x, y);
+  return els.find(el => el.classList && el.classList.contains("pz-cell") && el.dataset.r !== undefined);
+}
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function _anchor(cells) {
   if (!cells.length) return [0,0];
@@ -243,9 +238,9 @@ function _anchor(cells) {
   return best;
 }
 
-function _validPlacement(cells) {
+function _valid(cells) {
   if (!cells.length) return false;
-  const occ = new Set(placedPieces.flatMap(p => p.cells.map(([r,c])=>cellKey(r,c))));
+  const occ = new Set(placedPieces.flatMap(p=>p.cells.map(([r,c])=>cellKey(r,c))));
   return cells.every(([r,c]) => {
     const k = cellKey(r,c);
     return isValidCell(r,c) && !blocked.has(k) && !occ.has(k);
@@ -256,15 +251,14 @@ function _place(cells) {
   placedPieces.push({ name:selectedPiece.name, color:selectedPiece.color, cells });
   selectedPiece = null; selectedCells = []; currentRot = 0; currentFlip = false;
   refresh();
-  // Check win
-  const needed = BOARD_CELLS.filter(([r,c]) => !blocked.has(cellKey(r,c)));
-  const occ    = new Set(placedPieces.flatMap(p => p.cells.map(([r,c])=>cellKey(r,c))));
-  if (needed.every(([r,c]) => occ.has(cellKey(r,c)))) setTimeout(renderWin, 300);
+  const needed = BOARD_CELLS.filter(([r,c])=>!blocked.has(cellKey(r,c)));
+  const occ    = new Set(placedPieces.flatMap(p=>p.cells.map(([r,c])=>cellKey(r,c))));
+  if (needed.every(([r,c])=>occ.has(cellKey(r,c)))) setTimeout(renderWin, 300);
 }
 
 function resetPunzle() {
-  placedPieces  = []; selectedPiece = null; selectedCells = [];
-  currentRot    = 0;  currentFlip   = false;
+  placedPieces = []; selectedPiece = null; selectedCells = [];
+  currentRot = 0; currentFlip = false;
   const win = document.getElementById("punzle-win");
   if (win) win.style.display = "none";
   refresh();
@@ -272,16 +266,19 @@ function resetPunzle() {
 
 function refresh() { renderPunzleBoard(); renderPunzleTray(); }
 
+// ── Cell drag events (mouse only — touch handled globally) ────────────────────
+function onCellDragOver(e) { e.preventDefault(); }
+function onCellDrop(e)     { e.preventDefault(); }
+function onCardDragStart(e) { e.preventDefault(); } // disable HTML5 drag
+
 // ── Init ──────────────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-  const boardEl = document.getElementById("punzle-board");
-  if (boardEl) {
-    boardEl.addEventListener("dragleave", e => {
-      if (!boardEl.contains(e.relatedTarget)) _clearPreview();
-    });
-  }
+  // Touch
   document.addEventListener("touchmove",   _onTouchMove,  { passive: false });
-  document.addEventListener("touchend",    _onTouchEnd);
-  document.addEventListener("touchcancel", _onTouchEnd);
+  document.addEventListener("touchend",    _onTouchEnd,   { passive: true });
+  document.addEventListener("touchcancel", _onTouchEnd,   { passive: true });
+  // Mouse
+  document.addEventListener("mousemove",   _onMouseMove);
+  document.addEventListener("mouseup",     _onMouseUp);
   refresh();
 });
