@@ -90,3 +90,70 @@ function isValidCell(r, c) {
 }
 
 buildBoard();
+
+function getPlacements(piece, allowFlip, blocked) {
+  const valid = new Set(BOARD_CELLS.map(([r,c]) => cellKey(r,c)));
+  const placements = [];
+  const variants = getVariants(piece.cells, allowFlip);
+  for (const variant of variants) {
+    const maxR = Math.max(...variant.map(([r])=>r));
+    const maxC = Math.max(...variant.map(([,c])=>c));
+    for (let dr = 0; dr <= 6-maxR; dr++) {
+      for (let dc = 0; dc <= 6-maxC; dc++) {
+        const cells = variant.map(([r,c]) => [r+dr, c+dc]);
+        const keys  = cells.map(([r,c]) => cellKey(r,c));
+        if (!keys.every(k => valid.has(k) && !blocked.has(k))) continue;
+        const uk = [...keys].sort().join("|");
+        placements.push({ piece:piece.name, color:piece.color, cells, key:uk });
+      }
+    }
+  }
+  const dedup = new Map();
+  placements.forEach(p => dedup.set(p.key, p));
+  return [...dedup.values()];
+}
+
+function solve(month, day, allowFlip=true) {
+  const blocked   = getBlockedCells(month, day);
+  const remaining = new Set(BOARD_CELLS.map(([r,c])=>cellKey(r,c)).filter(k=>!blocked.has(k)));
+  const cellToPlacements = new Map();
+  for (const piece of PIECES) {
+    for (const placement of getPlacements(piece, allowFlip, blocked)) {
+      for (const [r,c] of placement.cells) {
+        const k = cellKey(r,c);
+        if (!cellToPlacements.has(k)) cellToPlacements.set(k,[]);
+        cellToPlacements.get(k).push(placement);
+      }
+    }
+  }
+  const usedPieces = new Set();
+  const filled     = new Set();
+  const path       = [];
+  const solutions  = [];
+
+  function backtrack() {
+    if (usedPieces.size === PIECES.length) {
+      if (filled.size === remaining.size) solutions.push(path.map(p=>({...p,cells:p.cells.map(([r,c])=>[r,c])})));
+      return;
+    }
+    let best = null;
+    for (const cell of remaining) {
+      if (filled.has(cell)) continue;
+      const opts = (cellToPlacements.get(cell)||[]).filter(p=>{
+        if (usedPieces.has(p.piece)) return false;
+        return p.cells.every(([r,c])=>!filled.has(cellKey(r,c)));
+      });
+      if (!best || opts.length < best.length) { best = opts; if (!opts.length) break; }
+    }
+    if (!best || !best.length) return;
+    for (const p of best) {
+      usedPieces.add(p.piece); path.push(p);
+      const added = p.cells.map(([r,c])=>{ const k=cellKey(r,c); filled.add(k); return k; });
+      backtrack();
+      added.forEach(k=>filled.delete(k)); path.pop(); usedPieces.delete(p.piece);
+      if (solutions.length >= 100) return;
+    }
+  }
+  backtrack();
+  return solutions;
+}
