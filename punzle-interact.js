@@ -12,6 +12,18 @@ const MONTH   = _today.getMonth() + 1;
 const DAY     = _today.getDate();
 const blocked = getBlockedCells(MONTH, DAY);
 
+// ── Helper: apply hint orientation if available, else reset ─────────────────
+function _applyHintOrient(piece) {
+  if (_hintOrientations && _hintOrientations[piece.name]) {
+    const ho  = _hintOrientations[piece.name];
+    currentRot  = ho.rot;
+    currentFlip = ho.flip;
+  } else {
+    currentRot  = 0;
+    currentFlip = false;
+  }
+}
+
 // ── Solutions & hints ────────────────────────────────────────────────────────
 let _allSolutions    = [];
 let _revealedHints   = new Set(); // piece names with correct orientation shown
@@ -45,6 +57,8 @@ function _updateSolBadge() {
 
   const n = placedPieces.length === 0 ? _allSolutions.length : compat.length;
   numEl.textContent = n;
+  const lblEl = document.getElementById("pz-sol-lbl");
+  if (lblEl) lblEl.textContent = placedPieces.length === 0 ? "solutions" : "possible";
 
   if (badge) {
     if (n === 0) {
@@ -129,7 +143,9 @@ function doSelect(piece) {
   if (selectedPiece && selectedPiece.name === piece.name) {
     selectedPiece = null; selectedCells = [];
   } else {
-    selectedPiece = piece; currentRot = 0; currentFlip = false; _rebuild();
+    selectedPiece = piece;
+    _applyHintOrient(piece);
+    _rebuild();
   }
   refresh();
 }
@@ -138,7 +154,8 @@ function doFlip(piece) {
   if (placedPieces.some(p => p.name === piece.name))
     placedPieces = placedPieces.filter(p => p.name !== piece.name);
   if (!selectedPiece || selectedPiece.name !== piece.name) {
-    selectedPiece = piece; currentRot = 0; currentFlip = false;
+    selectedPiece = piece;
+    _applyHintOrient(piece);
   }
   currentFlip = !currentFlip;
   _rebuild(); refresh();
@@ -148,7 +165,8 @@ function doRotate(piece) {
   if (placedPieces.some(p => p.name === piece.name))
     placedPieces = placedPieces.filter(p => p.name !== piece.name);
   if (!selectedPiece || selectedPiece.name !== piece.name) {
-    selectedPiece = piece; currentRot = 0; currentFlip = false;
+    selectedPiece = piece;
+    _applyHintOrient(piece);
   }
   currentRot = (currentRot + 90) % 360;
   _rebuild(); refresh();
@@ -171,6 +189,7 @@ function onCellClick(e) {
   const existing = placedPieces.find(p => p.cells.some(([pr,pc]) => pr===r && pc===c));
   if (existing) {
     placedPieces = placedPieces.filter(p => p.name !== existing.name);
+    _updateSolBadge();
     refresh(); return;
   }
   if (!selectedPiece || blocked.has(key)) return;
@@ -205,8 +224,7 @@ function _dragMove(x, y) {
   if (!_dragging && (Math.abs(dx) > THR || Math.abs(dy) > THR)) {
     _dragging     = true;
     selectedPiece = _dragPiece;
-    currentRot    = 0;
-    currentFlip   = false;
+    _applyHintOrient(_dragPiece);
     _rebuild();
     refresh();
     _makeFloat();
