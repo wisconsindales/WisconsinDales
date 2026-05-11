@@ -109,12 +109,20 @@ function renderPunzleTray() {
       flipZone.addEventListener("touchend",   e => { e.stopPropagation(); e.preventDefault(); doFlip(piece); }, { passive: false });
       card.appendChild(flipZone);
 
-      // Star badge
-      if (showStar) {
+      // Star shows only when piece is in correct hint orientation
+      const hintShape    = _getHintShape(piece);
+      const hintShapeKey = hintShape.map(([r,c])=>`${r},${c}`).join("|");
+      const curShapeKey  = displayCells.map(([r,c])=>`${r},${c}`).join("|");
+      const starVisible  = showStar && (hintShapeKey === curShapeKey);
+      if (starVisible) {
         const star = document.createElement("div");
         star.style.cssText = "position:absolute;top:22px;right:3px;font-size:10px;font-weight:900;color:#fde68a;pointer-events:none;z-index:5;";
         star.textContent = "★";
         card.appendChild(star);
+      }
+      // Gold border only when star showing
+      if (!isSelected && !isPeeking) {
+        card.style.borderColor = starVisible ? "rgba(253,230,138,0.6)" : isHinted ? "rgba(253,230,138,0.2)" : "#1e1030";
       }
 
       // Mini piece
