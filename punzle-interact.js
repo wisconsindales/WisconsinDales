@@ -220,31 +220,26 @@ function pzShowHint() {
   const solPiece = _hintSolution.find(s => s.piece === piece.name);
   if (!solPiece) return;
 
-  // Normalize solution cells to find shape
+  // Build solution shape key — shift to origin, sort keys (exactly like app)
   const solCells = solPiece.cells;
-  const srMin    = Math.min(...solCells.map(([r])=>r));
-  const scMin    = Math.min(...solCells.map(([,c])=>c));
-  const solNorm  = normalize(solCells.map(([r,c])=>[r-srMin, c-scMin]));
-  const solKey   = solNorm.map(([r,c])=>`${r},${c}`).join("|");
+  const srMin = Math.min(...solCells.map(([r]) => r));
+  const scMin = Math.min(...solCells.map(([,c]) => c));
+  const solShifted = solCells.map(([r,c]) => `${r-srMin},${c-scMin}`).sort().join("|");
 
-  // Find rotation/flip using same method as the app (rot first, then flip)
+  // Find rotation/flip — apply rot first then flip (app order), shift to origin, sort
   let hintRot = 0, hintFlip = false, found = false;
-  const solCells2 = solPiece.cells;
-  const srMin2 = Math.min(...solCells2.map(([r])=>r));
-  const scMin2 = Math.min(...solCells2.map(([,c])=>c));
-  const solShifted = solCells2.map(([r,c]) => `${r-srMin2},${c-scMin2}`).sort().join("|");
-
   outerLoop:
   for (let rot = 0; rot < 360; rot += 90) {
     for (const flipped of [false, true]) {
-      // Apply rotation first, then flip — same as app's transformPiece
       let cells = piece.cells.map(([r,c]) => [r,c]);
+      // rotate first
       const turns = rot / 90;
       for (let i = 0; i < turns; i++) cells = rotate(cells);
+      // then flip
       if (flipped) cells = flip(cells);
-      cells = normalize(cells);
-      const rMin = Math.min(...cells.map(([r])=>r));
-      const cMin = Math.min(...cells.map(([,c])=>c));
+      // shift to origin and sort — same as app
+      const rMin = Math.min(...cells.map(([r]) => r));
+      const cMin = Math.min(...cells.map(([,c]) => c));
       const shifted = cells.map(([r,c]) => `${r-rMin},${c-cMin}`).sort().join("|");
       if (shifted === solShifted) {
         hintRot  = rot;
@@ -255,7 +250,7 @@ function pzShowHint() {
     }
   }
 
-  if (!found) return; // safety check
+  if (!found) return;
 
   _revealedHints.add(piece.name);
   _hintOrientations[piece.name] = { rot: hintRot, flip: hintFlip };
@@ -335,9 +330,10 @@ function doRotate(piece) {
 function _rebuild() {
   if (!selectedPiece) { selectedCells = []; return; }
   let cells = selectedPiece.cells.map(([r,c]) => [r,c]);
-  if (currentFlip) cells = flip(cells);
+  // rotate first, then flip — same order as hint finder and app
   const turns = (((currentRot % 360) + 360) % 360) / 90;
   for (let i = 0; i < turns; i++) cells = rotate(cells);
+  if (currentFlip) cells = flip(cells);
   selectedCells = normalize(cells);
 }
 
