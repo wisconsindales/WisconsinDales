@@ -195,6 +195,14 @@
       transition: background 0.15s;
     }
     .pz-hint-btn:hover { background: rgba(253,230,138,0.25); }
+    .pz-next-btn {
+      background: rgba(34,211,238,0.12);
+      border: 1.5px solid rgba(34,211,238,0.4);
+      color: var(--cyan); font-size: 13px; font-weight: 900;
+      padding: 7px 14px; border-radius: 10px; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .pz-next-btn:hover { background: rgba(34,211,238,0.25); }
     .pz-hint-star {
       color: var(--gold); font-size: 9px; font-weight: 900;
       position: absolute; top: 4px; right: 3px;
@@ -365,6 +373,7 @@
       <div class="pz-sarcasm" id="pz-sarcasm">Fit the pieces. Puns included. 😄</div>
       <div class="pz-controls-row">
         <button class="pz-hint-btn" id="pz-hint-btn" onclick="pzShowHint()">💡 Hint</button>
+        <button class="pz-next-btn" id="pz-next-btn" onclick="pzNextSolution()" style="display:none;">→ Next Solution</button>
         <button class="pz-reset-btn" onclick="resetPunzle()">↺ Reset</button>
       </div>
       <div id="punzle-tray" class="pz-tray"></div>
@@ -481,9 +490,9 @@
   </footer>
 
 
-  <script src="punzle-game.js?v=18"></script>
-  <script src="punzle-render.js?v=18"></script>
-  <script src="punzle-interact.js?v=18"></script>
+  <script src="punzle-game.js?v=20"></script>
+  <script src="punzle-render.js?v=20"></script>
+  <script src="punzle-interact.js?v=20"></script>
   <script>
     // Set date label
     const today = new Date();
