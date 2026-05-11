@@ -245,6 +245,9 @@
     .pz-blocked  { background: #fde68a; border: 2px solid #f59e0b; color: #78350f; font-weight: 900; }
     .pz-placed   { color: rgba(255,255,255,0.9); font-weight: 800; font-size: clamp(5px,1.6vw,10px); border: 1px solid rgba(255,255,255,0.2); }
     .pz-preview  { transform: scale(1.05); border: 2px solid rgba(255,255,255,0.6); }
+    .pz-peek     { animation: pz-pulse 1s ease-in-out infinite; }
+    .pz-card-peek { background: rgba(34,211,238,0.15) !important; }
+    @keyframes pz-pulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
     .pz-preview-bad { background: rgba(239,68,68,0.5) !important; }
 
     .pz-sarcasm {
@@ -409,7 +412,7 @@
         <button class="pz-reset-btn" onclick="resetPunzle()">↺ Reset</button>
       </div>
       <div id="punzle-tray" class="pz-tray"></div>
-      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=39</div>
+      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=40</div>
     </div>
   </div>
 
@@ -537,9 +540,9 @@
   </footer>
 
 
-  <script src="punzle-game.js?v=39"></script>
-  <script src="punzle-render.js?v=39"></script>
-  <script src="punzle-interact.js?v=39"></script>
+  <script src="punzle-game.js?v=40"></script>
+  <script src="punzle-render.js?v=40"></script>
+  <script src="punzle-interact.js?v=40"></script>
   <script>
     // Set date label
     const today = new Date();
