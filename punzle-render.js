@@ -64,8 +64,8 @@ function renderPunzleTray() {
 
     if (!isPlaced) {
       card.draggable = true;
-      card.addEventListener("dragstart",  e => onCardDragStart(e, piece));
-      card.addEventListener("touchstart", e => onCardTouchStart(e, piece), { passive: true });
+      card.addEventListener("mousedown",  e => onCardMouseDown(e, piece));
+      card.addEventListener("touchstart", e => onCardTouchStart(e, piece), { passive: false });
     }
 
     // ── Color bar ─────────────────────────────────────────────────────────────
