@@ -77,10 +77,17 @@ function _updateSolBadge() {
   }
 }
 
+// Pick or reuse a single solution for all hints this session
+let _hintSolution = null;
+let _hintSolIndex = 0;
+
 function pzShowHint() {
   if (!_allSolutions.length) return;
-  // Pick a solution to base hints on
-  const sol = _allSolutions[0];
+
+  // Lock in one solution for all hints
+  if (!_hintSolution) {
+    _hintSolution = _allSolutions[Math.floor(Math.random() * _allSolutions.length)];
+  }
 
   // Find unplaced, un-hinted pieces
   const unplaced = PIECES.filter(p =>
@@ -95,11 +102,18 @@ function pzShowHint() {
 
   // Pick random unplaced piece
   const piece    = unplaced[Math.floor(Math.random() * unplaced.length)];
-  const solPiece = sol.find(s => s.piece === piece.name);
+  const solPiece = _hintSolution.find(s => s.piece === piece.name);
   if (!solPiece) return;
 
-  // Find the rotation/flip that produces solution shape
-  let hintRot = 0, hintFlip = false;
+  // Normalize solution cells to find shape
+  const solCells = solPiece.cells;
+  const srMin    = Math.min(...solCells.map(([r])=>r));
+  const scMin    = Math.min(...solCells.map(([,c])=>c));
+  const solNorm  = normalize(solCells.map(([r,c])=>[r-srMin, c-scMin]));
+  const solKey   = solNorm.map(([r,c])=>`${r},${c}`).join("|");
+
+  // Find rotation/flip that matches solution shape
+  let hintRot = 0, hintFlip = false, found = false;
   outer:
   for (const flipped of [false, true]) {
     for (let rot = 0; rot < 360; rot += 90) {
@@ -107,18 +121,17 @@ function pzShowHint() {
       if (flipped) cells = flip(cells);
       const turns = rot / 90;
       for (let i = 0; i < turns; i++) cells = rotate(cells);
-      const norm = normalize(cells);
-      const solCells = solPiece.cells;
-      const srMin = Math.min(...solCells.map(([r])=>r));
-      const scMin = Math.min(...solCells.map(([,c])=>c));
-      const solNorm = normalize(solCells.map(([r,c])=>[r-srMin,c-scMin]));
-      if (norm.map(([r,c])=>`${r},${c}`).join("|") === solNorm.map(([r,c])=>`${r},${c}`).join("|")) {
+      const normKey = normalize(cells).map(([r,c])=>`${r},${c}`).join("|");
+      if (normKey === solKey) {
         hintRot  = rot;
         hintFlip = flipped;
+        found    = true;
         break outer;
       }
     }
   }
+
+  if (!found) return; // safety check
 
   _revealedHints.add(piece.name);
   _hintOrientations[piece.name] = { rot: hintRot, flip: hintFlip };
@@ -133,6 +146,46 @@ function pzShowHint() {
   const sarcasm = document.getElementById("pz-sarcasm");
   if (sarcasm) sarcasm.textContent = `★ Piece ${piece.name} oriented correctly. Try not to waste it.`;
 
+  // Show Next Solution button when all pieces hinted
+  const allHinted = PIECES.every(p =>
+    placedPieces.some(pp => pp.name === p.name) || _revealedHints.has(p.name)
+  );
+  const nextBtn = document.getElementById("pz-next-btn");
+  if (nextBtn) nextBtn.style.display = allHinted ? "inline-flex" : "none";
+
+  refresh();
+}
+
+function pzNextSolution() {
+  if (!_allSolutions.length) return;
+  _hintSolIndex = (_hintSolIndex + 1) % _allSolutions.length;
+  _hintSolution = _allSolutions[_hintSolIndex];
+  // Rebuild all hint orientations from new solution
+  _revealedHints.forEach(name => {
+    const piece    = PIECES.find(p => p.name === name);
+    const solPiece = _hintSolution.find(s => s.piece === name);
+    if (!piece || !solPiece) return;
+    const solCells = solPiece.cells;
+    const srMin    = Math.min(...solCells.map(([r])=>r));
+    const scMin    = Math.min(...solCells.map(([,c])=>c));
+    const solKey   = normalize(solCells.map(([r,c])=>[r-srMin,c-scMin])).map(([r,c])=>`${r},${c}`).join("|");
+    for (const flipped of [false, true]) {
+      let found = false;
+      for (let rot = 0; rot < 360; rot += 90) {
+        let cells = piece.cells.map(([r,c])=>[r,c]);
+        if (flipped) cells = flip(cells);
+        const turns = rot / 90;
+        for (let i = 0; i < turns; i++) cells = rotate(cells);
+        if (normalize(cells).map(([r,c])=>`${r},${c}`).join("|") === solKey) {
+          _hintOrientations[name] = { rot, flip: flipped };
+          found = true; break;
+        }
+      }
+      if (found) break;
+    }
+  });
+  const sarcasm = document.getElementById("pz-sarcasm");
+  if (sarcasm) sarcasm.textContent = `Solution ${_hintSolIndex + 1} of ${_allSolutions.length} — try this one!`;
   refresh();
 }
 
@@ -388,6 +441,10 @@ function resetPunzle() {
   currentRot = 0; currentFlip = false;
   _revealedHints = new Set();
   _hintOrientations = {};
+  _hintSolution = null;
+  _hintSolIndex = 0;
+  const nextBtn = document.getElementById("pz-next-btn");
+  if (nextBtn) nextBtn.style.display = "none";
   const win = document.getElementById("punzle-win");
   if (win) win.style.display = "none";
   _updateSolBadge();
