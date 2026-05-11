@@ -12,6 +12,106 @@ const MONTH   = _today.getMonth() + 1;
 const DAY     = _today.getDate();
 const blocked = getBlockedCells(MONTH, DAY);
 
+// ── Audio ────────────────────────────────────────────────────────────────────
+let _audioCtx = null;
+
+function _getCtx() {
+  if (!_audioCtx) {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (Ctx) _audioCtx = new Ctx();
+  }
+  if (_audioCtx && _audioCtx.state === "suspended") _audioCtx.resume();
+  return _audioCtx;
+}
+
+function _playPlace() {
+  const ctx = _getCtx(); if (!ctx) return;
+  const now = ctx.currentTime;
+  const osc1 = ctx.createOscillator();
+  const osc2 = ctx.createOscillator();
+  const gain = ctx.createGain();
+  const filter = ctx.createBiquadFilter();
+  osc1.type = "triangle"; osc2.type = "sine";
+  osc1.frequency.setValueAtTime(720, now);
+  osc1.frequency.exponentialRampToValueAtTime(240, now + 0.22);
+  osc2.frequency.setValueAtTime(380, now);
+  osc2.frequency.exponentialRampToValueAtTime(120, now + 0.22);
+  filter.type = "lowpass"; filter.frequency.setValueAtTime(1400, now);
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(0.10, now + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+  osc1.connect(filter); osc2.connect(filter);
+  filter.connect(gain); gain.connect(ctx.destination);
+  osc1.start(now); osc2.start(now);
+  osc1.stop(now + 0.22); osc2.stop(now + 0.22);
+}
+
+function _playRemove() {
+  const ctx = _getCtx(); if (!ctx) return;
+  const now = ctx.currentTime;
+  const osc  = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(400, now);
+  osc.frequency.exponentialRampToValueAtTime(180, now + 0.15);
+  gain.gain.setValueAtTime(0.08, now);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.start(now); osc.stop(now + 0.15);
+}
+
+function _playHint() {
+  const ctx = _getCtx(); if (!ctx) return;
+  const now   = ctx.currentTime;
+  const freqs = [400, 600, 520, 480, 700];
+  freqs.forEach((f, fi) => {
+    const delay = fi * 0.03;
+    const osc   = ctx.createOscillator();
+    const gain  = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(f, now + delay);
+    gain.gain.setValueAtTime(0.0001, now + delay);
+    gain.gain.exponentialRampToValueAtTime(0.07, now + delay + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + delay + 0.18);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(now + delay); osc.stop(now + delay + 0.2);
+  });
+}
+
+function _playWin() {
+  const ctx = _getCtx(); if (!ctx) return;
+  const now   = ctx.currentTime;
+  const notes = [523, 659, 784, 1047, 784, 1047, 1319];
+  notes.forEach((f, ni) => {
+    const start = now + 0.1 + ni * 0.13;
+    const end   = start + 0.2;
+    const osc   = ctx.createOscillator();
+    const gain  = ctx.createGain();
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(f, start);
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.linearRampToValueAtTime(0.12, start + 0.04);
+    gain.gain.linearRampToValueAtTime(0.0001, end);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(start); osc.stop(end + 0.05);
+  });
+}
+
+function _playNext() {
+  const ctx = _getCtx(); if (!ctx) return;
+  const now = ctx.currentTime;
+  const osc  = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = "triangle";
+  osc.frequency.setValueAtTime(300, now);
+  osc.frequency.exponentialRampToValueAtTime(600, now + 0.12);
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(0.08, now + 0.03);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.start(now); osc.stop(now + 0.2);
+}
+
 // ── Helper: apply hint orientation if available, else reset ─────────────────
 function _applyHintOrient(piece) {
   if (_hintOrientations && _hintOrientations[piece.name]) {
@@ -144,6 +244,7 @@ function pzShowHint() {
   }
 
   const sarcasm = document.getElementById("pz-sarcasm");
+  _playHint();
   if (sarcasm) sarcasm.textContent = `★ Piece ${piece.name} oriented correctly. Try not to waste it.`;
 
   refresh();
@@ -166,6 +267,7 @@ function pzNextSolution() {
   if (win) win.style.display = "none";
   _updateSolBadge();
   const sarcasm = document.getElementById("pz-sarcasm");
+  _playNext();
   if (sarcasm) sarcasm.textContent = `Solution ${_hintSolIndex + 1} of ${_allSolutions.length} loaded. Good luck! 😄`;
   refresh();
 }
@@ -222,6 +324,7 @@ function onCellClick(e) {
   const key = cellKey(r, c);
   const existing = placedPieces.find(p => p.cells.some(([pr,pc]) => pr===r && pc===c));
   if (existing) {
+    _playRemove();
     placedPieces = placedPieces.filter(p => p.name !== existing.name);
     _updateSolBadge();
     refresh(); return;
@@ -408,13 +511,14 @@ function _valid(cells) {
 }
 
 function _place(cells) {
+  _playPlace();
   placedPieces.push({ name:selectedPiece.name, color:selectedPiece.color, cells });
   selectedPiece = null; selectedCells = []; currentRot = 0; currentFlip = false;
   refresh();
   _updateSolBadge();
   const needed = BOARD_CELLS.filter(([r,c])=>!blocked.has(cellKey(r,c)));
   const occ    = new Set(placedPieces.flatMap(p=>p.cells.map(([r,c])=>cellKey(r,c))));
-  if (needed.every(([r,c])=>occ.has(cellKey(r,c)))) setTimeout(renderWin, 300);
+  if (needed.every(([r,c])=>occ.has(cellKey(r,c)))) { _playWin(); setTimeout(renderWin, 300); }
 }
 
 function resetPunzle() {
