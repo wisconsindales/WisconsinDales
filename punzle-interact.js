@@ -223,28 +223,22 @@ function pzShowHint() {
   const solPiece = _hintSolution.find(s => s.piece === piece.name);
   if (!solPiece) return;
 
-  // Build solution shape key — shift to origin, sort keys (exactly like app)
+  // Build normalized solution shape using same normalize() as _rebuild
   const solCells = solPiece.cells;
-  const srMin = Math.min(...solCells.map(([r]) => r));
-  const scMin = Math.min(...solCells.map(([,c]) => c));
-  const solShifted = solCells.map(([r,c]) => `${r-srMin},${c-scMin}`).sort().join("|");
+  const solNormKey = normalize(solCells).map(([r,c]) => `${r},${c}`).join("|");
 
-  // Find rotation/flip — apply rot first then flip (app order), shift to origin, sort
+  // Find rotation/flip — apply rot first then flip (same as _rebuild)
+  // Use normalize() for comparison — exactly matching _rebuild
   let hintRot = 0, hintFlip = false, found = false;
   outerLoop:
   for (let rot = 0; rot < 360; rot += 90) {
     for (const flipped of [false, true]) {
       let cells = piece.cells.map(([r,c]) => [r,c]);
-      // rotate first
       const turns = rot / 90;
       for (let i = 0; i < turns; i++) cells = rotate(cells);
-      // then flip
       if (flipped) cells = flip(cells);
-      // shift to origin and sort — same as app
-      const rMin = Math.min(...cells.map(([r]) => r));
-      const cMin = Math.min(...cells.map(([,c]) => c));
-      const shifted = cells.map(([r,c]) => `${r-rMin},${c-cMin}`).sort().join("|");
-      if (shifted === solShifted) {
+      const normKey = normalize(cells).map(([r,c]) => `${r},${c}`).join("|");
+      if (normKey === solNormKey) {
         hintRot  = rot;
         hintFlip = flipped;
         found    = true;
