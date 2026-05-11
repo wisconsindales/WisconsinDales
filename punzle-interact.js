@@ -227,21 +227,30 @@ function pzShowHint() {
   const solNorm  = normalize(solCells.map(([r,c])=>[r-srMin, c-scMin]));
   const solKey   = solNorm.map(([r,c])=>`${r},${c}`).join("|");
 
-  // Find rotation/flip that matches solution shape
+  // Find rotation/flip using same method as the app (rot first, then flip)
   let hintRot = 0, hintFlip = false, found = false;
-  outer:
-  for (const flipped of [false, true]) {
-    for (let rot = 0; rot < 360; rot += 90) {
+  const solCells2 = solPiece.cells;
+  const srMin2 = Math.min(...solCells2.map(([r])=>r));
+  const scMin2 = Math.min(...solCells2.map(([,c])=>c));
+  const solShifted = solCells2.map(([r,c]) => `${r-srMin2},${c-scMin2}`).sort().join("|");
+
+  outerLoop:
+  for (let rot = 0; rot < 360; rot += 90) {
+    for (const flipped of [false, true]) {
+      // Apply rotation first, then flip — same as app's transformPiece
       let cells = piece.cells.map(([r,c]) => [r,c]);
-      if (flipped) cells = flip(cells);
       const turns = rot / 90;
       for (let i = 0; i < turns; i++) cells = rotate(cells);
-      const normKey = normalize(cells).map(([r,c])=>`${r},${c}`).join("|");
-      if (normKey === solKey) {
+      if (flipped) cells = flip(cells);
+      cells = normalize(cells);
+      const rMin = Math.min(...cells.map(([r])=>r));
+      const cMin = Math.min(...cells.map(([,c])=>c));
+      const shifted = cells.map(([r,c]) => `${r-rMin},${c-cMin}`).sort().join("|");
+      if (shifted === solShifted) {
         hintRot  = rot;
         hintFlip = flipped;
         found    = true;
-        break outer;
+        break outerLoop;
       }
     }
   }
