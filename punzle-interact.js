@@ -12,196 +12,37 @@ const MONTH   = _today.getMonth() + 1;
 const DAY     = _today.getDate();
 const blocked = getBlockedCells(MONTH, DAY);
 
-// ── Audio ────────────────────────────────────────────────────────────────────
-let _audioCtx = null;
-
-function _getCtx() {
-  if (!_audioCtx) {
-    const Ctx = window.AudioContext || window.webkitAudioContext;
-    if (Ctx) _audioCtx = new Ctx();
-  }
-  if (_audioCtx && _audioCtx.state === "suspended") _audioCtx.resume();
-  return _audioCtx;
-}
-
-function _playPlace() {
-  const ctx = _getCtx(); if (!ctx) return;
-  const now = ctx.currentTime;
-  const osc1 = ctx.createOscillator();
-  const osc2 = ctx.createOscillator();
-  const gain = ctx.createGain();
-  const filter = ctx.createBiquadFilter();
-  osc1.type = "triangle"; osc2.type = "sine";
-  osc1.frequency.setValueAtTime(720, now);
-  osc1.frequency.exponentialRampToValueAtTime(240, now + 0.22);
-  osc2.frequency.setValueAtTime(380, now);
-  osc2.frequency.exponentialRampToValueAtTime(120, now + 0.22);
-  filter.type = "lowpass"; filter.frequency.setValueAtTime(1400, now);
-  gain.gain.setValueAtTime(0.0001, now);
-  gain.gain.exponentialRampToValueAtTime(0.10, now + 0.02);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
-  osc1.connect(filter); osc2.connect(filter);
-  filter.connect(gain); gain.connect(ctx.destination);
-  osc1.start(now); osc2.start(now);
-  osc1.stop(now + 0.22); osc2.stop(now + 0.22);
-}
-
-function _playRemove() {
-  const ctx = _getCtx(); if (!ctx) return;
-  const now = ctx.currentTime;
-  const osc  = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.type = "sine";
-  osc.frequency.setValueAtTime(400, now);
-  osc.frequency.exponentialRampToValueAtTime(180, now + 0.15);
-  gain.gain.setValueAtTime(0.08, now);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
-  osc.connect(gain); gain.connect(ctx.destination);
-  osc.start(now); osc.stop(now + 0.15);
-}
-
-function _playHint() {
-  const ctx = _getCtx(); if (!ctx) return;
-  const now   = ctx.currentTime;
-  const freqs = [400, 600, 520, 480, 700];
-  freqs.forEach((f, fi) => {
-    const delay = fi * 0.03;
-    const osc   = ctx.createOscillator();
-    const gain  = ctx.createGain();
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(f, now + delay);
-    gain.gain.setValueAtTime(0.0001, now + delay);
-    gain.gain.exponentialRampToValueAtTime(0.07, now + delay + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + delay + 0.18);
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.start(now + delay); osc.stop(now + delay + 0.2);
-  });
-}
-
-function _playWin() {
-  const ctx = _getCtx(); if (!ctx) return;
-  const now   = ctx.currentTime;
-  const notes = [523, 659, 784, 1047, 784, 1047, 1319];
-  notes.forEach((f, ni) => {
-    const start = now + 0.1 + ni * 0.13;
-    const end   = start + 0.2;
-    const osc   = ctx.createOscillator();
-    const gain  = ctx.createGain();
-    osc.type = "triangle";
-    osc.frequency.setValueAtTime(f, start);
-    gain.gain.setValueAtTime(0.0001, start);
-    gain.gain.linearRampToValueAtTime(0.12, start + 0.04);
-    gain.gain.linearRampToValueAtTime(0.0001, end);
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.start(start); osc.stop(end + 0.05);
-  });
-}
-
-function _playNext() {
-  const ctx = _getCtx(); if (!ctx) return;
-  const now = ctx.currentTime;
-  const osc  = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.type = "triangle";
-  osc.frequency.setValueAtTime(300, now);
-  osc.frequency.exponentialRampToValueAtTime(600, now + 0.12);
-  gain.gain.setValueAtTime(0.0001, now);
-  gain.gain.exponentialRampToValueAtTime(0.08, now + 0.03);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
-  osc.connect(gain); gain.connect(ctx.destination);
-  osc.start(now); osc.stop(now + 0.2);
-}
-
-// ── Helper: apply hint orientation if available, else reset ─────────────────
-function _applyHintOrient(piece) {
-  if (_hintOrientations && _hintOrientations[piece.name]) {
-    const ho  = _hintOrientations[piece.name];
-    currentRot  = ho.rot;
-    currentFlip = ho.flip;
-  } else {
-    currentRot  = 0;
-    currentFlip = false;
-  }
-}
-
-// ── Solutions & hints ────────────────────────────────────────────────────────
-let _allSolutions    = [];
-let _revealedHints   = new Set(); // piece names with correct orientation shown
-let _hintOrientations = {}; // { pieceName: { rot, flip } }
+// ── Solutions & hints — matching solver page exactly ──────────────────────────
+let _allSolutions   = [];
+let _hintSolution   = null; // single solution used for all hints this session
+let _hintSolIndex   = 0;
+let _revealedHints  = new Set(); // piece names that have been hinted
+let _peekPieceName  = null; // piece name currently being peeked on board
 
 function _initSolutions() {
-  // Run solver for today
-  const month = _today.getMonth() + 1;
-  const day   = _today.getDate();
   setTimeout(() => {
-    _allSolutions = solve(month, day, true);
+    _allSolutions = solve(MONTH, DAY, true);
     _updateSolBadge();
   }, 100);
 }
 
-function _updateSolBadge() {
-  const badge  = document.getElementById("pz-sol-badge");
-  const numEl  = document.getElementById("pz-sol-num");
-  if (!numEl) return;
-
-  // Filter solutions compatible with current placed pieces
-  const compat = _allSolutions.filter(sol => {
-    return placedPieces.every(p => {
-      const sp = sol.find(s => s.piece === p.name);
-      if (!sp) return false;
-      const spKeys = new Set(sp.cells.map(([r,c]) => cellKey(r,c)));
-      const pKeys  = p.cells.map(([r,c]) => cellKey(r,c));
-      return pKeys.length === sp.cells.length &&
-             pKeys.every(k => spKeys.has(k));
-    });
-  });
-
-  const n = placedPieces.length === 0 ? _allSolutions.length : compat.length;
-  numEl.textContent = n;
-  const lblEl = document.getElementById("pz-sol-lbl");
-  if (lblEl) lblEl.textContent = placedPieces.length === 0 ? "solutions" : "possible";
-
-  if (badge) {
-    if (n === 0) {
-      badge.style.borderColor = "#ef4444";
-      numEl.style.color = "#ef4444";
-    } else if (n <= 3) {
-      badge.style.borderColor = "#f97316";
-      numEl.style.color = "#f97316";
-    } else if (n <= 10) {
-      badge.style.borderColor = "#eab308";
-      numEl.style.color = "#eab308";
-    } else {
-      badge.style.borderColor = "#22c55e";
-      numEl.style.color = "#22c55e";
-    }
-  }
-}
-
-// Pick or reuse a single solution for all hints this session
-let _hintSolution = null;
-let _hintSolIndex = 0;
-
+// ── Hint: pick compatible solution, reveal piece orientation ──────────────────
 function pzShowHint() {
   if (!_allSolutions.length) return;
 
-  // Lock in one solution — must be compatible with currently placed pieces
+  // Lock in a solution compatible with current board state
   if (!_hintSolution) {
-    // Find solutions compatible with ALL currently placed pieces
-    const compatible = _allSolutions.filter(sol => {
-      return placedPieces.every(p => {
+    const compatible = _allSolutions.filter(sol =>
+      placedPieces.every(p => {
         const sp = sol.find(s => s.piece === p.name);
         if (!sp) return false;
-        // Exact cell match — every placed cell must match solution cell
         const spKeys = new Set(sp.cells.map(([r,c]) => cellKey(r,c)));
-        const pKeys  = p.cells.map(([r,c]) => cellKey(r,c));
-        return pKeys.length === sp.cells.length &&
-               pKeys.every(k => spKeys.has(k));
-      });
-    });
+        return p.cells.every(([r,c]) => spKeys.has(cellKey(r,c))) &&
+               p.cells.length === sp.cells.length;
+      })
+    );
     if (!compatible.length) {
-      const sarcasm = document.getElementById("pz-sarcasm");
-      if (sarcasm) sarcasm.textContent = "No hints available — current placement has no solutions!";
+      _setSarcasm("No compatible hints — your placement has no solution. Try removing a piece.");
       return;
     }
     _hintSolution = compatible[Math.floor(Math.random() * compatible.length)];
@@ -214,90 +55,120 @@ function pzShowHint() {
   );
 
   if (!unplaced.length) {
-    document.getElementById("pz-sarcasm").textContent = "All hints shown! You got this. Maybe.";
+    _setSarcasm("All hints shown! You got this. Maybe. 😄");
     return;
   }
 
-  // Pick random unplaced piece
-  const piece    = unplaced[Math.floor(Math.random() * unplaced.length)];
-  const solPiece = _hintSolution.find(s => s.piece === piece.name);
-  if (!solPiece) return;
-
-  // Build normalized solution shape using same normalize() as _rebuild
-  const solCells = solPiece.cells;
-  const solNormKey = normalize(solCells).map(([r,c]) => `${r},${c}`).join("|");
-
-  // Find rotation/flip — apply rot first then flip (same as _rebuild)
-  // Use normalize() for comparison — exactly matching _rebuild
-  let hintRot = 0, hintFlip = false, found = false;
-  outerLoop:
-  for (let rot = 0; rot < 360; rot += 90) {
-    for (const flipped of [false, true]) {
-      let cells = piece.cells.map(([r,c]) => [r,c]);
-      const turns = rot / 90;
-      for (let i = 0; i < turns; i++) cells = rotate(cells);
-      if (flipped) cells = flip(cells);
-      const normKey = normalize(cells).map(([r,c]) => `${r},${c}`).join("|");
-      if (normKey === solNormKey) {
-        hintRot  = rot;
-        hintFlip = flipped;
-        found    = true;
-        break outerLoop;
-      }
-    }
-  }
-
-  if (!found) return;
-
+  // Pick random piece and reveal it
+  const piece = unplaced[Math.floor(Math.random() * unplaced.length)];
   _revealedHints.add(piece.name);
-  _hintOrientations[piece.name] = { rot: hintRot, flip: hintFlip };
 
-  // If this piece is selected, update its orientation
-  if (selectedPiece && selectedPiece.name === piece.name) {
-    currentRot  = hintRot;
-    currentFlip = hintFlip;
-    _rebuild();
-  }
-
-  const sarcasm = document.getElementById("pz-sarcasm");
   _playHint();
-  if (sarcasm) sarcasm.textContent = `★ Piece ${piece.name} oriented correctly. Try not to waste it.`;
+  const msgs = [
+    `★ Press and hold piece ${piece.name} to see where it goes.`,
+    `★ Piece ${piece.name} is starred. Hold it to peek at its position.`,
+    `★ ${piece.name} has been hinted. Hold the card to see where it belongs.`
+  ];
+  _setSarcasm(msgs[Math.floor(Math.random() * msgs.length)]);
 
   refresh();
 }
 
+// ── Peek: show piece position on board while holding card ─────────────────────
+function _startPeek(pieceName) {
+  if (!_revealedHints.has(pieceName)) return;
+  if (!_hintSolution) return;
+  _peekPieceName = pieceName;
+  renderPunzleBoard(); // board renders with peek overlay
+}
+
+function _endPeek() {
+  if (!_peekPieceName) return;
+  _peekPieceName = null;
+  renderPunzleBoard();
+}
+
+// ── Get hint shape for mini piece display — exactly like solver's getCurrentHintShape
+function _getHintShape(piece) {
+  if (!_hintSolution || !_revealedHints.has(piece.name)) {
+    return normalize(piece.cells);
+  }
+  const placement = _hintSolution.find(p => p.piece === piece.name);
+  // normalize the actual solution cells — same as solver page
+  return placement ? normalize(placement.cells) : normalize(piece.cells);
+}
+
+// ── Next Solution ─────────────────────────────────────────────────────────────
 function pzNextSolution() {
   if (!_allSolutions.length) return;
-  // Advance to next solution
-  _hintSolIndex = (_hintSolIndex + 1) % _allSolutions.length;
-  _hintSolution = _allSolutions[_hintSolIndex];
-  // Full reset — clear board, hints, stars
-  placedPieces      = [];
-  selectedPiece     = null;
-  selectedCells     = [];
-  currentRot        = 0;
-  currentFlip       = false;
-  _revealedHints    = new Set();
-  _hintOrientations = {};
+  _hintSolIndex  = (_hintSolIndex + 1) % _allSolutions.length;
+  _hintSolution  = _allSolutions[_hintSolIndex];
+  // Full reset
+  placedPieces   = [];
+  selectedPiece  = null;
+  selectedCells  = [];
+  currentRot     = 0;
+  currentFlip    = false;
+  _revealedHints = new Set();
+  _peekPieceName = null;
   const win = document.getElementById("punzle-win");
   if (win) win.style.display = "none";
-  _updateSolBadge();
-  const sarcasm = document.getElementById("pz-sarcasm");
   _playNext();
-  if (sarcasm) sarcasm.textContent = `Solution ${_hintSolIndex + 1} of ${_allSolutions.length} loaded. Good luck! 😄`;
+  _setSarcasm(`Solution ${_hintSolIndex + 1} of ${_allSolutions.length} — give it a shot! 😄`);
+  _updateSolBadge();
   refresh();
 }
 
-// ── Piece actions ─────────────────────────────────────────────────────────────
+// ── Solution badge ────────────────────────────────────────────────────────────
+function _updateSolBadge() {
+  const badge = document.getElementById("pz-sol-badge");
+  const numEl = document.getElementById("pz-sol-num");
+  const lblEl = document.getElementById("pz-sol-lbl");
+  if (!numEl) return;
+
+  const compat = _allSolutions.filter(sol =>
+    placedPieces.every(p => {
+      const sp = sol.find(s => s.piece === p.name);
+      if (!sp) return false;
+      const spKeys = new Set(sp.cells.map(([r,c]) => cellKey(r,c)));
+      return p.cells.every(([r,c]) => spKeys.has(cellKey(r,c))) &&
+             p.cells.length === sp.cells.length;
+    })
+  );
+
+  const n = placedPieces.length === 0 ? _allSolutions.length : compat.length;
+  numEl.textContent = n;
+  if (lblEl) lblEl.textContent = placedPieces.length === 0 ? "solutions" : "possible";
+
+  if (badge) {
+    const color = n === 0 ? "#ef4444" : n <= 3 ? "#f97316" : n <= 10 ? "#eab308" : "#22c55e";
+    badge.style.borderColor = color;
+    numEl.style.color = color;
+  }
+}
+
+function _setSarcasm(msg) {
+  const el = document.getElementById("pz-sarcasm");
+  if (el) el.textContent = msg;
+}
+
+// ── Piece transform ───────────────────────────────────────────────────────────
+function _rebuild() {
+  if (!selectedPiece) { selectedCells = []; return; }
+  let cells = selectedPiece.cells.map(([r,c]) => [r,c]);
+  const turns = (((currentRot % 360) + 360) % 360) / 90;
+  for (let i = 0; i < turns; i++) cells = rotate(cells);
+  if (currentFlip) cells = flip(cells);
+  selectedCells = normalize(cells);
+}
+
 function doSelect(piece) {
   if (placedPieces.some(p => p.name === piece.name))
     placedPieces = placedPieces.filter(p => p.name !== piece.name);
   if (selectedPiece && selectedPiece.name === piece.name) {
     selectedPiece = null; selectedCells = [];
   } else {
-    selectedPiece = piece;
-    _applyHintOrient(piece);
-    _rebuild();
+    selectedPiece = piece; currentRot = 0; currentFlip = false; _rebuild();
   }
   refresh();
 }
@@ -306,8 +177,7 @@ function doFlip(piece) {
   if (placedPieces.some(p => p.name === piece.name))
     placedPieces = placedPieces.filter(p => p.name !== piece.name);
   if (!selectedPiece || selectedPiece.name !== piece.name) {
-    selectedPiece = piece;
-    _applyHintOrient(piece);
+    selectedPiece = piece; currentRot = 0; currentFlip = false;
   }
   currentFlip = !currentFlip;
   _rebuild(); refresh();
@@ -317,21 +187,10 @@ function doRotate(piece) {
   if (placedPieces.some(p => p.name === piece.name))
     placedPieces = placedPieces.filter(p => p.name !== piece.name);
   if (!selectedPiece || selectedPiece.name !== piece.name) {
-    selectedPiece = piece;
-    _applyHintOrient(piece);
+    selectedPiece = piece; currentRot = 0; currentFlip = false;
   }
   currentRot = (currentRot + 90) % 360;
   _rebuild(); refresh();
-}
-
-function _rebuild() {
-  if (!selectedPiece) { selectedCells = []; return; }
-  let cells = selectedPiece.cells.map(([r,c]) => [r,c]);
-  // rotate first, then flip — same order as hint finder and app
-  const turns = (((currentRot % 360) + 360) % 360) / 90;
-  for (let i = 0; i < turns; i++) cells = rotate(cells);
-  if (currentFlip) cells = flip(cells);
-  selectedCells = normalize(cells);
 }
 
 // ── Cell click ────────────────────────────────────────────────────────────────
@@ -342,8 +201,8 @@ function onCellClick(e) {
   const existing = placedPieces.find(p => p.cells.some(([pr,pc]) => pr===r && pc===c));
   if (existing) {
     _playRemove();
-    placedPieces = placedPieces.filter(p => p.name !== existing.name);
-    _hintSolution = null; // recalculate hint solution after removal
+    placedPieces   = placedPieces.filter(p => p.name !== existing.name);
+    _hintSolution  = null; // recalculate on next hint
     _updateSolBadge();
     refresh(); return;
   }
@@ -352,102 +211,101 @@ function onCellClick(e) {
   if (_valid(shifted)) _place(shifted);
 }
 
-// ── Drag state ────────────────────────────────────────────────────────────────
-let _dragPiece   = null;
-let _dragging    = false;
-let _startX      = 0;
-let _startY      = 0;
-let _floatEl     = null;
-let _isTouch     = false;
-const THR        = 8;
+// ── Mouse drag ────────────────────────────────────────────────────────────────
+let _dragPiece  = null;
+let _dragging   = false;
+let _startX     = 0;
+let _startY     = 0;
+let _floatEl    = null;
+const THR       = 8;
 
-// ── Shared drag start ─────────────────────────────────────────────────────────
-function _dragStart(piece, x, y, isTouch) {
-  if (placedPieces.some(p => p.name === piece.name)) return;
-  _dragPiece = piece;
-  _dragging  = false;
-  _startX    = x;
-  _startY    = y;
-  _isTouch   = isTouch;
-}
-
-function _dragMove(x, y) {
-  if (!_dragPiece) return;
-  const dx = x - _startX;
-  const dy = y - _startY;
-
-  if (!_dragging && (Math.abs(dx) > THR || Math.abs(dy) > THR)) {
-    _dragging = true;
-    if (!selectedPiece || selectedPiece.name !== _dragPiece.name) {
-      // Piece wasn't selected — apply hint orient if available, else default
-      selectedPiece = _dragPiece;
-      _applyHintOrient(_dragPiece);
-      _rebuild();
-    }
-    // If already selected — keep currentRot/currentFlip exactly as user set them
-    refresh();
-    _makeFloat();
-  }
-
-  if (_dragging) {
-    _moveFloat(x, y);
-    _clearPreview();
-    const target = _cellAt(x, y);
-    if (target) _showPreview(parseInt(target.dataset.r), parseInt(target.dataset.c));
-  }
-}
-
-function _dragEnd(x, y) {
-  if (_dragging && _dragPiece && selectedPiece) {
-    const target = _cellAt(x, y);
-    if (target) {
-      const r       = parseInt(target.dataset.r);
-      const c       = parseInt(target.dataset.c);
-      const shifted = selectedCells.map(([sr,sc]) => [r+sr, c+sc]);
-      if (_valid(shifted)) _place(shifted);
-    }
-  }
-  _killFloat();
-  _clearPreview();
-  _dragPiece = null;
-  _dragging  = false;
-}
-
-// ── Touch handlers ────────────────────────────────────────────────────────────
-function onCardTouchStart(e, piece) {
-  if (placedPieces.some(p => p.name === piece.name)) return;
-  const t = e.touches[0];
-  _dragStart(piece, t.clientX, t.clientY, true);
-}
-
-function _onTouchMove(e) {
-  if (!_dragPiece) return;
-  const t = e.touches[0];
-  _dragMove(t.clientX, t.clientY);
-  if (_dragging) e.preventDefault();
-}
-
-function _onTouchEnd(e) {
-  if (!_dragPiece) return;
-  const t = e.changedTouches[0];
-  _dragEnd(t.clientX, t.clientY);
-}
-
-// ── Mouse handlers ────────────────────────────────────────────────────────────
 function onCardMouseDown(e, piece) {
   if (placedPieces.some(p => p.name === piece.name)) return;
   e.preventDefault();
-  _dragStart(piece, e.clientX, e.clientY, false);
+  _dragPiece = piece; _dragging = false;
+  _startX = e.clientX; _startY = e.clientY;
 }
 
 function _onMouseMove(e) {
   if (!_dragPiece) return;
-  _dragMove(e.clientX, e.clientY);
+  const dx = e.clientX - _startX;
+  const dy = e.clientY - _startY;
+  if (!_dragging && (Math.abs(dx) > THR || Math.abs(dy) > THR)) {
+    _dragging = true;
+    if (!selectedPiece || selectedPiece.name !== _dragPiece.name) {
+      selectedPiece = _dragPiece; currentRot = 0; currentFlip = false; _rebuild();
+    }
+    refresh(); _makeFloat();
+  }
+  if (_dragging) {
+    _moveFloat(e.clientX, e.clientY);
+    _clearPreview();
+    const t = _cellAt(e.clientX, e.clientY);
+    if (t) _showPreview(parseInt(t.dataset.r), parseInt(t.dataset.c));
+  }
 }
 
 function _onMouseUp(e) {
   if (!_dragPiece) return;
-  _dragEnd(e.clientX, e.clientY);
+  if (_dragging && selectedPiece) {
+    const t = _cellAt(e.clientX, e.clientY);
+    if (t) {
+      const r = parseInt(t.dataset.r), c = parseInt(t.dataset.c);
+      const shifted = selectedCells.map(([sr,sc]) => [r+sr, c+sc]);
+      if (_valid(shifted)) _place(shifted);
+    }
+  }
+  _killFloat(); _clearPreview();
+  _dragPiece = null; _dragging = false;
+}
+
+// ── Touch drag ────────────────────────────────────────────────────────────────
+let _touchPiece   = null;
+let _touchDragging = false;
+let _touchStartX  = 0;
+let _touchStartY  = 0;
+
+function onCardTouchStart(e, piece) {
+  if (placedPieces.some(p => p.name === piece.name)) return;
+  _touchPiece    = piece;
+  _touchDragging = false;
+  _touchStartX   = e.touches[0].clientX;
+  _touchStartY   = e.touches[0].clientY;
+}
+
+function _onTouchMove(e) {
+  if (!_touchPiece) return;
+  const t  = e.touches[0];
+  const dx = t.clientX - _touchStartX;
+  const dy = t.clientY - _touchStartY;
+  if (!_touchDragging && (Math.abs(dx) > THR || Math.abs(dy) > THR)) {
+    _touchDragging = true;
+    if (!selectedPiece || selectedPiece.name !== _touchPiece.name) {
+      selectedPiece = _touchPiece; currentRot = 0; currentFlip = false; _rebuild();
+    }
+    refresh(); _makeFloat();
+  }
+  if (_touchDragging) {
+    e.preventDefault();
+    _moveFloat(t.clientX, t.clientY);
+    _clearPreview();
+    const target = _cellAt(t.clientX, t.clientY);
+    if (target) _showPreview(parseInt(target.dataset.r), parseInt(target.dataset.c));
+  }
+}
+
+function _onTouchEnd(e) {
+  if (_touchDragging && _touchPiece && selectedPiece) {
+    const t = e.changedTouches[0];
+    const target = _cellAt(t.clientX, t.clientY);
+    if (target) {
+      const r = parseInt(target.dataset.r), c = parseInt(target.dataset.c);
+      const shifted = selectedCells.map(([sr,sc]) => [r+sr, c+sc]);
+      if (_valid(shifted)) _place(shifted);
+    }
+  }
+  _killFloat(); _clearPreview();
+  _touchPiece = null; _touchDragging = false;
 }
 
 // ── Float ghost ───────────────────────────────────────────────────────────────
@@ -456,15 +314,15 @@ function _makeFloat() {
   if (!selectedPiece || !selectedCells.length) return;
   _floatEl = document.createElement("div");
   _floatEl.style.cssText = "position:fixed;pointer-events:none;z-index:9999;display:grid;gap:2px;opacity:0.88;will-change:left,top;";
-  const SZ   = 36;
+  const SZ = 36;
   const maxR = Math.max(...selectedCells.map(([r])=>r));
   const maxC = Math.max(...selectedCells.map(([,c])=>c));
   _floatEl.style.gridTemplateColumns = `repeat(${maxC+1},${SZ}px)`;
   for (let r = 0; r <= maxR; r++) {
     for (let c = 0; c <= maxC; c++) {
-      const on   = selectedCells.some(([sr,sc])=>sr===r&&sc===c);
+      const on = selectedCells.some(([sr,sc])=>sr===r&&sc===c);
       const cell = document.createElement("div");
-      cell.style.cssText = `width:${SZ}px;height:${SZ}px;border-radius:6px;background:${on?selectedPiece.color:"transparent"};${on?"border:2px solid rgba(255,255,255,0.4);box-shadow:0 4px 12px rgba(0,0,0,0.4);":""}`;
+      cell.style.cssText = `width:${SZ}px;height:${SZ}px;border-radius:6px;background:${on?selectedPiece.color:"transparent"};${on?"border:2px solid rgba(255,255,255,0.4);":""}`;
       _floatEl.appendChild(cell);
     }
   }
@@ -474,9 +332,7 @@ function _makeFloat() {
 function _moveFloat(x, y) {
   if (!_floatEl) return;
   requestAnimationFrame(() => {
-    if (!_floatEl) return;
-    _floatEl.style.left = x + "px";
-    _floatEl.style.top  = y + "px";
+    if (_floatEl) { _floatEl.style.left = x+"px"; _floatEl.style.top = y+"px"; }
   });
 }
 
@@ -487,7 +343,6 @@ function _killFloat() {
 // ── Preview ───────────────────────────────────────────────────────────────────
 function _showPreview(r, c) {
   if (!selectedPiece || !selectedCells.length) return;
-  // Use top-left cell (0,0) as anchor so cursor cell = top-left of piece
   const shifted = selectedCells.map(([sr,sc]) => [r+sr, c+sc]);
   const valid   = _valid(shifted);
   shifted.forEach(([pr,pc]) => {
@@ -508,23 +363,11 @@ function _clearPreview() {
 }
 
 function _cellAt(x, y) {
-  const els = document.elementsFromPoint(x, y);
-  return els.find(el => el.classList && el.classList.contains("pz-cell") && el.dataset.r !== undefined);
+  return document.elementsFromPoint(x, y)
+    .find(el => el.classList && el.classList.contains("pz-cell") && el.dataset.r !== undefined);
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
-function _anchor(cells) {
-  if (!cells.length) return [0,0];
-  const ar = cells.reduce((s,[r])=>s+r,0)/cells.length;
-  const ac = cells.reduce((s,[,c])=>s+c,0)/cells.length;
-  let best = cells[0], bd = Infinity;
-  for (const cell of cells) {
-    const d = (cell[0]-ar)**2+(cell[1]-ac)**2;
-    if (d < bd) { best = cell; bd = d; }
-  }
-  return best;
-}
-
 function _valid(cells) {
   if (!cells.length) return false;
   const occ = new Set(placedPieces.flatMap(p=>p.cells.map(([r,c])=>cellKey(r,c))));
@@ -538,7 +381,7 @@ function _place(cells) {
   _playPlace();
   placedPieces.push({ name:selectedPiece.name, color:selectedPiece.color, cells });
   selectedPiece = null; selectedCells = []; currentRot = 0; currentFlip = false;
-  _hintSolution = null; // recalculate hint solution after placement
+  _hintSolution = null; // recalculate compatible solution on next hint
   refresh();
   _updateSolBadge();
   const needed = BOARD_CELLS.filter(([r,c])=>!blocked.has(cellKey(r,c)));
@@ -547,34 +390,79 @@ function _place(cells) {
 }
 
 function resetPunzle() {
-  placedPieces = []; selectedPiece = null; selectedCells = [];
-  currentRot = 0; currentFlip = false;
-  _revealedHints = new Set();
-  _hintOrientations = {};
-  _hintSolution = null;
-  _hintSolIndex = 0;
-
+  placedPieces   = []; selectedPiece = null; selectedCells = [];
+  currentRot     = 0;  currentFlip   = false;
+  _revealedHints = new Set(); _hintSolution = null; _hintSolIndex = 0; _peekPieceName = null;
   const win = document.getElementById("punzle-win");
   if (win) win.style.display = "none";
+  _setSarcasm("Fit the pieces. Puns included. 😄");
   _updateSolBadge();
   refresh();
 }
 
 function refresh() { renderPunzleBoard(); renderPunzleTray(); }
 
-// ── Cell drag events (mouse only — touch handled globally) ────────────────────
+// ── Stub events for board (touch handled globally) ────────────────────────────
 function onCellDragOver(e) { e.preventDefault(); }
 function onCellDrop(e)     { e.preventDefault(); }
-function onCardDragStart(e) { e.preventDefault(); } // disable HTML5 drag
+function onCardDragStart(e){ e.preventDefault(); }
+
+// ── Audio ─────────────────────────────────────────────────────────────────────
+let _audioCtx = null;
+function _getCtx() {
+  if (!_audioCtx) { const C = window.AudioContext||window.webkitAudioContext; if(C) _audioCtx=new C(); }
+  if (_audioCtx && _audioCtx.state==="suspended") _audioCtx.resume();
+  return _audioCtx;
+}
+function _playPlace() {
+  const ctx=_getCtx(); if(!ctx) return; const now=ctx.currentTime;
+  const o1=ctx.createOscillator(),o2=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();
+  o1.type="triangle"; o2.type="sine"; f.type="lowpass"; f.frequency.setValueAtTime(1400,now);
+  o1.frequency.setValueAtTime(720,now); o1.frequency.exponentialRampToValueAtTime(240,now+0.22);
+  o2.frequency.setValueAtTime(380,now); o2.frequency.exponentialRampToValueAtTime(120,now+0.22);
+  g.gain.setValueAtTime(0.0001,now); g.gain.exponentialRampToValueAtTime(0.10,now+0.02); g.gain.exponentialRampToValueAtTime(0.0001,now+0.22);
+  o1.connect(f); o2.connect(f); f.connect(g); g.connect(ctx.destination);
+  o1.start(now); o2.start(now); o1.stop(now+0.22); o2.stop(now+0.22);
+}
+function _playRemove() {
+  const ctx=_getCtx(); if(!ctx) return; const now=ctx.currentTime;
+  const o=ctx.createOscillator(),g=ctx.createGain(); o.type="sine";
+  o.frequency.setValueAtTime(400,now); o.frequency.exponentialRampToValueAtTime(180,now+0.15);
+  g.gain.setValueAtTime(0.08,now); g.gain.exponentialRampToValueAtTime(0.0001,now+0.15);
+  o.connect(g); g.connect(ctx.destination); o.start(now); o.stop(now+0.15);
+}
+function _playHint() {
+  const ctx=_getCtx(); if(!ctx) return; const now=ctx.currentTime;
+  [400,600,520,480,700].forEach((f,i)=>{
+    const d=i*0.03,o=ctx.createOscillator(),g=ctx.createGain(); o.type="sine";
+    o.frequency.setValueAtTime(f,now+d);
+    g.gain.setValueAtTime(0.0001,now+d); g.gain.exponentialRampToValueAtTime(0.07,now+d+0.02); g.gain.exponentialRampToValueAtTime(0.0001,now+d+0.18);
+    o.connect(g); g.connect(ctx.destination); o.start(now+d); o.stop(now+d+0.2);
+  });
+}
+function _playWin() {
+  const ctx=_getCtx(); if(!ctx) return; const now=ctx.currentTime;
+  [523,659,784,1047,784,1047,1319].forEach((f,i)=>{
+    const s=now+0.1+i*0.13,o=ctx.createOscillator(),g=ctx.createGain(); o.type="triangle";
+    o.frequency.setValueAtTime(f,s);
+    g.gain.setValueAtTime(0.0001,s); g.gain.linearRampToValueAtTime(0.12,s+0.04); g.gain.linearRampToValueAtTime(0.0001,s+0.2);
+    o.connect(g); g.connect(ctx.destination); o.start(s); o.stop(s+0.25);
+  });
+}
+function _playNext() {
+  const ctx=_getCtx(); if(!ctx) return; const now=ctx.currentTime;
+  const o=ctx.createOscillator(),g=ctx.createGain(); o.type="triangle";
+  o.frequency.setValueAtTime(300,now); o.frequency.exponentialRampToValueAtTime(600,now+0.12);
+  g.gain.setValueAtTime(0.0001,now); g.gain.exponentialRampToValueAtTime(0.08,now+0.03); g.gain.exponentialRampToValueAtTime(0.0001,now+0.18);
+  o.connect(g); g.connect(ctx.destination); o.start(now); o.stop(now+0.2);
+}
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-  // Touch
   _initSolutions();
   document.addEventListener("touchmove",   _onTouchMove,  { passive: false });
   document.addEventListener("touchend",    _onTouchEnd,   { passive: true });
   document.addEventListener("touchcancel", _onTouchEnd,   { passive: true });
-  // Mouse
   document.addEventListener("mousemove",   _onMouseMove);
   document.addEventListener("mouseup",     _onMouseUp);
   refresh();
