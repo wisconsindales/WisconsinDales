@@ -61,7 +61,6 @@ function renderPunzleTray() {
     if (isHinted && !isSelected && _hintOrientations[piece.name]) {
       const ho = _hintOrientations[piece.name];
       let cells = piece.cells.map(([r,c])=>[r,c]);
-      // rotate first, then flip — matching app order
       const turns = ho.rot / 90;
       for (let i = 0; i < turns; i++) cells = rotate(cells);
       if (ho.flip) cells = flip(cells);
