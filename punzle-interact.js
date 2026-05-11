@@ -359,10 +359,14 @@ function _dragMove(x, y) {
   const dy = y - _startY;
 
   if (!_dragging && (Math.abs(dx) > THR || Math.abs(dy) > THR)) {
-    _dragging     = true;
-    selectedPiece = _dragPiece;
-    _applyHintOrient(_dragPiece);
-    _rebuild();
+    _dragging = true;
+    if (!selectedPiece || selectedPiece.name !== _dragPiece.name) {
+      // Piece wasn't selected — apply hint orient if available, else default
+      selectedPiece = _dragPiece;
+      _applyHintOrient(_dragPiece);
+      _rebuild();
+    }
+    // If already selected — keep currentRot/currentFlip exactly as user set them
     refresh();
     _makeFloat();
   }
