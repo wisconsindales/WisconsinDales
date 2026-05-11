@@ -66,12 +66,19 @@ function renderPunzleTray() {
       for (let i = 0; i < turns; i++) cells = rotate(cells);
       displayCells = normalize(cells);
     }
+    // Star only shows if current orientation matches hint orientation
+    const hintOrient = _hintOrientations && _hintOrientations[piece.name];
+    const isCorrectOrient = isHinted && hintOrient && (
+      isSelected
+        ? (currentRot === hintOrient.rot && currentFlip === hintOrient.flip)
+        : true // not selected — always showing hint orientation
+    );
 
     // ── Card wrapper ──────────────────────────────────────────────────────────
     const card = document.createElement("div");
     card.className   = `pz-card${isPlaced ? " pz-card-done" : ""}${isSelected ? " pz-card-sel" : ""}`;
     card.dataset.piece = piece.name;
-    card.style.borderColor = isSelected ? "#22d3ee" : isHinted ? "rgba(253,230,138,0.6)" : isPlaced ? piece.color + "66" : "#1e1030";
+    card.style.borderColor = isSelected ? "#22d3ee" : isCorrectOrient ? "rgba(253,230,138,0.6)" : isPlaced ? piece.color + "66" : "#1e1030";
 
     if (!isPlaced) {
       card.draggable = true;
