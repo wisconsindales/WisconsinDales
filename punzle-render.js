@@ -82,8 +82,7 @@ function renderPunzleTray() {
 
     if (!isPlaced) {
       card.draggable = true;
-      card.addEventListener("mousedown",  e => onCardMouseDown(e, piece));
-      card.addEventListener("touchstart", e => onCardTouchStart(e, piece), { passive: false });
+      card.addEventListener("mousedown", e => onCardMouseDown(e, piece));
     }
 
     // ── Color bar ─────────────────────────────────────────────────────────────
@@ -124,7 +123,7 @@ function renderPunzleTray() {
       const cells = isSelected ? selectedCells : displayCells;
       body.appendChild(renderMiniPiece(cells, piece.color));
       body.addEventListener("click",      e => { e.stopPropagation(); doSelect(piece); });
-      body.addEventListener("touchstart", e => { e.stopPropagation(); }, { passive: true });
+      body.addEventListener("touchstart", e => { onCardTouchStart(e, piece); }, { passive: false });
       body.addEventListener("touchend",   e => { e.stopPropagation(); e.preventDefault(); doSelect(piece); }, { passive: false });
       card.appendChild(body);
 
