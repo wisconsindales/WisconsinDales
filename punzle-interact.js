@@ -146,13 +146,14 @@ function _updateSolBadge() {
 
   // Filter solutions compatible with current placed pieces
   const compat = _allSolutions.filter(sol => {
-    for (const p of placedPieces) {
+    return placedPieces.every(p => {
       const sp = sol.find(s => s.piece === p.name);
       if (!sp) return false;
-      const sk = new Set(sp.cells.map(([r,c]) => cellKey(r,c)));
-      if (!p.cells.every(([r,c]) => sk.has(cellKey(r,c)))) return false;
-    }
-    return true;
+      const spKeys = new Set(sp.cells.map(([r,c]) => cellKey(r,c)));
+      const pKeys  = p.cells.map(([r,c]) => cellKey(r,c));
+      return pKeys.length === sp.cells.length &&
+             pKeys.every(k => spKeys.has(k));
+    });
   });
 
   const n = placedPieces.length === 0 ? _allSolutions.length : compat.length;
@@ -186,15 +187,17 @@ function pzShowHint() {
 
   // Lock in one solution — must be compatible with currently placed pieces
   if (!_hintSolution) {
-    // Find solutions compatible with current board state
+    // Find solutions compatible with ALL currently placed pieces
     const compatible = _allSolutions.filter(sol => {
-      for (const p of placedPieces) {
+      return placedPieces.every(p => {
         const sp = sol.find(s => s.piece === p.name);
         if (!sp) return false;
-        const sk = new Set(sp.cells.map(([r,c]) => cellKey(r,c)));
-        if (!p.cells.every(([r,c]) => sk.has(cellKey(r,c)))) return false;
-      }
-      return true;
+        // Exact cell match — every placed cell must match solution cell
+        const spKeys = new Set(sp.cells.map(([r,c]) => cellKey(r,c)));
+        const pKeys  = p.cells.map(([r,c]) => cellKey(r,c));
+        return pKeys.length === sp.cells.length &&
+               pKeys.every(k => spKeys.has(k));
+      });
     });
     if (!compatible.length) {
       const sarcasm = document.getElementById("pz-sarcasm");
