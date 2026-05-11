@@ -110,11 +110,19 @@ function renderPunzleTray() {
       });
       card.appendChild(flipZone);
 
+      // ── Hint star ──────────────────────────────────────────────────────────
+      if (isCorrectOrient) {
+        const star = document.createElement("div");
+        star.style.cssText = "position:absolute;top:22px;right:3px;font-size:9px;font-weight:900;color:#fde68a;z-index:10;pointer-events:none;";
+        star.textContent = "★";
+        card.appendChild(star);
+      }
+
       // ── Mini piece (center) ───────────────────────────────────────────────
       const body = document.createElement("div");
       body.className = "pz-card-body";
 
-      const cells = isSelected ? selectedCells : normalize(piece.cells);
+      const cells = isSelected ? selectedCells : displayCells;
       body.appendChild(renderMiniPiece(cells, piece.color));
       body.addEventListener("click", e => {
         e.stopPropagation();
