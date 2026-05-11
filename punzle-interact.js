@@ -64,8 +64,7 @@ function onCellClick(e) {
     refresh(); return;
   }
   if (!selectedPiece || blocked.has(key)) return;
-  const anchor  = _anchor(selectedCells);
-  const shifted = selectedCells.map(([sr,sc]) => [r+sr-anchor[0], c+sc-anchor[1]]);
+  const shifted = selectedCells.map(([sr,sc]) => [r+sr, c+sc]);
   if (_valid(shifted)) _place(shifted);
 }
 
@@ -117,8 +116,7 @@ function _dragEnd(x, y) {
     if (target) {
       const r       = parseInt(target.dataset.r);
       const c       = parseInt(target.dataset.c);
-      const anchor  = _anchor(selectedCells);
-      const shifted = selectedCells.map(([sr,sc]) => [r+sr-anchor[0], c+sc-anchor[1]]);
+      const shifted = selectedCells.map(([sr,sc]) => [r+sr, c+sc]);
       if (_valid(shifted)) _place(shifted);
     }
   }
@@ -200,8 +198,8 @@ function _killFloat() {
 // ── Preview ───────────────────────────────────────────────────────────────────
 function _showPreview(r, c) {
   if (!selectedPiece || !selectedCells.length) return;
-  const anchor  = _anchor(selectedCells);
-  const shifted = selectedCells.map(([sr,sc]) => [r+sr-anchor[0], c+sc-anchor[1]]);
+  // Use top-left cell (0,0) as anchor so cursor cell = top-left of piece
+  const shifted = selectedCells.map(([sr,sc]) => [r+sr, c+sc]);
   const valid   = _valid(shifted);
   shifted.forEach(([pr,pc]) => {
     const el = document.querySelector(`.pz-cell[data-r="${pr}"][data-c="${pc}"]`);
