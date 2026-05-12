@@ -367,22 +367,12 @@
       #ms-tray {
         width: 96vw !important;
         max-width: 96vw !important;
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        gap: 3px !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 6px !important;
       }
-      #ms-tray .pz-card {
-        width: calc((96vw - 26px) / 8) !important;
-        min-height: 90px !important;
-        flex-shrink: 0 !important;
-      }
-      #ms-tray .pz-card-body {
-        flex: 1 !important;
-      }
-      #ms-tray .pz-zone {
-        height: 18px !important;
-        font-size: 6px !important;
-      }
+      #ms-tray .pz-card-body { flex: 1 !important; }
+      #ms-tray .pz-zone { height: 18px !important; font-size: 6px !important; }
     }
 
     @media (max-width: 600px) {
@@ -437,7 +427,7 @@
         <button class="pz-reset-btn" onclick="resetPunzle()">↺ Reset</button>
       </div>
       <div id="punzle-tray" class="pz-tray"></div>
-      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=60</div>
+      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=61</div>
     </div>
   </div>
 
@@ -458,7 +448,7 @@
       <button class="pz-reset-btn" onclick="msReset()">↺ Reset</button>
     </div>
     <div id="ms-tray" class="pz-tray" style="max-width:96vw;"></div>
-    <div style="font-size:12px;color:#f3c5d8;font-weight:800;opacity:0.7;">v=60</div>
+    <div style="font-size:12px;color:#f3c5d8;font-weight:800;opacity:0.7;">v=61</div>
     <a href="https://play.google.com/store/apps/details?id=punzle.app" class="pz-mobile-promo-btn" target="_blank">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M3.18 23.76c.3.17.64.24.99.2L15.53 12 11.68 8.15 3.18 23.76zm17.11-10.93c.43-.34.71-.86.71-1.46s-.28-1.12-.71-1.46l-2.13-1.23-4.02 4.02 4.02 4.02 2.13-1.89zM2.34.24C2.13.56 2 .97 2 1.43v21.14c0 .46.13.87.34 1.19l.06.06L13.13 12v-.27L2.4.18l-.06.06z"/></svg>
       Download Free App
@@ -577,9 +567,9 @@
   </footer>
 
 
-  <script src="punzle-game.js?v=60"></script>
-  <script src="punzle-render.js?v=60"></script>
-  <script src="punzle-interact.js?v=60"></script>
+  <script src="punzle-game.js?v=61"></script>
+  <script src="punzle-render.js?v=61"></script>
+  <script src="punzle-interact.js?v=61"></script>
   <script>
     // ── Mobile solver — completely separate from game state ──────────────────
     (function() {
@@ -774,11 +764,13 @@
           trayEl.appendChild(card);
         });
 
-        // Size cards to fill tray
-        var cardW = Math.floor((window.innerWidth - 26) / 8);
+        // Size cards for 2 rows of 4
+        var cardW = Math.floor((window.innerWidth - 40) / 4);
+        trayEl.style.flexWrap = "wrap";
+        trayEl.style.justifyContent = "center";
         trayEl.querySelectorAll(".pz-card").forEach(function(c) {
-          c.style.width    = cardW + "px";
-          c.style.minHeight = "90px";
+          c.style.width     = cardW + "px";
+          c.style.minHeight = "110px";
           c.style.flexShrink = "0";
         });
       }
