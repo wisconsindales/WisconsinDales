@@ -359,6 +359,19 @@
     }
 
     /* Mobile game hidden via 768px media query above */
+    .ms-sol-row { display: flex; justify-content: center; width: 100%; }
+    @media (max-width: 768px) {
+      #pz-mobile-solver .pz-board {
+        width: 96vw !important;
+        gap: 2px !important;
+        padding: 6px !important;
+        pointer-events: none;
+      }
+      #pz-mobile-solver .pz-cell {
+        font-size: clamp(7px, 2.2vw, 11px) !important;
+        border-radius: 4px !important;
+      }
+    }
 
     @media (max-width: 600px) {
       .hero-btns { flex-direction: column; align-items: center; }
@@ -412,20 +425,30 @@
         <button class="pz-reset-btn" onclick="resetPunzle()">↺ Reset</button>
       </div>
       <div id="punzle-tray" class="pz-tray"></div>
-      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=51</div>
+      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=52</div>
     </div>
   </div>
 
-  <!-- ── Mobile app promo (shown instead of game on phones) ── -->
-  <div class="pz-mobile-promo">
-    <div class="pz-mobile-promo-emoji">📱</div>
-    <div class="pz-mobile-promo-title">Play Punzle on your phone!</div>
-    <div class="pz-mobile-promo-sub">Download the free app for the best experience — drag pieces, earn hints, and compete on the daily leaderboard.</div>
+  <!-- ── Mobile solver (shown instead of game on phones) ── -->
+  <div class="pz-mobile-promo" id="pz-mobile-solver">
+    <div class="pz-date-label" id="ms-date-label"></div>
+    <div class="ms-sol-row">
+      <div class="pz-sol-badge" id="ms-sol-badge">
+        <span class="pz-sol-num" id="ms-sol-num">…</span>
+        <span class="pz-sol-lbl">solutions</span>
+      </div>
+    </div>
+    <div style="position:relative;">
+      <div id="ms-board" class="pz-board"></div>
+    </div>
+    <div class="pz-controls-row">
+      <button class="pz-next-btn" onclick="msSolve()">→ Next Solution</button>
+    </div>
+    <div class="pz-sarcasm" id="ms-sarcasm">Today's solution for your wooden puzzle. 🪵</div>
     <a href="https://play.google.com/store/apps/details?id=punzle.app" class="pz-mobile-promo-btn" target="_blank">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M3.18 23.76c.3.17.64.24.99.2L15.53 12 11.68 8.15 3.18 23.76zm17.11-10.93c.43-.34.71-.86.71-1.46s-.28-1.12-.71-1.46l-2.13-1.23-4.02 4.02 4.02 4.02 2.13-1.89zM2.34.24C2.13.56 2 .97 2 1.43v21.14c0 .46.13.87.34 1.19l.06.06L13.13 12v-.27L2.4.18l-.06.06z"/></svg>
-      Get it on Google Play
+      Download Free App
     </a>
-    <div style="font-size:11px;color:#6b3a5a;font-weight:600;">Free · No ads · Daily puzzle</div>
   </div>
 
   <div class="divider"></div>
@@ -540,21 +563,98 @@
   </footer>
 
 
-  <script src="punzle-game.js?v=51"></script>
-  <script src="punzle-render.js?v=51"></script>
-  <script src="punzle-interact.js?v=51"></script>
+  <script src="punzle-game.js?v=52"></script>
+  <script src="punzle-render.js?v=52"></script>
+  <script src="punzle-interact.js?v=52"></script>
   <script>
-    // JS mobile detection as backup to CSS media query
+    // ── Mobile solver — completely separate from game state ──────────────────
     (function() {
       const isMobile = window.innerWidth <= 768 ||
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      if (isMobile) {
-        document.addEventListener("DOMContentLoaded", function() {
-          const game  = document.querySelector(".pz-game-wrap");
-          const promo = document.querySelector(".pz-mobile-promo");
-          if (game)  game.style.display  = "none";
-          if (promo) promo.style.display = "flex";
+
+      // Always enforce mobile/desktop split
+      document.addEventListener("DOMContentLoaded", function() {
+        const game   = document.querySelector(".pz-game-wrap");
+        const solver = document.getElementById("pz-mobile-solver");
+        if (isMobile) {
+          if (game)   game.style.display   = "none";
+          if (solver) solver.style.display = "flex";
+        } else {
+          if (game)   game.style.display   = "";
+          if (solver) solver.style.display = "none";
+        }
+        if (isMobile) msInit();
+      });
+
+      // ── Mobile solver state ──────────────────────────────────────────────────
+      let _msSolutions = [];
+      let _msIndex     = 0;
+
+      function msInit() {
+        const today = new Date();
+        const month = today.getMonth() + 1;
+        const day   = today.getDate();
+
+        // Set date label
+        const dl = document.getElementById("ms-date-label");
+        if (dl) dl.textContent = today.toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" });
+
+        // Solve in background
+        setTimeout(() => {
+          _msSolutions = solve(month, day, true);
+          _msIndex     = 0;
+          msRender();
+          const numEl = document.getElementById("ms-sol-num");
+          if (numEl) numEl.textContent = _msSolutions.length;
+        }, 200);
+      }
+
+      window.msSolve = function() {
+        if (!_msSolutions.length) return;
+        _msIndex = (_msIndex + 1) % _msSolutions.length;
+        msRender();
+        const sarc = document.getElementById("ms-sarcasm");
+        if (sarc) sarc.textContent = `Solution ${_msIndex + 1} of ${_msSolutions.length} for your wooden puzzle. 🪵`;
+      };
+
+      function msRender() {
+        const boardEl = document.getElementById("ms-board");
+        if (!boardEl || !_msSolutions.length) return;
+        boardEl.innerHTML = "";
+
+        const today   = new Date();
+        const month   = today.getMonth() + 1;
+        const day     = today.getDate();
+        const blk     = getBlockedCells(month, day);
+        const sol     = _msSolutions[_msIndex];
+        const solMap  = new Map();
+        sol.forEach(placement => {
+          placement.cells.forEach(([r,c]) => {
+            solMap.set(cellKey(r,c), placement);
+          });
         });
+
+        for (let r = 0; r < 7; r++) {
+          for (let c = 0; c < 7; c++) {
+            const el    = document.createElement("div");
+            const key   = cellKey(r, c);
+            const valid = isValidCell(r, c);
+            el.textContent = LABELS.get(key) || "";
+
+            if (!valid) {
+              el.className = "pz-cell pz-off";
+            } else if (blk.has(key)) {
+              el.className = "pz-cell pz-blocked";
+            } else if (solMap.has(key)) {
+              const p = solMap.get(key);
+              el.className        = "pz-cell pz-placed";
+              el.style.background = p.color;
+            } else {
+              el.className = "pz-cell pz-empty";
+            }
+            boardEl.appendChild(el);
+          }
+        }
       }
     })();
   </script>
