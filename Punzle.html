@@ -392,6 +392,7 @@
     <div class="nav-links">
       <a href="#features">How It Works</a>
       <a href="#shop">Shop</a>
+      <a href="#contact">Contact</a>
       <a href="#download" class="nav-btn">📲 Download Free</a>
     </div>
   </nav>
@@ -411,6 +412,11 @@
     <div class="pz-game-wrap">
       <div class="pz-header-row">
         <div class="pz-date-label" id="pz-date-label"></div>
+        <a href="#shop" style="display:block;flex-shrink:0;">
+          <img src="wooden_puzzle.jpg" alt="Get the Real Thing"
+            style="width:44px;height:44px;object-fit:cover;border-radius:8px;border:1.5px solid rgba(253,230,138,0.4);box-shadow:0 4px 12px rgba(0,0,0,0.4);"
+            onerror="this.style.display='none'" />
+        </a>
         <div class="pz-sol-badge" id="pz-sol-badge">
           <span class="pz-sol-num" id="pz-sol-num">…</span>
           <span class="pz-sol-lbl" id="pz-sol-lbl">solutions</span>
@@ -427,7 +433,7 @@
         <button class="pz-reset-btn" onclick="resetPunzle()">↺ Reset</button>
       </div>
       <div id="punzle-tray" class="pz-tray"></div>
-      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=64</div>
+      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=65</div>
     </div>
   </div>
 
@@ -435,6 +441,11 @@
   <div class="pz-mobile-promo" id="pz-mobile-solver">
     <div class="pz-header-row" style="max-width:96vw;">
       <div class="pz-date-label" id="ms-date-label"></div>
+      <a href="#shop" style="display:block;flex-shrink:0;">
+        <img src="wooden_puzzle.jpg" alt="Get the Real Thing"
+          style="width:44px;height:44px;object-fit:cover;border-radius:8px;border:1.5px solid rgba(253,230,138,0.4);box-shadow:0 4px 12px rgba(0,0,0,0.4);"
+          onerror="this.style.display='none'" />
+      </a>
       <div class="pz-sol-badge" id="ms-sol-badge">
         <span class="pz-sol-num" id="ms-sol-num">…</span>
         <span class="pz-sol-lbl" id="ms-sol-lbl">solutions</span>
@@ -448,7 +459,7 @@
       <button class="pz-reset-btn" onclick="msReset()">↺ Reset</button>
     </div>
     <div id="ms-tray" class="pz-tray" style="max-width:96vw;"></div>
-    <div style="font-size:12px;color:#f3c5d8;font-weight:800;opacity:0.7;">v=64</div>
+    <div style="font-size:12px;color:#f3c5d8;font-weight:800;opacity:0.7;">v=65</div>
     <a href="https://play.google.com/store/apps/details?id=punzle.app" class="pz-mobile-promo-btn" target="_blank">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M3.18 23.76c.3.17.64.24.99.2L15.53 12 11.68 8.15 3.18 23.76zm17.11-10.93c.43-.34.71-.86.71-1.46s-.28-1.12-.71-1.46l-2.13-1.23-4.02 4.02 4.02 4.02 2.13-1.89zM2.34.24C2.13.56 2 .97 2 1.43v21.14c0 .46.13.87.34 1.19l.06.06L13.13 12v-.27L2.4.18l-.06.06z"/></svg>
       Download Free App
@@ -534,6 +545,100 @@
     </div>
   </div>
 
+  <!-- ── Contact / Request Form ── -->
+  <section id="contact" style="position:relative;z-index:1;padding:80px 24px;max-width:680px;margin:0 auto;">
+    <h2 class="section-title">💬 Comments & Requests</h2>
+    <p class="section-sub">Have a question, comment, or want to request a custom product? We'd love to hear from you!</p>
+
+    <form action="https://formspree.io/f/xnjbjdzr" method="POST" id="contact-form"
+      style="background:var(--panel);border:1.5px solid var(--outline);border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:16px;">
+
+      <!-- Name -->
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-size:13px;font-weight:800;color:var(--muted);letter-spacing:0.5px;">YOUR NAME</label>
+        <input type="text" name="name" placeholder="Dale Gehre" required
+          style="background:rgba(255,255,255,0.06);border:1.5px solid var(--outline);border-radius:10px;padding:12px 14px;color:var(--text);font-size:15px;font-family:inherit;outline:none;transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='#22d3ee'" onblur="this.style.borderColor='rgba(255,255,255,0.14)'" />
+      </div>
+
+      <!-- Email -->
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-size:13px;font-weight:800;color:var(--muted);letter-spacing:0.5px;">EMAIL ADDRESS</label>
+        <input type="email" name="email" placeholder="you@example.com" required
+          style="background:rgba(255,255,255,0.06);border:1.5px solid var(--outline);border-radius:10px;padding:12px 14px;color:var(--text);font-size:15px;font-family:inherit;outline:none;transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='#22d3ee'" onblur="this.style.borderColor='rgba(255,255,255,0.14)'" />
+      </div>
+
+      <!-- Type -->
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-size:13px;font-weight:800;color:var(--muted);letter-spacing:0.5px;">TYPE</label>
+        <select name="type"
+          style="background:rgba(255,255,255,0.06);border:1.5px solid var(--outline);border-radius:10px;padding:12px 14px;color:var(--text);font-size:15px;font-family:inherit;outline:none;cursor:pointer;">
+          <option value="comment">💬 General Comment</option>
+          <option value="product-request">🪵 Product Request</option>
+          <option value="custom-order">✏️ Custom Order Inquiry</option>
+          <option value="app-feedback">📱 App Feedback</option>
+          <option value="other">❓ Other</option>
+        </select>
+      </div>
+
+      <!-- Message -->
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-size:13px;font-weight:800;color:var(--muted);letter-spacing:0.5px;">MESSAGE</label>
+        <textarea name="message" placeholder="Tell us what's on your mind — product ideas, questions, feedback, or just say hi!" required
+          rows="5"
+          style="background:rgba(255,255,255,0.06);border:1.5px solid var(--outline);border-radius:10px;padding:12px 14px;color:var(--text);font-size:15px;font-family:inherit;outline:none;resize:vertical;transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='#22d3ee'" onblur="this.style.borderColor='rgba(255,255,255,0.14)'"></textarea>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit"
+        style="background:var(--accent);color:white;border:none;border-radius:12px;padding:14px 28px;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;box-shadow:0 8px 24px rgba(183,0,54,0.35);transition:transform 0.15s,box-shadow 0.15s;"
+        onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 32px rgba(183,0,54,0.5)'"
+        onmouseout="this.style.transform='';this.style.boxShadow='0 8px 24px rgba(183,0,54,0.35)'">
+        Send Message 🚀
+      </button>
+
+      <!-- Success message (shown after submit) -->
+      <div id="form-success" style="display:none;background:rgba(34,197,94,0.12);border:1.5px solid rgba(34,197,94,0.4);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:24px;margin-bottom:6px;">✅</div>
+        <div style="font-size:15px;font-weight:800;color:#22c55e;">Message sent!</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px;">Thanks for reaching out — we'll get back to you soon.</div>
+      </div>
+    </form>
+
+    <script>
+      document.getElementById("contact-form").addEventListener("submit", function(e) {
+        e.preventDefault();
+        var form = this;
+        var btn  = form.querySelector("button[type=submit]");
+        btn.textContent = "Sending…";
+        btn.disabled    = true;
+        fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { "Accept": "application/json" }
+        }).then(function(r) {
+          if (r.ok) {
+            form.reset();
+            document.getElementById("form-success").style.display = "block";
+            btn.style.display = "none";
+          } else {
+            btn.textContent = "Send Message 🚀";
+            btn.disabled    = false;
+            alert("Something went wrong. Please try again.");
+          }
+        }).catch(function() {
+          btn.textContent = "Send Message 🚀";
+          btn.disabled    = false;
+          alert("Something went wrong. Please try again.");
+        });
+      });
+    </script>
+  </section>
+
+  <div class="divider"></div>
+
   <section id="download" class="download-section">
     <h2 class="section-title">📲 Download Punzle Free</h2>
     <p class="section-sub">Available now on Android. Free to play. Daily challenge. No ads.</p>
@@ -567,9 +672,9 @@
   </footer>
 
 
-  <script src="punzle-game.js?v=64"></script>
-  <script src="punzle-render.js?v=64"></script>
-  <script src="punzle-interact.js?v=64"></script>
+  <script src="punzle-game.js?v=65"></script>
+  <script src="punzle-render.js?v=65"></script>
+  <script src="punzle-interact.js?v=65"></script>
   <script>
     // ── Mobile solver — completely separate from game state ──────────────────
     (function() {
