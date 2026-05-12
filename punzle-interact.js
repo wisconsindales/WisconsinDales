@@ -402,13 +402,10 @@ function _place(cells) {
   _playPlace();
   placedPieces.push({ name:selectedPiece.name, color:selectedPiece.color, cells });
   selectedPiece = null; selectedCells = []; currentRot = 0; currentFlip = false;
-  // Only reset hint solution if placed piece is incompatible with it
-  if (_hintSolution) {
-    const sp = _hintSolution.find(s => s.piece === selectedPiece.name);
-    const spKeys = sp ? new Set(sp.cells.map(([r,c]) => cellKey(r,c))) : null;
-    const compatible = spKeys && cells.every(([r,c]) => spKeys.has(cellKey(r,c)));
-    if (!compatible) _hintSolution = null;
-  }
+  // Reset hints on every placement — hint will recalculate from remaining solutions
+  _hintSolution  = null;
+  _revealedHints = new Set();
+  _peekPieceName = null;
   refresh();
   _updateSolBadge();
   const needed = BOARD_CELLS.filter(([r,c])=>!blocked.has(cellKey(r,c)));
