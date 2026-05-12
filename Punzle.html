@@ -427,7 +427,7 @@
         <button class="pz-reset-btn" onclick="resetPunzle()">↺ Reset</button>
       </div>
       <div id="punzle-tray" class="pz-tray"></div>
-      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=62</div>
+      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=64</div>
     </div>
   </div>
 
@@ -448,7 +448,7 @@
       <button class="pz-reset-btn" onclick="msReset()">↺ Reset</button>
     </div>
     <div id="ms-tray" class="pz-tray" style="max-width:96vw;"></div>
-    <div style="font-size:12px;color:#f3c5d8;font-weight:800;opacity:0.7;">v=62</div>
+    <div style="font-size:12px;color:#f3c5d8;font-weight:800;opacity:0.7;">v=64</div>
     <a href="https://play.google.com/store/apps/details?id=punzle.app" class="pz-mobile-promo-btn" target="_blank">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M3.18 23.76c.3.17.64.24.99.2L15.53 12 11.68 8.15 3.18 23.76zm17.11-10.93c.43-.34.71-.86.71-1.46s-.28-1.12-.71-1.46l-2.13-1.23-4.02 4.02 4.02 4.02 2.13-1.89zM2.34.24C2.13.56 2 .97 2 1.43v21.14c0 .46.13.87.34 1.19l.06.06L13.13 12v-.27L2.4.18l-.06.06z"/></svg>
       Download Free App
@@ -567,9 +567,9 @@
   </footer>
 
 
-  <script src="punzle-game.js?v=62"></script>
-  <script src="punzle-render.js?v=62"></script>
-  <script src="punzle-interact.js?v=62"></script>
+  <script src="punzle-game.js?v=64"></script>
+  <script src="punzle-render.js?v=64"></script>
+  <script src="punzle-interact.js?v=64"></script>
   <script>
     // ── Mobile solver — completely separate from game state ──────────────────
     (function() {
@@ -703,46 +703,62 @@
         if (!trayEl) return;
         trayEl.innerHTML = "";
 
+        // Card width: 4 per row with gaps
+        var cardW = Math.floor((window.innerWidth - 48) / 4);
+
+        trayEl.style.flexWrap       = "wrap";
+        trayEl.style.justifyContent = "center";
+        trayEl.style.gap            = "6px";
+        trayEl.style.width          = "100%";
+
         PIECES.forEach(function(piece) {
           var isHinted = hints.has(piece.name);
 
-          // Get hint shape
+          // Get hint shape — normalize actual solution cells like solver page
           var displayCells = normalize(piece.cells);
           if (isHinted && hintSol) {
             var placement = hintSol.find(function(p) { return p.piece === piece.name; });
             if (placement) displayCells = normalize(placement.cells);
           }
 
+          // Solver-style card — no flip/rotate zones
           var card = document.createElement("div");
-          card.className = "pz-card";
-          card.style.borderColor = isHinted ? "rgba(253,230,138,0.6)" : "#1e1030";
+          card.style.cssText = [
+            "width:" + cardW + "px",
+            "min-height:" + cardW + "px",
+            "background:" + (isHinted ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.05)"),
+            "border:1px solid " + (isHinted ? "rgba(253,230,138,0.45)" : "rgba(255,255,255,0.1)"),
+            "border-radius:14px",
+            "padding:10px",
+            "display:flex",
+            "flex-direction:column",
+            "align-items:flex-start",
+            "gap:6px",
+            "position:relative",
+            "cursor:" + (isHinted ? "pointer" : "default"),
+            "box-sizing:border-box"
+          ].join(";");
 
-          // Color bar
-          var bar = document.createElement("div");
-          bar.className = "pz-card-bar";
-          bar.style.background = piece.color;
-          card.appendChild(bar);
-
-          // Star
+          // Title row: dot + name + star
+          var title = document.createElement("div");
+          title.style.cssText = "display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:" + (isHinted ? piece.color : "var(--muted)") + ";";
+          var dot = document.createElement("span");
+          dot.style.cssText = "width:10px;height:10px;border-radius:50%;background:" + piece.color + ";display:inline-block;flex-shrink:0;";
+          var name = document.createElement("span");
+          name.textContent = piece.name;
+          title.appendChild(dot);
+          title.appendChild(name);
           if (isHinted) {
-            var star = document.createElement("div");
-            star.style.cssText = "position:absolute;top:22px;right:3px;font-size:10px;font-weight:900;color:#fde68a;pointer-events:none;z-index:5;";
+            var star = document.createElement("span");
             star.textContent = "★";
-            card.appendChild(star);
+            star.style.cssText = "color:#fde68a;font-size:14px;font-weight:900;";
+            title.appendChild(star);
           }
+          card.appendChild(title);
 
-          // Mini piece
-          var body = document.createElement("div");
-          body.className = "pz-card-body";
-          body.appendChild(msMiniPiece(displayCells, piece.color));
-          card.appendChild(body);
-
-          // Name
-          var nameEl = document.createElement("div");
-          nameEl.className = "pz-card-name";
-          nameEl.textContent = piece.name;
-          if (isHinted) nameEl.style.color = piece.color;
-          card.appendChild(nameEl);
+          // Mini piece grid
+          var miniWrap = msMiniPiece(displayCells, piece.color);
+          card.appendChild(miniWrap);
 
           // Hold to peek
           if (isHinted) {
@@ -762,16 +778,6 @@
           }
 
           trayEl.appendChild(card);
-        });
-
-        // Size cards for 2 rows of 4
-        var cardW = Math.floor((window.innerWidth - 40) / 4);
-        trayEl.style.flexWrap = "wrap";
-        trayEl.style.justifyContent = "center";
-        trayEl.querySelectorAll(".pz-card").forEach(function(c) {
-          c.style.width     = cardW + "px";
-          c.style.minHeight = "110px";
-          c.style.flexShrink = "0";
         });
       }
 
