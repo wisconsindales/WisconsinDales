@@ -361,11 +361,14 @@
     /* Mobile game hidden via 768px media query above */
     @media (max-width: 768px) {
       #pz-mobile-solver {
-        flex-direction: column;
-        align-items: center;
-        padding: 8px;
-        gap: 12px;
-        width: 100%;
+        flex-direction: column !important;
+        align-items: center !important;
+        padding: 8px !important;
+        gap: 10px !important;
+        width: 100% !important;
+        background: none !important;
+        border: none !important;
+        box-shadow: none !important;
       }
     }
 
@@ -421,19 +424,28 @@
         <button class="pz-reset-btn" onclick="resetPunzle()">↺ Reset</button>
       </div>
       <div id="punzle-tray" class="pz-tray"></div>
-      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=53</div>
+      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=54</div>
     </div>
   </div>
 
-  <!-- ── Mobile solver embedded (mobile only) ── -->
+  <!-- ── Mobile solver (mobile only, same theme as game) ── -->
   <div class="pz-mobile-promo" id="pz-mobile-solver">
-    <iframe
-      src="https://wisconsindales.com/wisconsindales_solver.html"
-      id="pz-solver-frame"
-      scrolling="yes"
-      style="width:100%;height:85vh;border:none;border-radius:16px;overflow:hidden;"
-    ></iframe>
-    <a href="https://play.google.com/store/apps/details?id=punzle.app" class="pz-mobile-promo-btn" target="_blank" style="margin-top:12px;">
+    <div class="pz-header-row" style="max-width:96vw;">
+      <div class="pz-date-label" id="ms-date-label"></div>
+      <div class="pz-sol-badge" id="ms-sol-badge">
+        <span class="pz-sol-num" id="ms-sol-num">…</span>
+        <span class="pz-sol-lbl" id="ms-sol-lbl">solutions</span>
+      </div>
+    </div>
+    <div id="ms-board" class="pz-board" style="width:96vw;"></div>
+    <div class="pz-sarcasm" id="ms-sarcasm">Today's solution for your wooden puzzle. 🪵</div>
+    <div class="pz-controls-row">
+      <button class="pz-hint-btn" onclick="msHint()">💡 Hint</button>
+      <button class="pz-next-btn" onclick="msNext()">→ Next</button>
+      <button class="pz-reset-btn" onclick="msReset()">↺ Reset</button>
+    </div>
+    <div id="ms-tray" class="pz-tray" style="max-width:96vw;"></div>
+    <a href="https://play.google.com/store/apps/details?id=punzle.app" class="pz-mobile-promo-btn" target="_blank">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M3.18 23.76c.3.17.64.24.99.2L15.53 12 11.68 8.15 3.18 23.76zm17.11-10.93c.43-.34.71-.86.71-1.46s-.28-1.12-.71-1.46l-2.13-1.23-4.02 4.02 4.02 4.02 2.13-1.89zM2.34.24C2.13.56 2 .97 2 1.43v21.14c0 .46.13.87.34 1.19l.06.06L13.13 12v-.27L2.4.18l-.06.06z"/></svg>
       Download Free App
     </a>
@@ -551,9 +563,9 @@
   </footer>
 
 
-  <script src="punzle-game.js?v=53"></script>
-  <script src="punzle-render.js?v=53"></script>
-  <script src="punzle-interact.js?v=53"></script>
+  <script src="punzle-game.js?v=54"></script>
+  <script src="punzle-render.js?v=54"></script>
+  <script src="punzle-interact.js?v=54"></script>
   <script>
     // ── Mobile solver — completely separate from game state ──────────────────
     (function() {
@@ -573,6 +585,230 @@
         }
         });
     })();
+
+    // ── Mobile solver — self-contained, reuses punzle-game.js ────────────────
+    var ms = (function() {
+      var solutions   = [];
+      var solIndex    = 0;
+      var hints       = new Set();
+      var hintSol     = null;
+      var peekPiece   = null;
+      var month, day, blk;
+
+      function init() {
+        var today = new Date();
+        month = today.getMonth() + 1;
+        day   = today.getDate();
+        blk   = getBlockedCells(month, day);
+
+        var dl = document.getElementById("ms-date-label");
+        if (dl) dl.textContent = today.toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" });
+
+        setTimeout(function() {
+          solutions = solve(month, day, true);
+          solIndex  = 0;
+          hintSol   = solutions.length ? solutions[0] : null;
+          updateBadge();
+          renderBoard();
+          renderTray();
+        }, 300);
+      }
+
+      function updateBadge() {
+        var n  = solutions.length;
+        var el = document.getElementById("ms-sol-num");
+        var lb = document.getElementById("ms-sol-lbl");
+        var bg = document.getElementById("ms-sol-badge");
+        if (el) el.textContent = n;
+        if (lb) lb.textContent = "solutions";
+        var color = n === 0 ? "#ef4444" : n <= 3 ? "#f97316" : n <= 10 ? "#eab308" : "#22c55e";
+        if (bg) { bg.style.borderColor = color; el.style.color = color; }
+      }
+
+      function renderBoard() {
+        var boardEl = document.getElementById("ms-board");
+        if (!boardEl) return;
+        boardEl.innerHTML = "";
+
+        // Build solution map from current solution
+        var solMap = new Map();
+        if (solutions.length) {
+          solutions[solIndex].forEach(function(p) {
+            p.cells.forEach(function(rc) {
+              solMap.set(cellKey(rc[0], rc[1]), p);
+            });
+          });
+        }
+
+        // Build peek map
+        var peekMap = new Map();
+        if (peekPiece && hintSol) {
+          var pp = hintSol.find(function(p) { return p.piece === peekPiece; });
+          if (pp) pp.cells.forEach(function(rc) { peekMap.set(cellKey(rc[0], rc[1]), pp); });
+        }
+
+        for (var r = 0; r < 7; r++) {
+          for (var c = 0; c < 7; c++) {
+            var el    = document.createElement("div");
+            var key   = cellKey(r, c);
+            var valid = isValidCell(r, c);
+            el.textContent = LABELS.get(key) || "";
+
+            if (!valid) {
+              el.className = "pz-cell pz-off";
+            } else if (blk.has(key)) {
+              el.className = "pz-cell pz-blocked";
+            } else if (peekMap.has(key)) {
+              var pp2 = peekMap.get(key);
+              el.className = "pz-cell pz-peek";
+              el.style.background = pp2.color + "cc";
+              el.style.border = "2px solid " + pp2.color;
+            } else if (solMap.has(key)) {
+              var p2 = solMap.get(key);
+              el.className = "pz-cell pz-placed";
+              el.style.background = p2.color;
+            } else {
+              el.className = "pz-cell pz-empty";
+            }
+            boardEl.appendChild(el);
+          }
+        }
+      }
+
+      function renderTray() {
+        var trayEl = document.getElementById("ms-tray");
+        if (!trayEl) return;
+        trayEl.innerHTML = "";
+
+        PIECES.forEach(function(piece) {
+          var isHinted = hints.has(piece.name);
+
+          // Get hint shape
+          var displayCells = normalize(piece.cells);
+          if (isHinted && hintSol) {
+            var placement = hintSol.find(function(p) { return p.piece === piece.name; });
+            if (placement) displayCells = normalize(placement.cells);
+          }
+
+          var card = document.createElement("div");
+          card.className = "pz-card";
+          card.style.borderColor = isHinted ? "rgba(253,230,138,0.6)" : "#1e1030";
+
+          // Color bar
+          var bar = document.createElement("div");
+          bar.className = "pz-card-bar";
+          bar.style.background = piece.color;
+          card.appendChild(bar);
+
+          // Star
+          if (isHinted) {
+            var star = document.createElement("div");
+            star.style.cssText = "position:absolute;top:22px;right:3px;font-size:10px;font-weight:900;color:#fde68a;pointer-events:none;z-index:5;";
+            star.textContent = "★";
+            card.appendChild(star);
+          }
+
+          // Mini piece
+          var body = document.createElement("div");
+          body.className = "pz-card-body";
+          body.appendChild(msMiniPiece(displayCells, piece.color));
+          card.appendChild(body);
+
+          // Name
+          var nameEl = document.createElement("div");
+          nameEl.className = "pz-card-name";
+          nameEl.textContent = piece.name;
+          if (isHinted) nameEl.style.color = piece.color;
+          card.appendChild(nameEl);
+
+          // Hold to peek
+          if (isHinted) {
+            var timer;
+            card.addEventListener("touchstart", function() {
+              timer = setTimeout(function() { peekPiece = piece.name; renderBoard(); }, 200);
+            }, { passive: true });
+            card.addEventListener("touchend", function() {
+              clearTimeout(timer); peekPiece = null; renderBoard();
+            });
+            card.addEventListener("mousedown", function() {
+              timer = setTimeout(function() { peekPiece = piece.name; renderBoard(); }, 200);
+            });
+            card.addEventListener("mouseup", function() {
+              clearTimeout(timer); peekPiece = null; renderBoard();
+            });
+          }
+
+          trayEl.appendChild(card);
+        });
+      }
+
+      function msMiniPiece(cells, color) {
+        var SZ = 6, GAP = 1, STP = SZ + GAP;
+        var maxR = Math.max.apply(null, cells.map(function(rc){return rc[0];}));
+        var maxC = Math.max.apply(null, cells.map(function(rc){return rc[1];}));
+        var set  = new Set(cells.map(function(rc){return rc[0]+","+rc[1];}));
+        var wrap = document.createElement("div");
+        wrap.style.cssText = "position:relative;width:"+((maxC+1)*STP-GAP)+"px;height:"+((maxR+1)*STP-GAP)+"px;";
+        for (var r = 0; r <= maxR; r++) {
+          for (var c = 0; c <= maxC; c++) {
+            var cell = document.createElement("div");
+            var on   = set.has(r+","+c);
+            cell.style.cssText = "position:absolute;top:"+(r*STP)+"px;left:"+(c*STP)+"px;width:"+SZ+"px;height:"+SZ+"px;border-radius:2px;background:"+(on?color:"transparent")+";";
+            wrap.appendChild(cell);
+          }
+        }
+        return wrap;
+      }
+
+      // Public functions
+      window.msHint = function() {
+        if (!solutions.length || !hintSol) return;
+        var unHinted = PIECES.filter(function(p) { return !hints.has(p.name); });
+        if (!unHinted.length) {
+          document.getElementById("ms-sarcasm").textContent = "All hints shown! You got this. Maybe. 😄";
+          return;
+        }
+        var piece = unHinted[Math.floor(Math.random() * unHinted.length)];
+        hints.add(piece.name);
+        document.getElementById("ms-sarcasm").textContent = "★ Hold piece " + piece.name + " to see where it goes.";
+        renderTray();
+      };
+
+      window.msNext = function() {
+        if (!solutions.length) return;
+        solIndex  = (solIndex + 1) % solutions.length;
+        hintSol   = solutions[solIndex];
+        hints     = new Set();
+        peekPiece = null;
+        var sarc = document.getElementById("ms-sarcasm");
+        if (sarc) sarc.textContent = "Solution " + (solIndex+1) + " of " + solutions.length + " 🪵";
+        renderBoard();
+        renderTray();
+      };
+
+      window.msReset = function() {
+        solIndex  = 0;
+        hintSol   = solutions.length ? solutions[0] : null;
+        hints     = new Set();
+        peekPiece = null;
+        var sarc = document.getElementById("ms-sarcasm");
+        if (sarc) sarc.textContent = "Today's solution for your wooden puzzle. 🪵";
+        renderBoard();
+        renderTray();
+      };
+
+      return { init: init };
+    })();
+
+    // Init mobile solver when ready
+    document.addEventListener("DOMContentLoaded", function() {
+      var isMobile = window.innerWidth <= 768 ||
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      if (isMobile) {
+        // Small delay to let punzle-game.js finish loading
+        setTimeout(function() { ms.init(); }, 100);
+      }
+    });
   </script>
   <script>
     // Set date label
