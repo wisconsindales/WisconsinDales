@@ -437,7 +437,7 @@
         <button class="pz-reset-btn" onclick="resetPunzle()">↺ Reset</button>
       </div>
       <div id="punzle-tray" class="pz-tray"></div>
-      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=58</div>
+      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=59</div>
     </div>
   </div>
 
@@ -458,7 +458,7 @@
       <button class="pz-reset-btn" onclick="msReset()">↺ Reset</button>
     </div>
     <div id="ms-tray" class="pz-tray" style="max-width:96vw;"></div>
-    <div style="font-size:12px;color:#f3c5d8;font-weight:800;opacity:0.7;">v=58</div>
+    <div style="font-size:12px;color:#f3c5d8;font-weight:800;opacity:0.7;">v=59</div>
     <a href="https://play.google.com/store/apps/details?id=punzle.app" class="pz-mobile-promo-btn" target="_blank">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M3.18 23.76c.3.17.64.24.99.2L15.53 12 11.68 8.15 3.18 23.76zm17.11-10.93c.43-.34.71-.86.71-1.46s-.28-1.12-.71-1.46l-2.13-1.23-4.02 4.02 4.02 4.02 2.13-1.89zM2.34.24C2.13.56 2 .97 2 1.43v21.14c0 .46.13.87.34 1.19l.06.06L13.13 12v-.27L2.4.18l-.06.06z"/></svg>
       Download Free App
@@ -577,9 +577,9 @@
   </footer>
 
 
-  <script src="punzle-game.js?v=58"></script>
-  <script src="punzle-render.js?v=58"></script>
-  <script src="punzle-interact.js?v=58"></script>
+  <script src="punzle-game.js?v=59"></script>
+  <script src="punzle-render.js?v=59"></script>
+  <script src="punzle-interact.js?v=59"></script>
   <script>
     // ── Mobile solver — completely separate from game state ──────────────────
     (function() {
@@ -592,18 +592,39 @@
         const solver = document.getElementById("pz-mobile-solver");
         if (isMobile) {
           if (game) game.style.display = "none";
+
+          // Hide hero content on mobile
+          var heroLogo    = document.querySelector(".hero-logo");
+          var heroTagline = document.querySelector(".hero-tagline");
+          var heroSub     = document.querySelector(".hero-sub");
+          var heroBtns    = document.querySelector(".hero-btns");
+          var heroEl      = document.querySelector(".hero");
+          if (heroLogo)    heroLogo.style.display    = "none";
+          if (heroTagline) heroTagline.style.display = "none";
+          if (heroSub)     heroSub.style.display     = "none";
+          if (heroBtns)    heroBtns.style.display    = "none";
+          if (heroEl)      heroEl.style.padding      = "0";
+
           if (solver) {
             solver.style.display        = "flex";
             solver.style.flexDirection  = "column";
             solver.style.alignItems     = "center";
             solver.style.gap            = "10px";
-            solver.style.padding        = "0 8px";
+            solver.style.padding        = "8px";
             solver.style.width          = "100%";
             solver.style.background     = "none";
             solver.style.border         = "none";
             solver.style.boxShadow      = "none";
             solver.style.borderRadius   = "0";
             solver.style.margin         = "0";
+          }
+
+          // Fix board and tray sizes
+          var msBoard = document.getElementById("ms-board");
+          if (msBoard) {
+            msBoard.style.width   = "80vw";
+            msBoard.style.gap     = "2px";
+            msBoard.style.padding = "6px";
           }
         } else {
           if (game)   game.style.display   = "";
