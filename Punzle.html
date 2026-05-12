@@ -332,7 +332,7 @@
     .pz-mobile-promo { display: none; }
     @media (max-width: 768px) {
       .pz-game-wrap { display: none !important; }
-      .hero { min-height: auto !important; padding: 20px 12px !important; }
+      .hero { min-height: auto !important; padding: 12px !important; }
       .pz-mobile-promo {
         display: flex !important;
         flex-direction: column !important;
@@ -428,7 +428,7 @@
         <button class="pz-reset-btn" onclick="resetPunzle()">↺ Reset</button>
       </div>
       <div id="punzle-tray" class="pz-tray"></div>
-      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=56</div>
+      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=57</div>
     </div>
   </div>
 
@@ -442,14 +442,14 @@
       </div>
     </div>
     <div id="ms-board" class="pz-board" style="width:96vw;"></div>
-    <div class="pz-sarcasm" id="ms-sarcasm">Today's solution for your wooden puzzle. 🪵</div>
+    <div class="pz-sarcasm" id="ms-sarcasm">Hint the pieces, then hold to see where they go. 🪵</div>
     <div class="pz-controls-row">
       <button class="pz-hint-btn" onclick="msHint()">💡 Hint</button>
       <button class="pz-next-btn" onclick="msNext()">→ Next</button>
       <button class="pz-reset-btn" onclick="msReset()">↺ Reset</button>
     </div>
     <div id="ms-tray" class="pz-tray" style="max-width:96vw;"></div>
-    <div style="font-size:12px;color:#f3c5d8;font-weight:800;opacity:0.7;">v=56</div>
+    <div style="font-size:12px;color:#f3c5d8;font-weight:800;opacity:0.7;">v=57</div>
     <a href="https://play.google.com/store/apps/details?id=punzle.app" class="pz-mobile-promo-btn" target="_blank">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M3.18 23.76c.3.17.64.24.99.2L15.53 12 11.68 8.15 3.18 23.76zm17.11-10.93c.43-.34.71-.86.71-1.46s-.28-1.12-.71-1.46l-2.13-1.23-4.02 4.02 4.02 4.02 2.13-1.89zM2.34.24C2.13.56 2 .97 2 1.43v21.14c0 .46.13.87.34 1.19l.06.06L13.13 12v-.27L2.4.18l-.06.06z"/></svg>
       Download Free App
@@ -568,9 +568,9 @@
   </footer>
 
 
-  <script src="punzle-game.js?v=56"></script>
-  <script src="punzle-render.js?v=56"></script>
-  <script src="punzle-interact.js?v=56"></script>
+  <script src="punzle-game.js?v=57"></script>
+  <script src="punzle-render.js?v=57"></script>
+  <script src="punzle-interact.js?v=57"></script>
   <script>
     // ── Mobile solver — completely separate from game state ──────────────────
     (function() {
@@ -647,17 +647,7 @@
         if (!boardEl) return;
         boardEl.innerHTML = "";
 
-        // Build solution map from current solution
-        var solMap = new Map();
-        if (solutions.length) {
-          solutions[solIndex].forEach(function(p) {
-            p.cells.forEach(function(rc) {
-              solMap.set(cellKey(rc[0], rc[1]), p);
-            });
-          });
-        }
-
-        // Build peek map
+        // Only show peek highlight — board is empty otherwise
         var peekMap = new Map();
         if (peekPiece && hintSol) {
           var pp = hintSol.find(function(p) { return p.piece === peekPiece; });
@@ -680,10 +670,6 @@
               el.className = "pz-cell pz-peek";
               el.style.background = pp2.color + "cc";
               el.style.border = "2px solid " + pp2.color;
-            } else if (solMap.has(key)) {
-              var p2 = solMap.get(key);
-              el.className = "pz-cell pz-placed";
-              el.style.background = p2.color;
             } else {
               el.className = "pz-cell pz-empty";
             }
@@ -809,7 +795,7 @@
         hints     = new Set();
         peekPiece = null;
         var sarc = document.getElementById("ms-sarcasm");
-        if (sarc) sarc.textContent = "Today's solution for your wooden puzzle. 🪵";
+        if (sarc) sarc.textContent = "Hint the pieces, then hold to see where they go. 🪵";
         renderBoard();
         renderTray();
       };
