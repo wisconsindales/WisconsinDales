@@ -273,6 +273,9 @@ function _onMouseUp(e) {
       const r = parseInt(t.dataset.r), c = parseInt(t.dataset.c);
       const shifted = selectedCells.map(([sr,sc]) => [r+sr, c+sc]);
       if (_valid(shifted)) _place(shifted);
+      else _playFail(); // invalid drop position
+    } else {
+      _playFail(); // dropped outside board
     }
   }
   _killFloat(); _clearPreview();
@@ -479,6 +482,22 @@ function _playNext() {
   o.frequency.setValueAtTime(300,now); o.frequency.exponentialRampToValueAtTime(600,now+0.12);
   g.gain.setValueAtTime(0.0001,now); g.gain.exponentialRampToValueAtTime(0.08,now+0.03); g.gain.exponentialRampToValueAtTime(0.0001,now+0.18);
   o.connect(g); g.connect(ctx.destination); o.start(now); o.stop(now+0.2);
+}
+function _playFail() {
+  const ctx=_getCtx(); if(!ctx) return; const now=ctx.currentTime;
+  // Two descending tones — classic "fail" sound
+  [220, 180].forEach((freq, i) => {
+    const delay = i * 0.12;
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type="sawtooth";
+    o.frequency.setValueAtTime(freq, now+delay);
+    o.frequency.exponentialRampToValueAtTime(freq*0.7, now+delay+0.15);
+    g.gain.setValueAtTime(0.0001, now+delay);
+    g.gain.exponentialRampToValueAtTime(0.09, now+delay+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, now+delay+0.18);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(now+delay); o.stop(now+delay+0.2);
+  });
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────────
