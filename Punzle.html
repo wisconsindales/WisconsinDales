@@ -390,122 +390,14 @@
       <img src="wisconsin-dales-creations.png" alt="WisconsinDalesCreations" />
     </a>
     <div class="nav-links">
-      <a href="#features">How It Works</a>
       <a href="#shop">Shop</a>
+      <a href="#features">How It Works</a>
       <a href="#contact">Contact</a>
       <a href="#download" class="nav-btn">📲 Download Free</a>
     </div>
   </nav>
 
-  <div class="hero">
-    <img src="punzle_feature_graphic_1024x500.png" alt="Punzle" class="hero-logo" />
-    <p class="hero-tagline">A totally Pun Puzzle that changes Daley. 😄</p>
-    <p class="hero-sub">
-      Fit all 8 pieces on the board. Leave only today's month and day uncovered.
-      A new puzzle every single day — puns included.
-    </p>
-    <div class="hero-btns">
-      <a href="#download" class="btn-primary">📲 Download Free on Android</a>
-      <a href="#shop" class="btn-secondary">🪵 Get the Real Thing</a>
-    </div>
-    <!-- ── Interactive Punzle Game ── -->
-    <div class="pz-game-wrap">
-      <div class="pz-header-row">
-        <div class="pz-date-label" id="pz-date-label"></div>
-        <a href="#shop" style="display:block;flex-shrink:0;">
-          <img src="wooden_puzzle.jpg" alt="Get the Real Thing"
-            style="width:44px;height:44px;object-fit:cover;border-radius:8px;border:1.5px solid rgba(253,230,138,0.4);box-shadow:0 4px 12px rgba(0,0,0,0.4);"
-            onerror="this.style.display='none'" />
-        </a>
-        <div class="pz-sol-badge" id="pz-sol-badge">
-          <span class="pz-sol-num" id="pz-sol-num">…</span>
-          <span class="pz-sol-lbl" id="pz-sol-lbl">solutions</span>
-        </div>
-      </div>
-      <div class="pz-board-wrap">
-        <div id="punzle-board" class="pz-board"></div>
-        <div id="punzle-win" class="pz-win" style="display:none;"></div>
-      </div>
-      <div class="pz-sarcasm" id="pz-sarcasm">Fit the pieces. Puns included. 😄</div>
-      <div class="pz-controls-row">
-        <button class="pz-hint-btn" id="pz-hint-btn" onclick="pzShowHint()">💡 Hint</button>
-        <button class="pz-next-btn" id="pz-next-btn" onclick="pzNextSolution()">→ Next Solution</button>
-        <button class="pz-reset-btn" onclick="resetPunzle()">↺ Reset</button>
-      </div>
-      <div id="punzle-tray" class="pz-tray"></div>
-      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=66</div>
-    </div>
-  </div>
-
-  <!-- ── Mobile solver (mobile only, same theme as game) ── -->
-  <div class="pz-mobile-promo" id="pz-mobile-solver">
-    <div class="pz-header-row" style="max-width:96vw;">
-      <div class="pz-date-label" id="ms-date-label"></div>
-      <a href="#shop" style="display:block;flex-shrink:0;">
-        <img src="wooden_puzzle.jpg" alt="Get the Real Thing"
-          style="width:44px;height:44px;object-fit:cover;border-radius:8px;border:1.5px solid rgba(253,230,138,0.4);box-shadow:0 4px 12px rgba(0,0,0,0.4);"
-          onerror="this.style.display='none'" />
-      </a>
-      <div class="pz-sol-badge" id="ms-sol-badge">
-        <span class="pz-sol-num" id="ms-sol-num">…</span>
-        <span class="pz-sol-lbl" id="ms-sol-lbl">solutions</span>
-      </div>
-    </div>
-    <div id="ms-board" class="pz-board" style="width:96vw;"></div>
-    <div class="pz-sarcasm" id="ms-sarcasm">Hint the pieces, then hold to see where they go. 🪵</div>
-    <div class="pz-controls-row">
-      <button class="pz-hint-btn" onclick="msHint()">💡 Hint</button>
-      <button class="pz-next-btn" onclick="msNext()">→ Next</button>
-      <button class="pz-reset-btn" onclick="msReset()">↺ Reset</button>
-    </div>
-    <div id="ms-tray" class="pz-tray" style="max-width:96vw;"></div>
-    <div style="font-size:12px;color:#f3c5d8;font-weight:800;opacity:0.7;">v=66</div>
-    <a href="https://play.google.com/store/apps/details?id=punzle.app" class="pz-mobile-promo-btn" target="_blank">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M3.18 23.76c.3.17.64.24.99.2L15.53 12 11.68 8.15 3.18 23.76zm17.11-10.93c.43-.34.71-.86.71-1.46s-.28-1.12-.71-1.46l-2.13-1.23-4.02 4.02 4.02 4.02 2.13-1.89zM2.34.24C2.13.56 2 .97 2 1.43v21.14c0 .46.13.87.34 1.19l.06.06L13.13 12v-.27L2.4.18l-.06.06z"/></svg>
-      Download Free App
-    </a>
-  </div>
-
-  <div class="divider"></div>
-
-  <section id="features">
-    <h2 class="section-title">How It Works</h2>
-    <p class="section-sub">Simple rules. Daily challenge. Endless puns.</p>
-    <div class="features">
-      <div class="feature-card">
-        <div class="feature-emoji">🧩</div>
-        <div class="feature-title">Fit the Pieces</div>
-        <div class="feature-desc">Place all 8 unique pieces on the board leaving only today's month and day uncovered. Every piece must fit perfectly.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-emoji">📅</div>
-        <div class="feature-title">Changes Every Day</div>
-        <div class="feature-desc">Each day brings a new puzzle. The date changes, the solutions change, the challenge changes. Come back tomorrow!</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-emoji">🔄</div>
-        <div class="feature-title">Rotate & Flip</div>
-        <div class="feature-desc">Each piece can be rotated and flipped to find the perfect fit. Tap the top to flip, tap the bottom to rotate.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-emoji">🏆</div>
-        <div class="feature-title">Daily Leaderboard</div>
-        <div class="feature-desc">Complete the Daily Challenge and submit your time. See how you rank against other Punzle players worldwide.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-emoji">😄</div>
-        <div class="feature-title">Wisconsin Dales Snark</div>
-        <div class="feature-desc">Every move is met with a pun-filled quip from the sarcasm bar. Because puzzles are better with personality.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-emoji">🎯</div>
-        <div class="feature-title">10 Difficulty Levels</div>
-        <div class="feature-desc">From Tiny Tot to Unsupervised Adult — pick your level of competency and earn your bragging rights.</div>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
+<div class="divider"></div>
 
   <div class="shop-section" id="shop">
     <div class="shop-inner">
@@ -546,6 +438,118 @@
   </div>
 
   <!-- ── Contact / Request Form ── -->
+
+
+  <div class="divider"></div>
+
+  <section id="features">
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-sub">Simple rules. Daily challenge. Endless puns.</p>
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-emoji">🧩</div>
+        <div class="feature-title">Fit the Pieces</div>
+        <div class="feature-desc">Place all 8 unique pieces on the board leaving only today's month and day uncovered. Every piece must fit perfectly.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-emoji">📅</div>
+        <div class="feature-title">Changes Every Day</div>
+        <div class="feature-desc">Each day brings a new puzzle. The date changes, the solutions change, the challenge changes. Come back tomorrow!</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-emoji">🔄</div>
+        <div class="feature-title">Rotate & Flip</div>
+        <div class="feature-desc">Each piece can be rotated and flipped to find the perfect fit. Tap the top to flip, tap the bottom to rotate.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-emoji">🏆</div>
+        <div class="feature-title">Daily Leaderboard</div>
+        <div class="feature-desc">Complete the Daily Challenge and submit your time. See how you rank against other Punzle players worldwide.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-emoji">😄</div>
+        <div class="feature-title">Wisconsin Dales Snark</div>
+        <div class="feature-desc">Every move is met with a pun-filled quip from the sarcasm bar. Because puzzles are better with personality.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-emoji">🎯</div>
+        <div class="feature-title">10 Difficulty Levels</div>
+        <div class="feature-desc">From Tiny Tot to Unsupervised Adult — pick your level of competency and earn your bragging rights.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="hero">
+    <img src="punzle_feature_graphic_1024x500.png" alt="Punzle" class="hero-logo" />
+    <p class="hero-tagline">A totally Pun Puzzle that changes Daley. 😄</p>
+    <p class="hero-sub">
+      Fit all 8 pieces on the board. Leave only today's month and day uncovered.
+      A new puzzle every single day — puns included.
+    </p>
+    <div class="hero-btns">
+      <a href="#download" class="btn-primary">📲 Download Free on Android</a>
+      <a href="#shop" class="btn-secondary">🪵 Get the Real Thing</a>
+    </div>
+    <!-- ── Interactive Punzle Game ── -->
+    <div class="pz-game-wrap">
+      <div class="pz-header-row">
+        <div class="pz-date-label" id="pz-date-label"></div>
+        <a href="#shop" style="display:block;flex-shrink:0;">
+          <img src="wooden_puzzle.jpg" alt="Get the Real Thing"
+            style="width:44px;height:44px;object-fit:cover;border-radius:8px;border:1.5px solid rgba(253,230,138,0.4);box-shadow:0 4px 12px rgba(0,0,0,0.4);"
+            onerror="this.style.display='none'" />
+        </a>
+        <div class="pz-sol-badge" id="pz-sol-badge">
+          <span class="pz-sol-num" id="pz-sol-num">…</span>
+          <span class="pz-sol-lbl" id="pz-sol-lbl">solutions</span>
+        </div>
+      </div>
+      <div class="pz-board-wrap">
+        <div id="punzle-board" class="pz-board"></div>
+        <div id="punzle-win" class="pz-win" style="display:none;"></div>
+      </div>
+      <div class="pz-sarcasm" id="pz-sarcasm">Fit the pieces. Puns included. 😄</div>
+      <div class="pz-controls-row">
+        <button class="pz-hint-btn" id="pz-hint-btn" onclick="pzShowHint()">💡 Hint</button>
+        <button class="pz-next-btn" id="pz-next-btn" onclick="pzNextSolution()">→ Next Solution</button>
+        <button class="pz-reset-btn" onclick="resetPunzle()">↺ Reset</button>
+      </div>
+      <div id="punzle-tray" class="pz-tray"></div>
+      <div style="font-size:12px;color:#f3c5d8;font-weight:800;margin-top:8px;opacity:0.7;">v=68</div>
+    </div>
+  </div>
+
+  <!-- ── Mobile solver (mobile only, same theme as game) ── -->
+  <div class="pz-mobile-promo" id="pz-mobile-solver">
+    <div class="pz-header-row" style="max-width:96vw;">
+      <div class="pz-date-label" id="ms-date-label"></div>
+      <a href="#shop" style="display:block;flex-shrink:0;">
+        <img src="wooden_puzzle.jpg" alt="Get the Real Thing"
+          style="width:44px;height:44px;object-fit:cover;border-radius:8px;border:1.5px solid rgba(253,230,138,0.4);box-shadow:0 4px 12px rgba(0,0,0,0.4);"
+          onerror="this.style.display='none'" />
+      </a>
+      <div class="pz-sol-badge" id="ms-sol-badge">
+        <span class="pz-sol-num" id="ms-sol-num">…</span>
+        <span class="pz-sol-lbl" id="ms-sol-lbl">solutions</span>
+      </div>
+    </div>
+    <div id="ms-board" class="pz-board" style="width:96vw;"></div>
+    <div class="pz-sarcasm" id="ms-sarcasm">Hint the pieces, then hold to see where they go. 🪵</div>
+    <div class="pz-controls-row">
+      <button class="pz-hint-btn" onclick="msHint()">💡 Hint</button>
+      <button class="pz-next-btn" onclick="msNext()">→ Next</button>
+      <button class="pz-reset-btn" onclick="msReset()">↺ Reset</button>
+    </div>
+    <div id="ms-tray" class="pz-tray" style="max-width:96vw;"></div>
+    <div style="font-size:12px;color:#f3c5d8;font-weight:800;opacity:0.7;">v=68</div>
+    <a href="https://play.google.com/store/apps/details?id=punzle.app" class="pz-mobile-promo-btn" target="_blank">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M3.18 23.76c.3.17.64.24.99.2L15.53 12 11.68 8.15 3.18 23.76zm17.11-10.93c.43-.34.71-.86.71-1.46s-.28-1.12-.71-1.46l-2.13-1.23-4.02 4.02 4.02 4.02 2.13-1.89zM2.34.24C2.13.56 2 .97 2 1.43v21.14c0 .46.13.87.34 1.19l.06.06L13.13 12v-.27L2.4.18l-.06.06z"/></svg>
+      Download Free App
+    </a>
+  </div>
+
+
+
   <section id="contact" style="position:relative;z-index:1;padding:80px 24px;max-width:680px;margin:0 auto;">
     <h2 class="section-title">💬 Comments & Requests</h2>
     <p class="section-sub">Have a question, comment, or want to request a custom product? We'd love to hear from you!</p>
@@ -672,9 +676,9 @@
   </footer>
 
 
-  <script src="punzle-game.js?v=66"></script>
-  <script src="punzle-render.js?v=66"></script>
-  <script src="punzle-interact.js?v=66"></script>
+  <script src="punzle-game.js?v=68"></script>
+  <script src="punzle-render.js?v=68"></script>
+  <script src="punzle-interact.js?v=68"></script>
   <script>
     // ── Mobile solver — completely separate from game state ──────────────────
     (function() {
