@@ -402,8 +402,27 @@ function _valid(cells) {
 }
 
 function _place(cells) {
+  // Place the piece temporarily to check if solutions still exist
+  const testPlacement = { name:selectedPiece.name, color:selectedPiece.color, cells };
+  const testPieces = [...placedPieces, testPlacement];
+  const compat = _allSolutions.filter(sol =>
+    testPieces.every(p => {
+      const sp = sol.find(s => s.piece === p.name);
+      if (!sp) return false;
+      const spKeys = new Set(sp.cells.map(([r,c]) => cellKey(r,c)));
+      return p.cells.every(([r,c]) => spKeys.has(cellKey(r,c))) &&
+             p.cells.length === sp.cells.length;
+    })
+  );
+
+  if (compat.length === 0) {
+    // Fits physically but no solutions remain — play fail sound
+    _playFail();
+    return; // don't place it
+  }
+
   _playPlace();
-  placedPieces.push({ name:selectedPiece.name, color:selectedPiece.color, cells });
+  placedPieces.push(testPlacement);
   selectedPiece = null; selectedCells = []; currentRot = 0; currentFlip = false;
   // Reset hints on every placement — hint will recalculate from remaining solutions
   _hintSolution  = null;
