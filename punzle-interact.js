@@ -415,13 +415,12 @@ function _place(cells) {
     })
   );
 
-  if (compat.length === 0) {
-    // Fits physically but no solutions remain — play fail sound
-    _playFail();
-    return; // don't place it
+  // Play appropriate sound — fail if no solutions remain, place if solvable
+  if (_allSolutions.length > 0 && compat.length === 0) {
+    _playFail(); // warning — unsolvable position but piece still places
+  } else {
+    _playPlace();
   }
-
-  _playPlace();
   placedPieces.push(testPlacement);
   selectedPiece = null; selectedCells = []; currentRot = 0; currentFlip = false;
   // Reset hints on every placement — hint will recalculate from remaining solutions
