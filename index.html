@@ -3,727 +3,875 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wisconsin Dales | Home</title>
-
+<title>Punzle — The Daily Puzzle Game</title>
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#b70036">
-
-<!-- Tailwind -->
-<script src="https://cdn.tailwindcss.com"></script>
-
 <style>
-    body {
-        background-color: #b70036;
-        font-family: sans-serif;
-        margin: 0;
-        text-align: center;
-    }
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500&display=swap');
 
-    html {
-        scroll-behavior: smooth;
-    }
+  :root {
+    --red: #b70036;
+    --red-dark: #8c0029;
+    --cyan: #00bcd4;
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #1a1a1a;
+    --border: rgba(255,255,255,0.07);
+    --border-red: rgba(183,0,54,0.5);
+    --text: #f0f0f0;
+    --muted: #666666;
+    --subtle: #333333;
+  }
 
-    .hero {
-        background-color: #b70036;
-        color: white;
-        padding: 90px 20px;
-    }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    .hero-logo {
-        max-width: 360px;
-        margin: 0 auto 30px;
-    }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+  }
 
-    @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-6px); }
-    }
+  a { text-decoration: none; color: inherit; }
 
-    .floaty {
-        animation: float 4s ease-in-out infinite;
-    }
+  /* ── NAV ── */
+  nav {
+    background: var(--bg);
+    border-bottom: 0.5px solid var(--border);
+    padding: 14px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
 
-    /* Puns Styling & Gradient Animation */
-    @keyframes gradientMove {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--red);
+    font-size: 18px;
+  }
 
-    #pun {
-        font-size: 2.5rem;
-        font-weight: 900;
-        background: linear-gradient(270deg, #b70036, #FF79A9, #FFC0CB);
-        background-size: 600% 600%;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: 1px 1px 4px rgba(0,0,0,0.15);
-        text-align: center;
-        padding: 20px;
-        max-width: 90%;
-        transition: all 0.5s ease-in-out;
-        animation: gradientMove 5s ease infinite;
-    }
+  .nav-links { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
 
-    /* Pop animation for pun text */
-    @keyframes pop {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.2); }
-        100% { transform: scale(1); }
-    }
+  .nav-a {
+    font-size: 12px;
+    color: #888;
+    transition: color 0.2s;
+  }
+  .nav-a:hover { color: var(--text); }
 
-    /* Bounce animation for pun text */
-    @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
-    }
+  .nav-btn {
+    font-size: 12px;
+    font-weight: 500;
+    background: var(--red);
+    color: #fff;
+    padding: 7px 16px;
+    border-radius: 30px;
+    transition: background 0.2s;
+  }
+  .nav-btn:hover { background: var(--red-dark); }
 
-    .pop {
-        animation: pop 0.4s ease-in-out, bounce 0.8s ease-in-out;
-    }
+  .nav-btn2 {
+    font-size: 12px;
+    font-weight: 500;
+    background: var(--cyan);
+    color: #fff;
+    padding: 7px 16px;
+    border-radius: 30px;
+    transition: opacity 0.2s;
+  }
+  .nav-btn2:hover { opacity: 0.85; }
 
-    /* Water drop effect for the button */
-    .splash-btn {
-        position: relative;
-        overflow: hidden;
-    }
+  /* ── HERO ── */
+  .hero {
+    padding: 60px 32px 48px;
+    text-align: center;
+    border-bottom: 0.5px solid var(--border);
+  }
 
-    .splash-btn span {
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.7);
-        transform: scale(0);
-        animation: splash 0.6s ease-out forwards;
-        pointer-events: none;
-    }
+  .hero-logo-link img {
+    max-width: 520px;
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: block;
+    margin: 0 auto;
+    transition: opacity 0.2s;
+  }
+  .hero-logo-link:hover img { opacity: 0.9; }
 
-    @keyframes splash {
-        0% { transform: scale(0); opacity: 1; }
-        80% { transform: scale(3); opacity: 0.6; }
-        100% { transform: scale(4); opacity: 0; }
-    }
+  .hero-tagline {
+    margin: 22px auto 0;
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 380px;
+    line-height: 1.7;
+  }
 
-    /* Button pop animation */
-    @keyframes buttonPop {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.1); }
-        100% { transform: scale(1); }
-    }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg3);
+    border: 0.5px solid var(--red);
+    color: var(--red);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 14px;
+    border-radius: 30px;
+    margin-top: 16px;
+    letter-spacing: 0.04em;
+  }
 
-    /* ===========================
-       THE PLUNGE (COMMENTS)
-       =========================== */
+  .ctas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 28px;
+  }
 
-    .pun-plunge-wrap {
-        max-width: 920px;
-        margin: 40px auto 0;
-        padding: 0 16px 40px;
-        position: relative;
-    }
+  .cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--red);
+    color: #fff;
+    padding: 14px 36px;
+    border-radius: 40px;
+    font-weight: 500;
+    font-size: 15px;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .cta-primary:hover { background: var(--red-dark); transform: translateY(-1px); }
 
-    .pun-plunge-card {
-        background: #6fd6e8;
-        border-radius: 24px;
-        box-shadow: 0 16px 34px rgba(0,0,0,0.14);
-        border-top: 6px solid #b70036;
-        padding: 26px 22px;
-        transform-origin: center center;
-        position: relative;
-        overflow: hidden;
-    }
+  .cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--cyan);
+    color: #fff;
+    padding: 14px 36px;
+    border-radius: 40px;
+    font-weight: 500;
+    font-size: 15px;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .cta-secondary:hover { opacity: 0.88; transform: translateY(-1px); }
 
-    .pun-plunge-title {
-        font-size: 2.7rem;
-        font-weight: 900;
-        color: #b70036;
-        margin: 0 0 6px;
-    }
+  .store-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
 
-    .pun-plunge-sub {
-        color: #555;
-        margin: 0 0 18px;
-		font-size: 1.3rem;
-        font-weight: 600;
-    }
+  .store-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 11px 20px;
+    transition: border-color 0.2s;
+  }
+  .store-badge:hover { border-color: var(--red); }
 
-    .pun-plunge-form textarea {
+  .store-icon { color: var(--red); font-size: 24px; }
+
+  .store-text { display: flex; flex-direction: column; text-align: left; }
+  .store-small { font-size: 10px; color: #777; line-height: 1; margin-bottom: 2px; }
+  .store-name { font-size: 13px; color: var(--text); font-weight: 500; }
+  .store-live { font-size: 10px; color: var(--cyan); font-weight: 500; margin-left: 6px; }
+
+  /* ── DIVIDER ── */
+  .divider { height: 0.5px; background: var(--border); margin: 0 32px; }
+
+  /* ── HOW IT WORKS ── */
+  .section { padding: 40px 32px; }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--red);
+    font-weight: 500;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .section-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    max-width: 480px;
+  }
+
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+  }
+
+  .how-card {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 18px;
+    transition: border-color 0.2s;
+  }
+  .how-card:hover { border-color: var(--border-red); }
+
+  .how-num {
+    font-size: 11px;
+    color: var(--red);
+    font-weight: 500;
+    margin-bottom: 10px;
+    letter-spacing: 0.06em;
+  }
+
+  .how-title {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+
+  .how-desc { font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+  /* ── LOGO BREAK ── */
+  .logo-break {
+    padding: 36px 32px;
+    text-align: center;
+    border-top: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .logo-break a img {
+    max-width: 380px;
+    width: 100%;
+    border-radius: 10px;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+  }
+  .logo-break a:hover img { opacity: 1; }
+
+  /* ── FEATURES ── */
+  .features {
+    padding: 32px 32px 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 12px;
+  }
+
+  .feat {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    transition: border-color 0.2s;
+  }
+  .feat:hover { border-color: var(--border-red); }
+
+  .feat-icon { color: var(--red); font-size: 22px; margin-bottom: 10px; display: block; }
+  .feat-title { font-size: 13px; color: var(--text); font-weight: 500; margin-bottom: 5px; }
+  .feat-desc { font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+  /* ── TESTER ── */
+  .tester-wrap { margin: 0 32px 32px; }
+
+  .tester-card {
+    background: var(--bg2);
+    border: 1.5px solid var(--red);
+    border-radius: 16px;
+    padding: 28px;
+    text-align: center;
+  }
+
+  .tester-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--red);
+    font-weight: 500;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .tester-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .tester-sub {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 22px;
+    max-width: 440px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .tester-steps {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+
+  .tester-step {
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: #888;
+    line-height: 1.5;
+    text-align: left;
+    flex: 1;
+    min-width: 130px;
+    max-width: 190px;
+  }
+
+  .tester-step strong { display: block; color: var(--text); font-weight: 500; margin-bottom: 3px; }
+
+  .email-row {
+    display: flex;
+    gap: 8px;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  .email-input {
+    flex: 1;
+    background: var(--bg);
+    border: 0.5px solid var(--subtle);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text);
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.2s;
+  }
+  .email-input:focus { border-color: var(--red); }
+  .email-input::placeholder { color: #444; }
+
+  .email-submit {
+    background: var(--red);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 22px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+  }
+  .email-submit:hover { background: var(--red-dark); }
+  .email-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .tester-note {
+    font-size: 11px;
+    color: #444;
+    margin-top: 12px;
+  }
+
+  .tester-note a { color: var(--cyan); }
+  .tester-note a:hover { text-decoration: underline; }
+
+  .tester-status { min-height: 20px; margin-top: 10px; font-size: 12px; font-weight: 500; }
+  .tester-status.ok { color: var(--cyan); }
+  .tester-status.err { color: var(--red); }
+
+  /* ── REVIEW ── */
+  .review-wrap { margin: 0 32px 32px; }
+
+  .review-card {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+  }
+
+  .review-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .review-icon-wrap {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: var(--bg3);
+    border: 0.5px solid var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 22px;
+    color: var(--red);
+  }
+
+  .review-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--text);
+    margin-bottom: 5px;
+  }
+
+  .review-sub { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  .review-encourage {
+    background: var(--bg3);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .review-encourage .enc-icon { color: var(--cyan); font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+  .review-encourage strong { color: #999; font-weight: 500; }
+
+  .review-type-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .rtype {
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    border-radius: 30px;
+    padding: 7px 16px;
+    font-size: 12px;
+    color: #777;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .rtype:hover { border-color: var(--red); color: #ccc; }
+  .rtype.active { background: var(--red); border-color: var(--red); color: #fff; }
+
+  .stars-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+
+  .stars-label { font-size: 12px; color: var(--muted); margin-right: 4px; }
+
+  .star {
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--subtle);
+    line-height: 1;
+    transition: color 0.15s, transform 0.1s;
+  }
+  .star:hover { transform: scale(1.15); }
+  .star.lit { color: var(--red); }
+
+  #starLabel { font-size: 12px; color: #555; margin-left: 6px; }
+
+  .name-row { display: flex; gap: 8px; margin-bottom: 12px; }
+
+  .review-input {
+    flex: 1;
+    background: var(--bg);
+    border: 0.5px solid var(--subtle);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--text);
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.2s;
+  }
+  .review-input:focus { border-color: var(--red); }
+  .review-input::placeholder { color: #333; }
+
+  textarea.review-ta {
+    width: 100%;
+    background: var(--bg);
+    border: 0.5px solid var(--subtle);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--text);
     min-height: 100px;
-    }
+    resize: vertical;
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.2s;
+  }
+  textarea.review-ta:focus { border-color: var(--red); }
+  textarea.review-ta::placeholder { color: #333; }
 
-    .pun-plunge-form label {
-        display: block;
-		font-size: 1.2rem;
-        font-weight: 900;
-        color: #7c0d22;
-        margin: 10px 0 6px;
-    }
+  .review-meta { font-size: 11px; color: #333; text-align: right; margin-top: 5px; }
 
-    .pun-plunge-form textarea {
-        width: 100%;
-        border: 2px solid rgba(0,0,0,0.10);
-        border-radius: 16px;
-        padding: 12px 12px;
-        font-size: 1.2rem;
-        outline: none;
-        min-height: 140px;
-        resize: vertical;
-    }
+  .review-submit {
+    margin-top: 14px;
+    width: 100%;
+    background: var(--red);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 13px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .review-submit:hover { background: var(--red-dark); }
+  .review-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    .pun-meta {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 8px;
-        color: #666;
-        font-weight: 700;
-        font-size: 0.95rem;
-        justify-content: flex-end;
-    }
+  .review-status { min-height: 20px; margin-top: 10px; font-size: 12px; font-weight: 500; text-align: center; }
+  .review-status.ok { color: var(--cyan); }
+  .review-status.err { color: var(--red); }
 
-    .pun-submit {
-        margin-top: 14px;
-        width: 100%;
-        border: none;
-        border-radius: 18px;
-        padding: 14px 16px;
-        font-size: 1.1rem;
-        font-weight: 900;
-        cursor: pointer;
-        color: white;
-        background: linear-gradient(135deg, #00bcd4, #ff5aa5);
-        box-shadow: 0 14px 26px rgba(0,0,0,0.16);
-        transition: transform 140ms ease, filter 140ms ease;
-    }
+  /* ── FOOTER ── */
+  footer {
+    background: #070707;
+    border-top: 0.5px solid var(--border);
+    padding: 24px 32px;
+    text-align: center;
+  }
 
-    .pun-submit:hover { transform: translateY(-1px); filter: brightness(1.03); }
-    .pun-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
 
-    .pun-status {
-        min-height: 1.3em;
-        margin: 10px 0 0;
-        font-weight: 900;
-        color: #7c0d22;
-        text-align: center;
-    }
+  .footer-copy { font-size: 12px; color: #444; }
 
-    /* Honeypot */
-    .hp { display: none !important; }
-
-    /* Drain animation */
-    .drain-spin {
-        animation: drainSpin 1.15s ease-in forwards;
-    }
-
-    @keyframes drainSpin {
-        0%   { transform: rotate(0deg) scale(1); opacity: 1; filter: blur(0px); }
-        60%  { transform: rotate(540deg) scale(0.72); opacity: 0.85; filter: blur(0.4px); }
-        100% { transform: rotate(920deg) scale(0.06); opacity: 0; filter: blur(1.4px); }
-    }
-
-    /* Overlay while draining */
-    .pun-overlay {
-        position: absolute;
-        inset: 0;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        pointer-events: none;
-    }
-
-    .pun-overlay.show { display: flex; }
-
-    .pun-overlay-card {
-        background: rgba(0,0,0,0.78);
-        color: white;
-        border-radius: 22px;
-        padding: 18px 18px;
-        text-align: center;
-        max-width: 420px;
-        box-shadow: 0 18px 34px rgba(0,0,0,0.35);
-        font-weight: 800;
-    }
-
-    .swirl {
-        font-size: 2.3rem;
-        margin-bottom: 6px;
-        animation: swirl 700ms linear infinite;
-    }
-
-    @keyframes swirl {
-        to { transform: rotate(360deg); }
-    }
+  /* ── ICONS (inline SVG fallback via content) ── */
+  .icon-gplay::before { content: "▶"; font-size: 0.9em; }
+  .icon-mail::before { content: "✉"; font-size: 0.9em; }
+  .icon-puzzle::before { content: "◈"; font-size: 0.9em; }
+  .icon-send::before { content: "→"; font-size: 0.9em; }
+  .icon-star::before { content: "★"; font-size: 0.9em; }
+  .icon-bulb::before { content: "💡"; font-size: 0.85em; }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav class="bg-white p-5 border-b flex justify-around items-center sticky top-0 z-50 shadow-sm">
-    <div class="font-bold text-[#b70036] text-xl">WI DALES</div>
-    <div class="flex gap-6 items-center">
-        <a href="#" class="font-bold text-gray-700 hover:text-[#b70036]">Home</a>
-        <a href="#about" class="font-bold text-gray-700 hover:text-[#D81B60]">About</a>
-	<a href="#the-plunge" class="font-bold text-gray-700 hover:text-[#00bcd4] transition">Comment</a> 
-        <a href="gallery.html"
-           class="bg-[#b70036] text-white px-4 py-2 rounded-full font-bold hover:opacity-90 transition">
-            Visit Splash Zone 💦
-        </a>
-         <a href="ExcitingNews/"
-           class="bg-[#00bcd4] text-white px-4 py-2 rounded-full font-bold hover:opacity-90 transition">
-            🚀 Exciting News 🚀
-        </a>
-    </div>
+<nav>
+  <div class="nav-brand">Wi Dales</div>
+  <div class="nav-links">
+    <a class="nav-a" href="#">Home</a>
+    <a class="nav-a" href="#review-zone">Leave a review</a>
+    <a class="nav-btn2" href="#tester-zone">Join testers</a>
+    <a class="nav-btn" href="https://play.google.com/apps/testing/punzle.app" target="_blank">Get early access</a>
+  </div>
 </nav>
 
 <!-- HERO -->
-<header class="hero">
-
-    <img src="wisconsin-dales.jpg" alt="Wisconsin Dales" class="mx-auto w-full max-w-xs"/>
-
-    <p class="text-xl mb-10 opacity-90 max-w-xl mx-auto">
-        A personal play on the classic vacation — with way more PUN.
-    </p>
-
-    <div class="flex flex-col items-center gap-8">
-
-        <a href="#pun"
-           class="inline-block bg-white text-[#b70036] px-12 py-4 rounded-full font-black text-2xl shadow-xl
-              hover:scale-105 transition-transform">
-        💦 ENTER THE SPLASH ZONE 💦
-    </a>
-
-        <a href="wisconsindales_solver.html"
-           id="solverBtn"
-           class="inline-block bg-[#00bcd4] text-white px-12 py-4 rounded-full font-black text-2xl shadow-xl
-              hover:scale-105 transition-transform splash-btn">
-        🧩 SOLVE THE DAILY PUZZLE
-    </a>
-
-        <a href="gallery.html"
-           class="floaty inline-block rounded-3xl border-4 border-white/80 p-4 hover:border-white hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] transition-all duration-300">
-            <img src="wisconsin-dales-creations.png" alt="Wisconsin Dales Creations" class="mx-auto w-full max-w-xs">
-        </a>
-
-    </div>
-</header>
-
-<!-- MAIN -->
-<main class="max-w-6xl mx-auto py-12 px-6">
-
-    <!-- PUN ZONE -->
-    <section class="bg-white p-10 rounded-3xl shadow-xl border-t-4 border-[#b70036] text-center mb-12">
-
-        <h2 class="text-3xl font-black text-[#b70036] mb-6">Da PUN Zone 😎</h2>
-
-        <p id="pun" class="min-h-[4rem] transition-opacity duration-300">Loading peak Wisconsin humor…</p>
-
-        <button id="punBtn"
-            class="bg-[#b70036] text-white px-10 py-4 rounded-full font-black text-xl shadow-lg hover:scale-105 transition-transform splash-btn">
-             💦 SPLASH ME ANOTHER 💦
-        </button>
-
-    </section>
-
-    <!-- INFO CARDS -->
-    <div class="grid md:grid-cols-3 gap-8">
-
-        <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#b70036]" id="about">
-            <h2 class="text-2xl font-bold text-[#b70036] mb-4">The Vision</h2>
-            <p class="text-gray-600">
-                Just for the PUN of it!.
-            </p>
-        </section>
-
-        <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#b70036]">
-            <h2 class="text-2xl font-bold text-[#b70036] mb-4">The Difference</h2>
-            <p class="text-gray-600">No Lines, fewer snacks, & Our wave pool is imaginary.</p>
-        </section>
-
-        <section class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#b70036]" id="contact">
-            <h2 class="text-2xl font-bold text-[#b70036] mb-4">Contact</h2>
-            <p class="text-gray-600">Just listen for excessive dad laughter.</p>
-        </section>
-
-    </div>
-
-    <!-- ===========================
-         THE PLUNGE (COMMENTS)
-         =========================== -->
-    <section class="pun-plunge-wrap" id="the-plunge">
-
-        <div class="pun-plunge-card" id="punPlungeCard">
-            <h3 class="pun-plunge-title">🚽 THE PLUNGE ZONE 🚽</h3>
-            <p class="pun-plunge-sub">
-                Drop iT! Plop it! & <span style="font-weight:900;color:#b70036;">DON'T FORGET TO FLUSH!</span>
-            </p>
-
-            <form
-  id="punPlungeForm"
-  action="https://formspree.io/f/xnjbjdzr"
-  method="POST"
-  class="pun-plunge-form"
->
-  <!-- Honeypot anti-spam -->
-  <input
-    type="text"
-    name="_gotcha"
-    class="hp"
-    tabindex="-1"
-    autocomplete="off"
-  />
-
-  <!-- Email Subject Line -->
-  <input
-    type="hidden"
-    name="_subject"
-    value="🚽 New Plunge Comment from Wisconsin Dales!"
-  />
-
-  <label>Your Comment will go exactly where it needs to go!</label>
-
-  <!-- ✅ Comment Box -->
-  <textarea
-    name="comment"
-    id="punMessage"
-    required
-    maxlength="800"
-    placeholder="💦  Drop it here and we'll flush it to HQ...  💦"
-  ></textarea>
-
-  <!-- Character Counter -->
-  <div class="pun-meta">
-    <span><span id="charCount">0</span>/800</span>
-  </div>
-
-  <!-- Context Fields -->
-  <input type="hidden" name="page" id="punPage" />
-  <input type="hidden" name="timestamp" id="punTime" />
-  <input type="hidden" name="site" value="wisconsindales.com" />
-
-  <!-- Submit Button -->
-  <button type="submit" id="punSubmit" class="pun-submit">
-    FLUSH 🌀
-  </button>
-
-  <!-- Status Message -->
-  <p class="pun-status" id="punStatus" aria-live="polite"></p>
-</form>
-        </div>
-
-        <div class="pun-overlay" id="punOverlay" aria-hidden="true">
-            <div class="pun-overlay-card">
-                <div class="swirl">🌀</div>
-                WHOOSH! DON'T FORGET TO WIPE!!!
-            </div>
-        </div>
-
-    </section>
-
-</main>
-
-<section class="bg-white p-6 rounded-2xl shadow-lg mt-10 mb-10 max-w-3xl mx-auto">
-  <h3 class="text-2xl font-bold text-[#b70036] mb-2">
-     App Arriving Soon
-  </h3>
-
-  <p class="text-gray-600 mb-4">
-    (Testing version — not from the Play Store yet)
-  </p>
-
-  <a href="/wisconsindales.apk"
-     class="inline-block bg-[#b70036] text-white px-6 py-3 rounded-full font-bold hover:opacity-90">
-    Download APP
+<div class="hero">
+  <a class="hero-logo-link" href="https://wisconsindales.com/Punzle" target="_blank">
+    <img src="punzle_feature_graphic_1024x500.png" alt="Punzle — The Daily Puzzle Game" />
   </a>
+  <p class="hero-tagline">A new daily pun-powered word puzzle. One puzzle a day. Can you solve it before you run out of guesses?</p>
+  <div class="hero-badge">
+    <span class="icon-gplay"></span>Early access open now on Google Play
+  </div>
+  <div class="ctas">
+    <a class="cta-primary" href="https://play.google.com/apps/testing/punzle.app" target="_blank">
+      <span class="icon-gplay"></span>Download on Google Play
+    </a>
+    <a class="cta-secondary" href="#tester-zone">
+      <span class="icon-mail"></span>Sign up as a tester
+    </a>
+  </div>
+  <div class="store-row">
+    <a class="store-badge" href="https://play.google.com/apps/testing/punzle.app" target="_blank">
+      <span class="store-icon icon-gplay"></span>
+      <div class="store-text">
+        <span class="store-small">Early access on</span>
+        <span class="store-name">Google Play <span class="store-live">Live</span></span>
+      </div>
+    </a>
+    <a class="store-badge" href="https://wisconsindales.com/Punzle" target="_blank">
+      <span class="store-icon icon-puzzle"></span>
+      <div class="store-text">
+        <span class="store-small">Play in browser</span>
+        <span class="store-name">Web version</span>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="section-label">How it works</div>
+  <div class="section-title">One puzzle. One pun. Daily.</div>
+  <p class="section-sub">A fresh brain-tickler every day built around the art of the pun.</p>
+  <div class="how-grid">
+    <div class="how-card"><div class="how-num">01</div><div class="how-title">Get the clue</div><div class="how-desc">A pun-loaded hint drops every morning.</div></div>
+    <div class="how-card"><div class="how-num">02</div><div class="how-title">Solve it</div><div class="how-desc">Guess the answer before your attempts run out.</div></div>
+    <div class="how-card"><div class="how-num">03</div><div class="how-title">Share it</div><div class="how-desc">Show your score without spoiling the pun.</div></div>
+    <div class="how-card"><div class="how-num">04</div><div class="how-title">Come back</div><div class="how-desc">New puzzle resets every day at midnight.</div></div>
+  </div>
 </section>
 
+<div class="logo-break">
+  <a href="https://wisconsindales.com/Punzle" target="_blank">
+    <img src="punzle_feature_graphic_1024x500.png" alt="Punzle — The Daily Puzzle Game" />
+  </a>
+</div>
+
+<!-- FEATURES -->
+<div class="features">
+  <div class="feat">
+    <span class="feat-icon">📅</span>
+    <div class="feat-title">Daily fresh puzzle</div>
+    <div class="feat-desc">Never the same puzzle twice. New ones drop every day.</div>
+  </div>
+  <div class="feat">
+    <span class="feat-icon">⏱</span>
+    <div class="feat-title">Quick to play</div>
+    <div class="feat-desc">Under two minutes. Perfect for your morning coffee.</div>
+  </div>
+  <div class="feat">
+    <span class="feat-icon">🏆</span>
+    <div class="feat-title">Track your streak</div>
+    <div class="feat-desc">Build a daily streak and defend your pun credentials.</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- TESTER SIGNUP -->
+<div class="tester-wrap" id="tester-zone" style="margin-top:32px;">
+  <div class="tester-card">
+    <div class="tester-eyebrow">Early tester program</div>
+    <div class="tester-title">Get early access to Punzle</div>
+    <p class="tester-sub">Sign up below and we'll add your Google account email to the Play Console testers list — then the link below unlocks the app for you on Google Play.</p>
+    <div class="tester-steps">
+      <div class="tester-step"><strong>Step 1</strong>Enter your Google account email below.</div>
+      <div class="tester-step"><strong>Step 2</strong>We'll add you to the testers list.</div>
+      <div class="tester-step"><strong>Step 3</strong>Tap the Play Store link and install.</div>
+    </div>
+    <div class="email-row">
+      <input class="email-input" type="email" id="testerEmail" placeholder="your@gmail.com" />
+      <button class="email-submit" onclick="submitTester()">
+        <span class="icon-send"></span> Sign me up
+      </button>
+    </div>
+    <div class="tester-status" id="testerStatus"></div>
+    <p class="tester-note">After you're added, use this link to install: <a href="https://play.google.com/apps/testing/punzle.app" target="_blank">play.google.com/apps/testing/punzle.app</a></p>
+  </div>
+</div>
+
+<div class="divider" style="margin-top:32px;"></div>
+
+<!-- PUNZLE REVIEW -->
+<div class="review-wrap" id="review-zone" style="margin-top:32px;">
+  <div class="review-card">
+    <div class="review-header">
+      <div class="review-icon-wrap">
+        <span class="icon-star" style="font-size:22px;color:var(--red);">★</span>
+      </div>
+      <div class="review-heading">
+        <div class="review-title">The Punzle Review</div>
+        <p class="review-sub">Played it? Have ideas? Found a bug? We want to hear all of it — reviews, requests, and wild suggestions all welcome. Help make Punzle awesome.</p>
+      </div>
+    </div>
+
+    <div class="review-encourage">
+      <span class="enc-icon">💡</span>
+      <div><strong>What's helpful:</strong> What did you enjoy? What felt off? Any puzzle ideas, feature requests, difficulty feedback, or bugs — drop it all here. Every message is read by the person building the game.</div>
+    </div>
+
+    <div class="review-type-row">
+      <button class="rtype active" onclick="setType(this,'Review')">★ Review</button>
+      <button class="rtype" onclick="setType(this,'Feature request')">+ Feature request</button>
+      <button class="rtype" onclick="setType(this,'Bug report')">⚠ Bug report</button>
+      <button class="rtype" onclick="setType(this,'Puzzle idea')">◈ Puzzle idea</button>
+      <button class="rtype" onclick="setType(this,'General')">✉ General</button>
+    </div>
+
+    <div class="stars-row" id="starsRow">
+      <span class="stars-label">Your rating</span>
+      <span class="star" onclick="setStar(1)">★</span>
+      <span class="star" onclick="setStar(2)">★</span>
+      <span class="star" onclick="setStar(3)">★</span>
+      <span class="star" onclick="setStar(4)">★</span>
+      <span class="star" onclick="setStar(5)">★</span>
+      <span id="starLabel"></span>
+    </div>
+
+    <div class="name-row">
+      <input class="review-input" type="text" id="reviewName" placeholder="Your name (optional)" style="max-width:210px;" />
+      <input class="review-input" type="email" id="reviewEmail" placeholder="Email (optional — for follow-up)" />
+    </div>
+
+    <textarea class="review-ta" id="reviewTa" maxlength="1000" placeholder="Tell us what you think — the good, the bad, the punny..."></textarea>
+    <div class="review-meta"><span id="reviewCount">0</span> / 1000</div>
+
+    <input type="hidden" id="reviewType" value="Review" />
+    <input type="hidden" id="reviewStars" value="0" />
+
+    <button class="review-submit" onclick="submitReview()">
+      <span class="icon-send"></span> Send your review
+    </button>
+    <div class="review-status" id="reviewStatus"></div>
+  </div>
+</div>
+
 <!-- FOOTER -->
-<footer class="bg-[#7c0d22] text-white py-10 text-center font-semibold">
-    Wisconsin Dales — Come for the pun. Stay cause you clicked.
+<footer>
+  <div class="footer-brand">Wisconsin Dales</div>
+  <div class="footer-copy">Come for the pun. Stay cause you clicked.</div>
 </footer>
 
-<!-- Splash Sound -->
-<audio id="splashSound" src="splash.wav" preload="auto"></audio>
-
-<!-- Flush Sound (ADD THIS FILE: flush.wav) -->
-<audio id="flushSound" src="flush.wav" preload="auto"></audio>
-
-<!-- SCRIPT -->
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-
-    const puns = [
-        "Welcome to the Wisconsin Dales — where the only thing wetter than the jokes is the weather.",
-        "Our slides are imaginary, but the puns are real slippery.",
-        "Come for the Dales. Stay because you misread the sign.",
-        "No water parks, just splash damage from laughter.",
-        "If you’re not having fun, you're in the right place.",
-        "Less chlorine. More groan-ine.",
-        "If you’re confused, you’re doing it right.",
-        "Wisconsin Dales: where every joke is a little cheesy — as tradition demands.",
-        "You wanted the Dells. You got the Dales. Close enough for a Midwestern goodbye.",
-        "All thrills, no spills… unless you spill your drink laughing.",
-        "We’re on a pun-limited aquifer. Please recycle your groans.",
-        "This site contains 0% water and 100% dad approval.",
-        "The Dells zigged. The Dales zagged. Nobody knows why.",
-        "Please keep your arms, legs, and expectations inside the joke at all times.",
-        "Welcome to the Wisconsin Dales — the only attraction where the main splash is sarcasm.",
-        "It’s like the Dells, but with no people and more emotional support drinks.",
-        "Our lazy river is just you standing around thinking about snacks.",
-        "No water rides, but plenty of dry humor.",
-        "Wisconsin Dales: come for the name, stay because you already parked.",
-        "If your not laughing, don't worry, you will at the next click.",
-        "HA HA HA...Made You CLick!.",
-        "The slides are imaginary, but the dad jokes are very real.",
-        "We proudly operate on a strict no-refunds-for-eye-rolling policy.",
-        "If found fun, please return to the Wisconsin Dales immediately.",
-        "Our wave pool is just someone saying “woooosh” nearby.",
-        "This is what happens when the Dells takes a wrong turn and leans into it.",
-        "Zero chlorine. 100% WTF.",
-        "If you don't get it, & I don't get it.  Well... THAT MAKES THREE OF US!.",
-        "We’re not saying it’s better than the Dells… well...yup that's exactly what were saying.",
-        "Come ride our most popular attraction: mild amusement.",
-        "Our gift shop is just compliments and bad advice.",
-        "You can’t spell ‘Dells’ without ‘Dales’… actually you can, ok - Mr. Proof Reader!.",
-        "We’re a splash of pun and a puddle of responsibility.",
-        "If excitement lasts more than four hours, your in the wrong place.",
-        "The only thing deeper than our kiddie pool is our commitment to PUN.",
-        "Wisconsin Dales: where expectations are Unimaginable.",
-        "Our admission price is one polite nod and a chuckle.",
-        "What happens at the Dales, stays at the....nope...nope...thats a different place!.",
-        "Please, supervision of childish adults is frowned upon.",
-        "This attraction may cause uncontrollable sighing and smiling.",
-        "We may not have height requirements, but the Lack of Immaturity is NOT ALLOWED.",
-        "Our rides are imaginary, which makes the lines move as fast as you'd like.",
-        "The Midwest goodbye starts here and never truly ends.",
-        "If you’re confused, you’re still doing it right, keep going.",
-        "Welcome! You are now officially ‘having a good enough time.’",
-        "Wisconsin Dales — because someone had to lean into the typo.",
-        "If you have nine apples in one hand and eight oranges in another, what do you have?.",
-        "Really Big Hands!.",
-        "We take Pun very seriously."
-    ];
-
-    const punEl = document.getElementById("pun");
-    const btn = document.getElementById("punBtn");
-
-    if (!punEl) return;
-
-    let index = Math.floor(Math.random() * puns.length);
-
-    function nextPun() {
-        punEl.classList.add("opacity-0");
-        setTimeout(() => {
-            index = (index + 1) % puns.length;
-            punEl.textContent = puns[index];
-            punEl.classList.remove("opacity-0");
-
-            // Pop + bounce
-            punEl.classList.add("pop");
-            setTimeout(() => punEl.classList.remove("pop"), 800);
-        }, 200);
+  async function submitTester() {
+    const emailEl = document.getElementById("testerEmail");
+    const statusEl = document.getElementById("testerStatus");
+    const btn = document.querySelector(".email-submit");
+    const email = emailEl.value.trim();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      statusEl.className = "tester-status err";
+      statusEl.textContent = "Please enter a valid email address.";
+      return;
     }
-
-    btn?.addEventListener("click", nextPun);
-
-    // Splash effect + button pop
-    btn?.addEventListener("click", (e) => {
-        // Play splash sound
-        const audio = document.getElementById("splashSound");
-        if (audio) {
-            audio.currentTime = 0;
-            audio.play();
-        }
-
-        // Splash animation
-        const splash = document.createElement("span");
-        const rect = btn.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-
-        splash.style.width = splash.style.height = `${size}px`;
-        splash.style.left = `${e.clientX - rect.left - size/2}px`;
-        splash.style.top = `${e.clientY - rect.top - size/2}px`;
-
-        btn.appendChild(splash);
-
-        setTimeout(() => {
-            splash.remove();
-        }, 600);
-
-        // Button pop
-        btn.style.animation = "buttonPop 0.3s ease";
-        setTimeout(() => btn.style.animation = "", 300);
-    });
-
-    const solverBtn = document.getElementById("solverBtn");
-
-    solverBtn?.addEventListener("click", (e) => {
-        const audio = document.getElementById("splashSound");
-        if (audio) {
-            audio.currentTime = 0;
-            audio.play();
-        }
-
-        const splash = document.createElement("span");
-        const rect = solverBtn.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-
-        splash.style.width = splash.style.height = `${size}px`;
-        splash.style.left = `${e.clientX - rect.left - size/2}px`;
-        splash.style.top = `${e.clientY - rect.top - size/2}px`;
-
-        solverBtn.appendChild(splash);
-
-        setTimeout(() => {
-            splash.remove();
-        }, 600);
-
-        solverBtn.style.animation = "buttonPop 0.3s ease";
-        setTimeout(() => solverBtn.style.animation = "", 300);
-    });
-
-    nextPun();
-
-    /* ===========================
-       THE PLUNGE (COMMENTS) LOGIC
-       =========================== */
-
-    const form = document.getElementById("punPlungeForm");
-    const card = document.getElementById("punPlungeCard");
-    const overlay = document.getElementById("punOverlay");
-    const statusEl = document.getElementById("punStatus");
-    const submitBtn = document.getElementById("punSubmit");
-    const msg = document.getElementById("punMessage");
-    const charCount = document.getElementById("charCount");
-    const flushSound = document.getElementById("flushSound");
-
-    // Fill context fields
-    document.getElementById("punPage").value = window.location.href;
-    document.getElementById("punTime").value = new Date().toISOString();
-
-    const updateCount = () => { charCount.textContent = String(msg.value.length); };
-    msg.addEventListener("input", updateCount);
-    updateCount();
-
-    const wait = (ms) => new Promise(r => setTimeout(r, ms));
-
-    async function playFlush() {
-        try {
-            flushSound.currentTime = 0;
-            await flushSound.play();
-        } catch (e) {}
+    btn.disabled = true;
+    btn.textContent = "Sending...";
+    statusEl.className = "tester-status";
+    statusEl.textContent = "";
+    try {
+      const fd = new FormData();
+      fd.append("email", email);
+      fd.append("type", "Tester signup");
+      fd.append("_subject", "Punzle tester signup: " + email);
+      fd.append("site", "wisconsindales.com");
+      fd.append("timestamp", new Date().toISOString());
+      const res = await fetch("https://formspree.io/f/xnjbjdzr", { method: "POST", body: fd, headers: { Accept: "application/json" } });
+      if (res.ok) {
+        statusEl.className = "tester-status ok";
+        statusEl.textContent = "You're on the list! We'll add you soon — then use the link below to install.";
+        emailEl.value = "";
+      } else throw new Error();
+    } catch (e) {
+      statusEl.className = "tester-status err";
+      statusEl.textContent = "Something went wrong. Try again.";
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<span class="icon-send"></span> Sign me up';
     }
+  }
 
-    function setDisabled(disabled) {
-        submitBtn.disabled = disabled;
-        msg.disabled = disabled;
+  document.getElementById("testerEmail").addEventListener("keydown", e => { if (e.key === "Enter") submitTester(); });
+
+  function setType(el, type) {
+    document.querySelectorAll(".rtype").forEach(r => r.classList.remove("active"));
+    el.classList.add("active");
+    document.getElementById("reviewType").value = type;
+    const sr = document.getElementById("starsRow");
+    const hide = type === "Bug report" || type === "Feature request";
+    sr.style.opacity = hide ? "0.3" : "1";
+    sr.style.pointerEvents = hide ? "none" : "auto";
+  }
+
+  const starLabels = ["", "Needs work", "It's ok", "Good fun", "Really good", "Love it!"];
+  function setStar(n) {
+    document.getElementById("reviewStars").value = n;
+    document.querySelectorAll(".star").forEach((s, i) => s.classList.toggle("lit", i < n));
+    document.getElementById("starLabel").textContent = starLabels[n] || "";
+  }
+
+  const ta = document.getElementById("reviewTa");
+  const cnt = document.getElementById("reviewCount");
+  ta.addEventListener("input", () => { cnt.textContent = ta.value.length; });
+
+  async function submitReview() {
+    const statusEl = document.getElementById("reviewStatus");
+    const btn = document.querySelector(".review-submit");
+    const msg = ta.value.trim();
+    if (!msg) { statusEl.className = "review-status err"; statusEl.textContent = "Please write something before sending."; return; }
+    btn.disabled = true;
+    btn.textContent = "Sending...";
+    statusEl.className = "review-status";
+    statusEl.textContent = "";
+    const name = document.getElementById("reviewName").value.trim();
+    const email = document.getElementById("reviewEmail").value.trim();
+    const type = document.getElementById("reviewType").value;
+    const stars = document.getElementById("reviewStars").value;
+    const starStr = stars > 0 ? stars + " stars" : "No rating";
+    try {
+      const fd = new FormData();
+      fd.append("type", type);
+      fd.append("rating", starStr);
+      fd.append("message", msg);
+      if (name) fd.append("name", name);
+      if (email) fd.append("reply_to", email);
+      fd.append("_subject", "Punzle " + type + ": " + starStr + (name ? " from " + name : ""));
+      fd.append("site", "wisconsindales.com");
+      fd.append("timestamp", new Date().toISOString());
+      const res = await fetch("https://formspree.io/f/xnjbjdzr", { method: "POST", body: fd, headers: { Accept: "application/json" } });
+      if (res.ok) {
+        statusEl.className = "review-status ok";
+        statusEl.textContent = "Got it — thank you! Every review helps make Punzle better.";
+        ta.value = ""; cnt.textContent = "0";
+        document.getElementById("reviewName").value = "";
+        document.getElementById("reviewEmail").value = "";
+        setStar(0);
+      } else throw new Error();
+    } catch (e) {
+      statusEl.className = "review-status err";
+      statusEl.textContent = "Something went wrong. Try again.";
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<span class="icon-send"></span> Send your review';
     }
-
-    function randomFlushLabel() {
-        const labels = [
-            "🌀 FLUSH 🌀",
-            "🚽 SEND IT DOWN 🚽",
-            "💦  PLUNGE IT 💦",
-            "TO HQ! 📬",
-            "WHOOSH! 🌊"
-        ];
-        return labels[Math.floor(Math.random() * labels.length)];
-    }
-
-    async function drainEffect() {
-        overlay.classList.add("show");
-        overlay.setAttribute("aria-hidden", "false");
-        card.classList.add("drain-spin");
-
-        await wait(1150);
-        await wait(5000 - 1150);
-
-        card.classList.remove("drain-spin");
-        card.style.opacity = "1";
-        card.style.transform = "none";
-        overlay.classList.remove("show");
-        overlay.setAttribute("aria-hidden", "true");
-    }
-
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        statusEl.textContent = "";
-
-        if (!msg.value.trim()) {
-            statusEl.textContent = "Drop a comment before you flush. 😄";
-            return;
-        }
-// ✅ Update context fields right before submit
-document.getElementById("punPage").value = window.location.href;
-document.getElementById("punTime").value = new Date().toISOString();
-
-// ✅ Capture the comment BEFORE disabling fields
-const formData = new FormData(form);
-
-		// Now disable UI
-        setDisabled(true);
-
-        // Change button text each flush (simple fun)
-        submitBtn.textContent = randomFlushLabel();
-
-        playFlush();
-        const drainPromise = drainEffect();
-
-        try {
-            // honeypot check
-            if (formData.get("_gotcha")) {
-                await drainPromise;
-                form.reset();
-                updateCount();
-                statusEl.textContent = "Flushed! (Nice try, robot.) 🤖🚽";
-                setDisabled(false);
-                submitBtn.textContent = "FLUSH 🌀";
-                return;
-            }
-
-            const res = await fetch(form.action, {
-                method: "POST",
-                body: formData,
-                headers: { "Accept": "application/json" }
-            });
-
-            await drainPromise;
-
-            if (res.ok) {
-                form.reset();
-                updateCount();
-                statusEl.textContent = "Flushed & delivered to HQ. 🌊📬";
-            } else {
-                statusEl.textContent = "Uh-oh… the pipes clogged. Try again. 🪠";
-            }
-        } catch (err) {
-            await drainPromise;
-            statusEl.textContent = "Network splash-out. Try again. 💦";
-        } finally {
-            setDisabled(false);
-            submitBtn.textContent = "FLUSH 🌀";
-        }
-    });
-});
+  }
 </script>
 
-
 <script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/sw.js");
-}
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js");
+  }
 </script>
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
