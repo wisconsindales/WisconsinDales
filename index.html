@@ -634,68 +634,56 @@
   <a class="hero-logo-link" href="https://wisconsindales.com/Punzle#game-section" target="_blank">
     <img src="punzle_feature_graphic_1024x500.png" alt="Punzle — The Daily Puzzle Game" />
   </a>
-  <p class="hero-tagline">A new daily pun-powered word puzzle. One puzzle a day. Can you solve it before you run out of guesses?</p>
-  <div class="hero-badge">
-    <span class="icon-gplay"></span>Early access open now on Google Play
-  </div>
-  <div class="ctas">
-    <a class="cta-primary" href="https://play.google.com/apps/testing/punzle.app" target="_blank">
-      <span class="icon-gplay"></span>Download on Google Play
-    </a>
-    <a class="cta-secondary" href="#tester-zone">
-      <span class="icon-mail"></span>Sign up as a tester
-    </a>
-  </div>
-  <div class="store-row">
-    <a class="store-badge" href="https://play.google.com/apps/testing/punzle.app" target="_blank">
-      <span class="store-icon icon-gplay"></span>
-      <div class="store-text">
-        <span class="store-small">Early access on</span>
-        <span class="store-name">Google Play <span class="store-live">Live</span></span>
-      </div>
-    </a>
-    <a class="store-badge" href="https://wisconsindales.com/Punzle#game-section" target="_blank">
-      <span class="store-icon icon-puzzle"></span>
-      <div class="store-text">
-        <span class="store-small">Play in browser</span>
-        <span class="store-name">PC Web version only</span>
-      </div>
-    </a>
-  </div>
-</div>
 
-<!-- COUNTDOWN -->
-<div style="margin:28px 32px 0;">
-  <div id="countdown-card" style="background:var(--bg2);border:1.5px solid var(--red);border-radius:16px;padding:28px;text-align:center;">
-    <div style="font-size:10px;letter-spacing:0.14em;color:var(--red);font-weight:500;margin-bottom:8px;text-transform:uppercase;">&#9733; Google Play Launch Countdown &#9733;</div>
-    <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--text);margin-bottom:6px;">Punzle's next step towards Production in...</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:24px;">12 testers running for 4 days — need 14 days total to apply for full Play Store production.</div>
-    <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:24px;">
-      <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:12px;padding:16px 20px;min-width:80px;">
-        <div id="cd-days" style="font-family:'Playfair Display',serif;font-size:42px;color:var(--red);line-height:1;">10</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:0.08em;text-transform:uppercase;">Days</div>
+  <!-- COUNTDOWN -->
+  <div style="max-width:580px;margin:24px auto 0;">
+    <div id="countdown-card" style="background:var(--bg3);border:1.5px solid var(--red);border-radius:14px;padding:22px;text-align:center;">
+      <div style="font-size:10px;letter-spacing:0.14em;color:var(--red);font-weight:500;margin-bottom:8px;text-transform:uppercase;">&#9733; Google Play Launch Countdown &#9733;</div>
+      <div style="font-family:'Playfair Display',serif;font-size:20px;color:var(--text);margin-bottom:20px;">Punzle's next step towards Production in...</div>
+      <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:18px;">
+        <div style="background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:14px 18px;min-width:72px;">
+          <div id="cd-days" style="font-family:'Playfair Display',serif;font-size:38px;color:var(--red);line-height:1;">10</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:5px;letter-spacing:0.08em;text-transform:uppercase;">Days</div>
+        </div>
+        <div style="background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:14px 18px;min-width:72px;">
+          <div id="cd-hours" style="font-family:'Playfair Display',serif;font-size:38px;color:var(--red);line-height:1;">00</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:5px;letter-spacing:0.08em;text-transform:uppercase;">Hours</div>
+        </div>
+        <div style="background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:14px 18px;min-width:72px;">
+          <div id="cd-mins" style="font-family:'Playfair Display',serif;font-size:38px;color:var(--red);line-height:1;">00</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:5px;letter-spacing:0.08em;text-transform:uppercase;">Mins</div>
+        </div>
+        <div style="background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:14px 18px;min-width:72px;">
+          <div id="cd-secs" style="font-family:'Playfair Display',serif;font-size:38px;color:var(--red);line-height:1;">00</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:5px;letter-spacing:0.08em;text-transform:uppercase;">Secs</div>
+        </div>
       </div>
-      <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:12px;padding:16px 20px;min-width:80px;">
-        <div id="cd-hours" style="font-family:'Playfair Display',serif;font-size:42px;color:var(--red);line-height:1;">00</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:0.08em;text-transform:uppercase;">Hours</div>
+      <div style="background:var(--bg2);border-radius:8px;overflow:hidden;height:8px;margin-bottom:8px;max-width:380px;margin-left:auto;margin-right:auto;">
+        <div id="cd-bar" style="height:100%;background:var(--red);width:28.5%;border-radius:8px;"></div>
       </div>
-      <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:12px;padding:16px 20px;min-width:80px;">
-        <div id="cd-mins" style="font-family:'Playfair Display',serif;font-size:42px;color:var(--red);line-height:1;">00</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:0.08em;text-transform:uppercase;">Mins</div>
-      </div>
-      <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:12px;padding:16px 20px;min-width:80px;">
-        <div id="cd-secs" style="font-family:'Playfair Display',serif;font-size:42px;color:var(--red);line-height:1;">00</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:0.08em;text-transform:uppercase;">Secs</div>
-      </div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:0;">4 of 14 days completed</div>
     </div>
-    <div style="background:var(--bg3);border-radius:10px;overflow:hidden;height:10px;margin-bottom:10px;max-width:400px;margin-left:auto;margin-right:auto;">
-      <div id="cd-bar" style="height:100%;background:var(--red);width:28.5%;transition:width 1s linear;border-radius:10px;"></div>
-    </div>
-    <div style="font-size:11px;color:var(--muted);">4 of 14 days completed &nbsp;&#8226;&nbsp; 12 testers opted in &#10003;</div>
-    <a href="https://play.google.com/apps/testing/punzle.app" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--red);color:#fff;padding:13px 32px;border-radius:40px;font-weight:500;font-size:15px;margin-top:20px;text-decoration:none;">
-      <span class="icon-gplay"></span>Get early access
-    </a>
   </div>
+  <div style="text-align:center;margin-top:16px;">
+    <div style="font-size:10px;letter-spacing:0.14em;color:var(--red);font-weight:500;margin-bottom:10px;text-transform:uppercase;">Early tester program</div>
+    <div style="font-family:'Playfair Display',serif;font-size:26px;color:var(--text);margin-bottom:16px;">Get early access to Punzle</div>
+    <div style="background:var(--bg2);border:1.5px solid var(--red);border-radius:14px;padding:24px;max-width:580px;margin:0 auto;text-align:center;">
+      <p style="font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:18px;max-width:420px;margin-left:auto;margin-right:auto;">Sign up below and we'll add your Google account email to the Play Console testers list — then the link below unlocks the app for you on Google Play.</p>
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:18px;flex-wrap:wrap;">
+        <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;padding:10px 14px;font-size:11px;color:#888;line-height:1.4;text-align:left;flex:1;min-width:120px;max-width:180px;"><strong style="display:block;color:var(--text);font-weight:500;margin-bottom:2px;">Step 1</strong>Enter your Google account email below.</div>
+        <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;padding:10px 14px;font-size:11px;color:#888;line-height:1.4;text-align:left;flex:1;min-width:120px;max-width:180px;"><strong style="display:block;color:var(--text);font-weight:500;margin-bottom:2px;">Step 2</strong>We'll add you to the testers list.</div>
+        <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;padding:10px 14px;font-size:11px;color:#888;line-height:1.4;text-align:left;flex:1;min-width:120px;max-width:180px;"><strong style="display:block;color:var(--text);font-weight:500;margin-bottom:2px;">Step 3</strong>Tap the Play Store link and install.</div>
+      </div>
+      <div style="display:flex;gap:8px;max-width:420px;margin:0 auto;">
+        <input class="email-input" type="email" id="testerEmail" placeholder="your@gmail.com" />
+        <button class="email-submit" onclick="submitTester()"><span class="icon-send"></span> Sign me up</button>
+      </div>
+      <div class="tester-status" id="testerStatus"></div>
+      <p style="font-size:11px;color:#444;margin-top:10px;">After you're added, use this link to install: <a href="https://play.google.com/apps/testing/punzle.app" target="_blank" style="color:var(--cyan);">play.google.com/apps/testing/punzle.app</a></p>
+    </div>
+  </div>
+
+  <p class="hero-tagline">A new daily pun-powered word puzzle. One puzzle a day. Can you solve it before you run out of guesses?</p>
 </div>
 
 <div class="divider" style="margin-top:28px;"></div>
@@ -739,28 +727,6 @@
 </div>
 
 <div class="divider"></div>
-
-<!-- TESTER SIGNUP -->
-<div class="tester-wrap" id="tester-zone" style="margin-top:32px;">
-  <div class="tester-card">
-    <div class="tester-eyebrow">Early tester program</div>
-    <div class="tester-title">Get early access to Punzle</div>
-    <p class="tester-sub">Sign up below and we'll add your Google account email to the Play Console testers list — then the link below unlocks the app for you on Google Play.</p>
-    <div class="tester-steps">
-      <div class="tester-step"><strong>Step 1</strong>Enter your Google account email below.</div>
-      <div class="tester-step"><strong>Step 2</strong>We'll add you to the testers list.</div>
-      <div class="tester-step"><strong>Step 3</strong>Tap the Play Store link and install.</div>
-    </div>
-    <div class="email-row">
-      <input class="email-input" type="email" id="testerEmail" placeholder="your@gmail.com" />
-      <button class="email-submit" onclick="submitTester()">
-        <span class="icon-send"></span> Sign me up
-      </button>
-    </div>
-    <div class="tester-status" id="testerStatus"></div>
-    <p class="tester-note">After you're added, use this link to install: <a href="https://play.google.com/apps/testing/punzle.app" target="_blank">play.google.com/apps/testing/punzle.app</a></p>
-  </div>
-</div>
 
 <div class="divider" style="margin-top:32px;"></div>
 
