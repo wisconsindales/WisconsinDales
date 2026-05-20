@@ -503,6 +503,31 @@
 
   #starLabel { font-size: 12px; color: #555; margin-left: 6px; }
 
+  .stars-section { margin-bottom: 16px; }
+  .stars-section-label { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+  .stars-buckets { display: flex; gap: 6px; flex-wrap: nowrap; }
+  .star-bucket {
+    flex: 1;
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+  }
+  .star-bucket:hover { border-color: var(--red); }
+  .star-bucket.active { background: var(--red); border-color: var(--red); }
+  .star-display { font-size: 16px; color: var(--red); letter-spacing: 0px; white-space: nowrap; }
+  .star-bucket.active .star-display { color: #fff; }
+  .star-bucket-label { font-size: 10px; color: var(--muted); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .star-bucket.active .star-bucket-label { color: #fff; }
+
   .name-row { display: flex; gap: 8px; margin-bottom: 12px; }
 
   .review-input {
@@ -606,7 +631,7 @@
 
 <!-- HERO -->
 <div class="hero">
-  <a class="hero-logo-link" href="https://wisconsindales.com/Punzle" target="_blank">
+  <a class="hero-logo-link" href="https://wisconsindales.com/Punzle#game-section" target="_blank">
     <img src="punzle_feature_graphic_1024x500.png" alt="Punzle — The Daily Puzzle Game" />
   </a>
   <p class="hero-tagline">A new daily pun-powered word puzzle. One puzzle a day. Can you solve it before you run out of guesses?</p>
@@ -629,33 +654,67 @@
         <span class="store-name">Google Play <span class="store-live">Live</span></span>
       </div>
     </a>
-    <a class="store-badge" href="https://wisconsindales.com/Punzle" target="_blank">
+    <a class="store-badge" href="https://wisconsindales.com/Punzle#game-section" target="_blank">
       <span class="store-icon icon-puzzle"></span>
       <div class="store-text">
         <span class="store-small">Play in browser</span>
-        <span class="store-name">Web version</span>
+        <span class="store-name">PC Web version only</span>
       </div>
     </a>
   </div>
 </div>
 
-<div class="divider"></div>
+<!-- COUNTDOWN -->
+<div style="margin:28px 32px 0;">
+  <div id="countdown-card" style="background:var(--bg2);border:1.5px solid var(--red);border-radius:16px;padding:28px;text-align:center;">
+    <div style="font-size:10px;letter-spacing:0.14em;color:var(--red);font-weight:500;margin-bottom:8px;text-transform:uppercase;">&#9733; Google Play Launch Countdown &#9733;</div>
+    <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--text);margin-bottom:6px;">Punzle's next step towards Production in...</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:24px;">12 testers running for 4 days — need 14 days total to apply for full Play Store production.</div>
+    <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:24px;">
+      <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:12px;padding:16px 20px;min-width:80px;">
+        <div id="cd-days" style="font-family:'Playfair Display',serif;font-size:42px;color:var(--red);line-height:1;">10</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:0.08em;text-transform:uppercase;">Days</div>
+      </div>
+      <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:12px;padding:16px 20px;min-width:80px;">
+        <div id="cd-hours" style="font-family:'Playfair Display',serif;font-size:42px;color:var(--red);line-height:1;">00</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:0.08em;text-transform:uppercase;">Hours</div>
+      </div>
+      <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:12px;padding:16px 20px;min-width:80px;">
+        <div id="cd-mins" style="font-family:'Playfair Display',serif;font-size:42px;color:var(--red);line-height:1;">00</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:0.08em;text-transform:uppercase;">Mins</div>
+      </div>
+      <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:12px;padding:16px 20px;min-width:80px;">
+        <div id="cd-secs" style="font-family:'Playfair Display',serif;font-size:42px;color:var(--red);line-height:1;">00</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:0.08em;text-transform:uppercase;">Secs</div>
+      </div>
+    </div>
+    <div style="background:var(--bg3);border-radius:10px;overflow:hidden;height:10px;margin-bottom:10px;max-width:400px;margin-left:auto;margin-right:auto;">
+      <div id="cd-bar" style="height:100%;background:var(--red);width:28.5%;transition:width 1s linear;border-radius:10px;"></div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);">4 of 14 days completed &nbsp;&#8226;&nbsp; 12 testers opted in &#10003;</div>
+    <a href="https://play.google.com/apps/testing/punzle.app" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--red);color:#fff;padding:13px 32px;border-radius:40px;font-weight:500;font-size:15px;margin-top:20px;text-decoration:none;">
+      <span class="icon-gplay"></span>Get early access
+    </a>
+  </div>
+</div>
+
+<div class="divider" style="margin-top:28px;"></div>
 
 <!-- HOW IT WORKS -->
 <section class="section">
   <div class="section-label">How it works</div>
-  <div class="section-title">One puzzle. One pun. Daily.</div>
+  <div class="section-title">One puzzle. Multiple Solutions. Multiple Puns. Changes Daily.</div>
   <p class="section-sub">A fresh brain-tickler every day built around the art of the pun.</p>
   <div class="how-grid">
     <div class="how-card"><div class="how-num">01</div><div class="how-title">Get the clue</div><div class="how-desc">A pun-loaded hint drops every morning.</div></div>
     <div class="how-card"><div class="how-num">02</div><div class="how-title">Solve it</div><div class="how-desc">Guess the answer before your attempts run out.</div></div>
-    <div class="how-card"><div class="how-num">03</div><div class="how-title">Share it</div><div class="how-desc">Show your score without spoiling the pun.</div></div>
+    <div class="how-card"><div class="how-num">03</div><div class="how-title">Leaderboard</div><div class="how-desc">Solve the Daily Challenge and enter your name to the Leader Board.</div></div>
     <div class="how-card"><div class="how-num">04</div><div class="how-title">Come back</div><div class="how-desc">New puzzle resets every day at midnight.</div></div>
   </div>
 </section>
 
 <div class="logo-break">
-  <a href="https://wisconsindales.com/Punzle" target="_blank">
+  <a href="https://wisconsindales.com/Punzle#game-section" target="_blank">
     <img src="punzle_feature_graphic_1024x500.png" alt="Punzle — The Daily Puzzle Game" />
   </a>
 </div>
@@ -709,8 +768,8 @@
 <div class="review-wrap" id="review-zone" style="margin-top:32px;">
   <div class="review-card">
     <div class="review-header">
-      <div class="review-icon-wrap">
-        <span class="icon-star" style="font-size:22px;color:var(--red);">★</span>
+      <div class="review-icon-wrap" style="width:auto;padding:0 18px;min-width:120px;">
+        <span style="font-size:36px;color:var(--red);letter-spacing:4px;white-space:nowrap;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
       </div>
       <div class="review-heading">
         <div class="review-title">The Punzle Review</div>
@@ -731,14 +790,30 @@
       <button class="rtype" onclick="setType(this,'General')">✉ General</button>
     </div>
 
-    <div class="stars-row" id="starsRow">
-      <span class="stars-label">Your rating</span>
-      <span class="star" onclick="setStar(1)">★</span>
-      <span class="star" onclick="setStar(2)">★</span>
-      <span class="star" onclick="setStar(3)">★</span>
-      <span class="star" onclick="setStar(4)">★</span>
-      <span class="star" onclick="setStar(5)">★</span>
-      <span id="starLabel"></span>
+    <div class="stars-section" id="starsRow">
+      <div class="stars-section-label">Your rating</div>
+      <div class="stars-buckets">
+        <div class="star-bucket" onclick="setStar(1)">
+          <span class="star-display">&#9733;</span>
+          <span class="star-bucket-label">Needs work</span>
+        </div>
+        <div class="star-bucket" onclick="setStar(2)">
+          <span class="star-display">&#9733;&#9733;</span>
+          <span class="star-bucket-label">It's ok</span>
+        </div>
+        <div class="star-bucket" onclick="setStar(3)">
+          <span class="star-display">&#9733;&#9733;&#9733;</span>
+          <span class="star-bucket-label">Good fun</span>
+        </div>
+        <div class="star-bucket" onclick="setStar(4)">
+          <span class="star-display">&#9733;&#9733;&#9733;&#9733;</span>
+          <span class="star-bucket-label">Really good</span>
+        </div>
+        <div class="star-bucket" onclick="setStar(5)">
+          <span class="star-display">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          <span class="star-bucket-label">Love it!</span>
+        </div>
+      </div>
     </div>
 
     <div class="name-row">
@@ -762,7 +837,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-brand">Wisconsin Dales</div>
-  <div class="footer-copy">Come for the pun. Stay cause you clicked.</div>
+  <div class="footer-copy">A Daley dose of pun-ishment.</div>
 </footer>
 
 <script>
@@ -817,8 +892,7 @@
   const starLabels = ["", "Needs work", "It's ok", "Good fun", "Really good", "Love it!"];
   function setStar(n) {
     document.getElementById("reviewStars").value = n;
-    document.querySelectorAll(".star").forEach((s, i) => s.classList.toggle("lit", i < n));
-    document.getElementById("starLabel").textContent = starLabels[n] || "";
+    document.querySelectorAll(".star-bucket").forEach((b, i) => b.classList.toggle("active", i + 1 === n));
   }
 
   const ta = document.getElementById("reviewTa");
@@ -866,6 +940,35 @@
       btn.innerHTML = '<span class="icon-send"></span> Send your review';
     }
   }
+
+  // Countdown — target is 10 days from May 19 2026 (day 4 of 14, need 10 more)
+  const cdTarget = new Date('2026-05-29T00:00:00').getTime();
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const diff = cdTarget - now;
+    if (diff <= 0) {
+      document.getElementById('cd-days').textContent = '00';
+      document.getElementById('cd-hours').textContent = '00';
+      document.getElementById('cd-mins').textContent = '00';
+      document.getElementById('cd-secs').textContent = '00';
+      document.getElementById('cd-bar').style.width = '100%';
+      return;
+    }
+    const days  = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const mins  = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const secs  = Math.floor((diff % (1000*60)) / 1000);
+    document.getElementById('cd-days').textContent  = String(days).padStart(2,'0');
+    document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+    document.getElementById('cd-mins').textContent  = String(mins).padStart(2,'0');
+    document.getElementById('cd-secs').textContent  = String(secs).padStart(2,'0');
+    const totalSecs = 14 * 24 * 60 * 60;
+    const elapsed = totalSecs - Math.floor(diff/1000);
+    const pct = Math.min(100, Math.round((elapsed / totalSecs) * 100));
+    document.getElementById('cd-bar').style.width = pct + '%';
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 </script>
 
 <script>
