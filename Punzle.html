@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Punzle — The Daily Pun Puzzle</title>
-  <meta name="description" content="A totally Pun Puzzle that changes Daley. Download Punzle free on Android. Also available as a crafted wooden puzzle from WisconsinDalesCreations." />
+  <meta name="description" content="A totally Pun Puzzle that changes Daley. Download Punzle free on Android or $0.99 on iOS. Also available as a crafted wooden puzzle from WisconsinDalesCreations." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -66,6 +66,8 @@
     .nav-links a:hover { color: var(--cyan); }
     .nav-btn { background: var(--accent); color: white !important; padding: 8px 16px; border-radius: 20px; font-size: 13px !important; font-weight: 900 !important; transition: background 0.2s, transform 0.1s !important; }
     .nav-btn:hover { background: var(--accent2) !important; transform: scale(1.04); }
+    .nav-btn-ios { background: #555; color: white !important; padding: 8px 16px; border-radius: 20px; font-size: 13px !important; font-weight: 900 !important; transition: background 0.2s, transform 0.1s !important; }
+    .nav-btn-ios:hover { background: #333 !important; transform: scale(1.04); }
 
     .hero {
       position: relative;
@@ -84,6 +86,8 @@
     .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(183,0,54,0.5); }
     .btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.06); color: var(--cyan); text-decoration: none; padding: 14px 28px; border-radius: 14px; font-size: 16px; font-weight: 900; border: 1.5px solid var(--cyan); transition: transform 0.15s, background 0.15s; }
     .btn-secondary:hover { transform: translateY(-2px); background: rgba(34,211,238,0.1); }
+    .btn-ios { display: inline-flex; align-items: center; gap: 8px; background: #1c1c1e; color: white; text-decoration: none; padding: 14px 28px; border-radius: 14px; font-size: 16px; font-weight: 900; border: 1.5px solid rgba(255,255,255,0.2); transition: transform 0.15s, background 0.15s; }
+    .btn-ios:hover { transform: translateY(-2px); background: #2c2c2e; }
 
     .hero-board { margin-top: 48px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: min(320px, 80vw); background: #3d1540; border-radius: 16px; padding: 8px; box-shadow: 0 16px 48px rgba(0,0,0,0.5); animation: float 4s ease-in-out infinite, fadeDown 1.2s ease both; }
     .board-cell { aspect-ratio: 1; border-radius: 5px; background: #fff8f5; }
@@ -123,35 +127,21 @@
     .product-name { font-size: 18px; font-weight: 900; color: var(--text); margin-bottom: 6px; }
     .product-desc { font-size: 13px; color: var(--muted); line-height: 1.7; font-weight: 600; margin-bottom: 16px; }
     .product-price { font-size: 22px; font-weight: 900; color: var(--gold); margin-bottom: 14px; }
-    .buy-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--accent);
-      color: white; text-decoration: none;
-      padding: 12px 24px; border-radius: 12px;
-      font-size: 15px; font-weight: 900;
-      box-shadow: 0 6px 20px rgba(183,0,54,0.35);
-      transition: transform 0.15s, box-shadow 0.15s;
-      width: 100%; justify-content: center;
-    }
+    .buy-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: white; text-decoration: none; padding: 12px 24px; border-radius: 12px; font-size: 15px; font-weight: 900; box-shadow: 0 6px 20px rgba(183,0,54,0.35); transition: transform 0.15s, box-shadow 0.15s; width: 100%; justify-content: center; }
     .buy-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(183,0,54,0.5); }
     .free-shipping-note { font-size: 11px; color: var(--muted); margin-top: 8px; text-align: center; font-weight: 600; }
-    .coupon-banner {
-      background: rgba(34,211,238,0.12);
-      border: 1.5px dashed var(--cyan);
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 13px; font-weight: 800;
-      color: var(--cyan);
-      text-align: center;
-      margin-bottom: 12px;
-    }
+    .coupon-banner { background: rgba(34,211,238,0.12); border: 1.5px dashed var(--cyan); border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 800; color: var(--cyan); text-align: center; margin-bottom: 12px; }
     .coupon-banner strong { color: var(--gold); font-size: 15px; letter-spacing: 1px; }
     .coming-soon-badge { display: inline-block; background: rgba(253,230,138,0.15); border: 1.5px solid rgba(253,230,138,0.4); color: var(--gold); font-size: 12px; font-weight: 900; padding: 6px 14px; border-radius: 20px; letter-spacing: 0.5px; text-transform: uppercase; }
 
     .download-section { text-align: center; }
-    .download-card { background: var(--panel); border: 1.5px solid var(--outline); border-radius: 24px; padding: 48px 36px; max-width: 560px; margin: 0 auto; box-shadow: 0 16px 48px rgba(0,0,0,0.3); }
+    .download-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; max-width: 700px; margin: 0 auto; }
+    .download-card { background: var(--panel); border: 1.5px solid var(--outline); border-radius: 24px; padding: 36px 28px; box-shadow: 0 16px 48px rgba(0,0,0,0.3); text-align: center; }
+    .download-card.ios-card { border-color: rgba(255,255,255,0.2); }
     .play-store-btn { display: inline-flex; align-items: center; gap: 12px; background: #01875f; color: white; text-decoration: none; padding: 14px 28px; border-radius: 14px; font-size: 16px; font-weight: 900; margin-top: 24px; transition: transform 0.15s, background 0.15s; box-shadow: 0 8px 24px rgba(1,135,95,0.35); }
     .play-store-btn:hover { transform: translateY(-2px); background: #016b4c; }
+    .app-store-btn { display: inline-flex; align-items: center; gap: 12px; background: #1c1c1e; color: white; text-decoration: none; padding: 14px 28px; border-radius: 14px; font-size: 16px; font-weight: 900; margin-top: 24px; transition: transform 0.15s, background 0.15s; box-shadow: 0 8px 24px rgba(0,0,0,0.35); border: 1.5px solid rgba(255,255,255,0.15); }
+    .app-store-btn:hover { transform: translateY(-2px); background: #2c2c2e; }
     .play-store-note { font-size: 11px; color: var(--muted); margin-top: 12px; font-weight: 600; }
 
     .about-strip { text-align: center; padding: 60px 24px; border-top: 1px solid var(--outline); position: relative; z-index: 1; }
@@ -164,220 +154,76 @@
     footer a { color: #6b3a5a; text-decoration: none; }
     footer a:hover { color: var(--muted); }
 
-
     /* ── Punzle Game Styles ── */
-    .pz-header-row {
-      display: flex; align-items: center; justify-content: space-between;
-      width: 100%; max-width: 380px;
-    }
-    .pz-sol-badge {
-      display: flex; flex-direction: column; align-items: center;
-      border: 1.5px solid #22c55e; border-radius: 10px;
-      padding: 4px 12px; background: rgba(34,197,94,0.08);
-      min-width: 54px;
-    }
-    .pz-sol-num {
-      font-size: 20px; font-weight: 900; color: #22c55e; line-height: 1.1;
-    }
-    .pz-sol-lbl {
-      font-size: 8px; font-weight: 700; color: var(--muted);
-      letter-spacing: 0.8px; text-transform: uppercase;
-    }
-    .pz-controls-row {
-      display: flex; gap: 10px; align-items: center; justify-content: center;
-      width: 100%;
-    }
-    .pz-hint-btn {
-      background: rgba(253,230,138,0.12);
-      border: 1.5px solid rgba(253,230,138,0.4);
-      color: var(--gold); font-size: 13px; font-weight: 900;
-      padding: 7px 18px; border-radius: 10px; cursor: pointer;
-      transition: background 0.15s;
-    }
+    .pz-header-row { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 380px; }
+    .pz-sol-badge { display: flex; flex-direction: column; align-items: center; border: 1.5px solid #22c55e; border-radius: 10px; padding: 4px 12px; background: rgba(34,197,94,0.08); min-width: 54px; }
+    .pz-sol-num { font-size: 20px; font-weight: 900; color: #22c55e; line-height: 1.1; }
+    .pz-sol-lbl { font-size: 8px; font-weight: 700; color: var(--muted); letter-spacing: 0.8px; text-transform: uppercase; }
+    .pz-controls-row { display: flex; gap: 10px; align-items: center; justify-content: center; width: 100%; }
+    .pz-hint-btn { background: rgba(253,230,138,0.12); border: 1.5px solid rgba(253,230,138,0.4); color: var(--gold); font-size: 13px; font-weight: 900; padding: 7px 18px; border-radius: 10px; cursor: pointer; transition: background 0.15s; }
     .pz-hint-btn:hover { background: rgba(253,230,138,0.25); }
-    .pz-next-btn {
-      background: rgba(34,211,238,0.12);
-      border: 1.5px solid rgba(34,211,238,0.4);
-      color: var(--cyan); font-size: 13px; font-weight: 900;
-      padding: 7px 14px; border-radius: 10px; cursor: pointer;
-      transition: background 0.15s;
-    }
+    .pz-next-btn { background: rgba(34,211,238,0.12); border: 1.5px solid rgba(34,211,238,0.4); color: var(--cyan); font-size: 13px; font-weight: 900; padding: 7px 14px; border-radius: 10px; cursor: pointer; transition: background 0.15s; }
     .pz-next-btn:hover { background: rgba(34,211,238,0.25); }
-    .pz-hint-star {
-      color: var(--gold); font-size: 9px; font-weight: 900;
-      position: absolute; top: 4px; right: 3px;
-    }
-    .pz-game-wrap {
-      margin-top: 40px;
-      width: min(420px, 95vw);
-      display: flex; flex-direction: column; align-items: center; gap: 10px;
-    }
-    .pz-date-label {
-      font-family: 'Boogaloo', cursive;
-      font-size: 18px; color: var(--gold);
-      font-weight: 700; letter-spacing: 0.3px;
-    }
+    .pz-hint-star { color: var(--gold); font-size: 9px; font-weight: 900; position: absolute; top: 4px; right: 3px; }
+    .pz-game-wrap { margin-top: 40px; width: min(420px, 95vw); display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .pz-date-label { font-family: 'Boogaloo', cursive; font-size: 18px; color: var(--gold); font-weight: 700; letter-spacing: 0.3px; }
     .pz-board-wrap { position: relative; }
-    .pz-board {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 3px;
-      background: #3d1540;
-      border-radius: 14px;
-      padding: 7px;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
-      width: min(380px, 92vw);
-      touch-action: none;
-    }
-    .pz-cell {
-      aspect-ratio: 1;
-      border-radius: 5px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: clamp(6px, 1.8vw, 11px);
-      font-weight: 700; color: #3f1635;
-      cursor: pointer;
-      transition: transform 0.1s, filter 0.1s;
-      user-select: none;
-    }
+    .pz-board { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; background: #3d1540; border-radius: 14px; padding: 7px; box-shadow: 0 16px 48px rgba(0,0,0,0.5); width: min(380px, 92vw); touch-action: none; }
+    .pz-cell { aspect-ratio: 1; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: clamp(6px, 1.8vw, 11px); font-weight: 700; color: #3f1635; cursor: pointer; transition: transform 0.1s, filter 0.1s; user-select: none; }
     .pz-cell:hover:not(.pz-off):not(.pz-blocked) { filter: brightness(1.1); }
-    .pz-off      { background: transparent; pointer-events: none; }
-    .pz-empty    { background: #fff8f5; }
-    .pz-blocked  { background: #fde68a; border: 2px solid #f59e0b; color: #78350f; font-weight: 900; }
-    .pz-placed   { color: rgba(255,255,255,0.9); font-weight: 800; font-size: clamp(5px,1.6vw,10px); border: 1px solid rgba(255,255,255,0.2); }
-    .pz-preview  { transform: scale(1.05); border: 2px solid rgba(255,255,255,0.6); }
-    .pz-peek     { animation: pz-pulse 1s ease-in-out infinite; }
+    .pz-off { background: transparent; pointer-events: none; }
+    .pz-empty { background: #fff8f5; }
+    .pz-blocked { background: #fde68a; border: 2px solid #f59e0b; color: #78350f; font-weight: 900; }
+    .pz-placed { color: rgba(255,255,255,0.9); font-weight: 800; font-size: clamp(5px,1.6vw,10px); border: 1px solid rgba(255,255,255,0.2); }
+    .pz-preview { transform: scale(1.05); border: 2px solid rgba(255,255,255,0.6); }
+    .pz-peek { animation: pz-pulse 1s ease-in-out infinite; }
     .pz-card-peek { background: rgba(34,211,238,0.15) !important; }
     @keyframes pz-pulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
     .pz-preview-bad { background: rgba(239,68,68,0.5) !important; }
-
-    .pz-sarcasm {
-      font-size: 12px; font-weight: 800; color: var(--muted);
-      font-style: italic; text-align: center;
-      background: var(--panel); border: 1px solid var(--outline);
-      border-radius: 10px; padding: 8px 14px;
-      width: 100%; max-width: 380px;
-    }
-
-    .pz-tray {
-      display: flex; flex-wrap: nowrap; justify-content: center;
-      gap: 3px; width: 100%; max-width: 420px;
-      touch-action: none; overflow-x: auto;
-    }
-    .pz-card {
-      width: 44px;
-      background: rgba(72,18,50,0.55);
-      border-radius: 8px; border: 1.5px solid #1e1030;
-      display: flex; flex-direction: column; align-items: center;
-      overflow: hidden; cursor: pointer; position: relative;
-      transition: transform 0.1s, border-color 0.15s;
-      user-select: none;
-    }
+    .pz-sarcasm { font-size: 12px; font-weight: 800; color: var(--muted); font-style: italic; text-align: center; background: var(--panel); border: 1px solid var(--outline); border-radius: 10px; padding: 8px 14px; width: 100%; max-width: 380px; }
+    .pz-tray { display: flex; flex-wrap: nowrap; justify-content: center; gap: 3px; width: 100%; max-width: 420px; touch-action: none; overflow-x: auto; }
+    .pz-card { width: 44px; background: rgba(72,18,50,0.55); border-radius: 8px; border: 1.5px solid #1e1030; display: flex; flex-direction: column; align-items: center; overflow: hidden; cursor: pointer; position: relative; transition: transform 0.1s, border-color 0.15s; user-select: none; }
     .pz-card:hover { transform: translateY(-2px); }
     .pz-card-done { opacity: 0.55; cursor: default; }
-    .pz-card-sel  { background: rgba(98,25,68,0.85); }
-    .pz-card-bar  { width: 100%; height: 3px; flex-shrink: 0; }
-    .pz-card-check {
-      flex: 1; font-size: 20px;
-      display: flex; align-items: center; justify-content: center; width: 100%;
-    }
-    .pz-card-body {
-      flex: 1; display: flex; align-items: center; justify-content: center;
-      width: 100%; padding: 2px; overflow: hidden;
-      max-height: 44px;
-    }
-    .pz-card-name {
-      font-size: 8px; font-weight: 900; color: #f3c5d8;
-      letter-spacing: 1px; text-transform: uppercase;
-      padding-bottom: 2px; flex-shrink: 0;
-    }
-    .pz-zone {
-      width: 100%; height: 20px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(253,230,138,0.14);
-      font-size: 7px; font-weight: 900; color: #fde68a;
-      cursor: pointer;
-    }
+    .pz-card-sel { background: rgba(98,25,68,0.85); }
+    .pz-card-bar { width: 100%; height: 3px; flex-shrink: 0; }
+    .pz-card-check { flex: 1; font-size: 20px; display: flex; align-items: center; justify-content: center; width: 100%; }
+    .pz-card-body { flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; padding: 2px; overflow: hidden; max-height: 44px; }
+    .pz-card-name { font-size: 8px; font-weight: 900; color: #f3c5d8; letter-spacing: 1px; text-transform: uppercase; padding-bottom: 2px; flex-shrink: 0; }
+    .pz-zone { width: 100%; height: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: rgba(253,230,138,0.14); font-size: 7px; font-weight: 900; color: #fde68a; cursor: pointer; }
     .pz-zone:active, .pz-zone:hover { background: rgba(253,230,138,0.30); }
     .pz-zone-flip { border-bottom: 1px solid rgba(253,230,138,0.2); }
-    .pz-zone-rot  { border-top:    1px solid rgba(253,230,138,0.2); }
-
-    .pz-reset-btn {
-      background: rgba(255,255,255,0.06);
-      border: 1.5px solid var(--outline);
-      color: var(--muted); font-size: 12px; font-weight: 800;
-      padding: 7px 18px; border-radius: 10px; cursor: pointer;
-      transition: background 0.15s;
-    }
+    .pz-zone-rot { border-top: 1px solid rgba(253,230,138,0.2); }
+    .pz-reset-btn { background: rgba(255,255,255,0.06); border: 1.5px solid var(--outline); color: var(--muted); font-size: 12px; font-weight: 800; padding: 7px 18px; border-radius: 10px; cursor: pointer; transition: background 0.15s; }
     .pz-reset-btn:hover { background: rgba(255,255,255,0.12); }
-
-    .pz-win {
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(26,16,33,0.95);
-      border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      z-index: 10;
-    }
+    .pz-win { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(26,16,33,0.95); border-radius: 14px; display: flex; align-items: center; justify-content: center; z-index: 10; }
     .pz-win-inner { text-align: center; padding: 20px; }
     .pz-win-title { font-family: 'Boogaloo', cursive; font-size: 36px; color: var(--gold); margin-bottom: 8px; }
-    .pz-win-sub   { font-size: 14px; color: var(--muted); font-weight: 600; margin-bottom: 20px; }
-    .pz-win-btn   {
-      background: var(--accent); color: white; border: none;
-      padding: 12px 28px; border-radius: 12px; font-size: 15px;
-      font-weight: 900; cursor: pointer;
-    }
+    .pz-win-sub { font-size: 14px; color: var(--muted); font-weight: 600; margin-bottom: 20px; }
+    .pz-win-btn { background: var(--accent); color: white; border: none; padding: 12px 28px; border-radius: 12px; font-size: 15px; font-weight: 900; cursor: pointer; }
 
     @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* ── Mobile: hide game, show app promo ── */
     .pz-mobile-promo { display: none; }
     @media (max-width: 768px) {
       .pz-game-wrap { display: none !important; }
       .hero { min-height: auto !important; padding: 0 !important; }
       .hero-logo, .hero-tagline, .hero-sub, .hero-btns { display: none !important; }
-      .pz-mobile-promo {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        gap: 10px;
-        padding: 0 8px;
-        width: 100%;
-        background: none;
-        border: none;
-        box-shadow: none;
-        border-radius: 0;
-        margin: 0;
-      }
-      .pz-mobile-promo-btn {
-        display: inline-flex; align-items: center; gap: 10px;
-        background: #01875f; color: white; text-decoration: none;
-        padding: 14px 28px; border-radius: 14px;
-        font-size: 16px; font-weight: 900;
-        box-shadow: 0 8px 24px rgba(1,135,95,0.35);
-        margin-top: 8px;
-      }
+      .pz-mobile-promo { display: flex !important; flex-direction: column !important; align-items: center !important; gap: 10px; padding: 0 8px; width: 100%; background: none; border: none; box-shadow: none; border-radius: 0; margin: 0; }
+      .pz-mobile-promo-btn { display: inline-flex; align-items: center; gap: 10px; background: #01875f; color: white; text-decoration: none; padding: 14px 28px; border-radius: 14px; font-size: 16px; font-weight: 900; box-shadow: 0 8px 24px rgba(1,135,95,0.35); margin-top: 8px; }
+      .download-grid { grid-template-columns: 1fr; }
     }
 
-    /* Mobile game hidden via 768px media query above */
     @media (max-width: 768px) {
-      #ms-board {
-        width: 80vw !important;
-        gap: 2px !important;
-        padding: 6px !important;
-      }
-      #ms-tray {
-        width: 96vw !important;
-        max-width: 96vw !important;
-        flex-wrap: wrap !important;
-        justify-content: center !important;
-        gap: 6px !important;
-      }
+      #ms-board { width: 80vw !important; gap: 2px !important; padding: 6px !important; }
+      #ms-tray { width: 96vw !important; max-width: 96vw !important; flex-wrap: wrap !important; justify-content: center !important; gap: 6px !important; }
       #ms-tray .pz-card-body { flex: 1 !important; }
       #ms-tray .pz-zone { height: 18px !important; font-size: 6px !important; }
     }
 
     @media (max-width: 600px) {
       .hero-btns { flex-direction: column; align-items: center; }
-      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+      .btn-primary, .btn-secondary, .btn-ios { width: 100%; justify-content: center; }
       nav { padding: 10px 16px; }
       .nav-links { gap: 10px; }
     }
@@ -393,13 +239,12 @@
       <a href="#shop">Shop</a>
       <a href="#features">How It Works</a>
       <a href="#contact">Contact</a>
-      <a href="#download" class="nav-btn">📲 Download Free</a>
+      <a href="#download" class="nav-btn">📲 Download</a>
     </div>
   </nav>
 
-<div class="divider"></div>
+  <div class="divider"></div>
 
-  <!-- ── Top logo linking to game ── -->
   <div style="text-align:center;padding:32px 24px 0;position:relative;z-index:1;">
     <a href="#game-section">
       <img src="punzle_feature_graphic_1024x500.png" alt="Punzle"
@@ -449,9 +294,6 @@
     </div>
   </div>
 
-  <!-- ── Contact / Request Form ── -->
-
-
   <div class="divider"></div>
 
   <section id="features">
@@ -476,7 +318,12 @@
       <div class="feature-card">
         <div class="feature-emoji">🏆</div>
         <div class="feature-title">Daily Leaderboard</div>
-        <div class="feature-desc">Complete the Daily Challenge and submit your time. See how you rank against other Punzle players worldwide.</div>
+        <div class="feature-desc">Complete the Daily Challenge and submit your time. See how you rank against other Punzle players worldwide. Track your removals too!</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-emoji">⏱️</div>
+        <div class="feature-title">Time Penalties & Rewards</div>
+        <div class="feature-desc">Daily Challenge adds strategy — earn -2s for each correct placement and pay +5s every time you remove a piece. Play smart!</div>
       </div>
       <div class="feature-card">
         <div class="feature-emoji">😄</div>
@@ -484,9 +331,14 @@
         <div class="feature-desc">Every move is met with a pun-filled quip from the sarcasm bar. Because puzzles are better with personality.</div>
       </div>
       <div class="feature-card">
+        <div class="feature-emoji">📤</div>
+        <div class="feature-title">Share Your Result</div>
+        <div class="feature-desc">Solved it? Share a beautiful result card showing your time, rank, and today's saying. Challenge your friends!</div>
+      </div>
+      <div class="feature-card">
         <div class="feature-emoji">🎯</div>
-        <div class="feature-title">10 Difficulty Levels</div>
-        <div class="feature-desc">From Tiny Tot to Unsupervised Adult — pick your level of competency and earn your bragging rights.</div>
+        <div class="feature-title">11 Difficulty Levels</div>
+        <div class="feature-desc">From Tiny Tot to Chief Director of Quantitative Punzology — pick your level of competency and earn your bragging rights.</div>
       </div>
     </div>
   </section>
@@ -502,9 +354,9 @@
     </p>
     <div class="hero-btns">
       <a href="#download" class="btn-primary">📲 Download Free on Android</a>
+      <a href="#download" class="btn-ios">🍎 $0.99 on iOS</a>
       <a href="#shop" class="btn-secondary">🪵 Get the Real Thing</a>
     </div>
-    <!-- ── Interactive Punzle Game ── -->
     <div class="pz-game-wrap">
       <div class="pz-header-row">
         <div class="pz-date-label" id="pz-date-label"></div>
@@ -533,7 +385,6 @@
     </div>
   </div>
 
-  <!-- ── Mobile solver (mobile only, same theme as game) ── -->
   <div class="pz-mobile-promo" id="pz-mobile-solver">
     <div class="pz-header-row" style="max-width:96vw;">
       <div class="pz-date-label" id="ms-date-label"></div>
@@ -558,11 +409,12 @@
     <div style="font-size:12px;color:#f3c5d8;font-weight:800;opacity:0.7;">v=75</div>
     <a href="https://play.google.com/store/apps/details?id=punzle.app" class="pz-mobile-promo-btn" target="_blank">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M3.18 23.76c.3.17.64.24.99.2L15.53 12 11.68 8.15 3.18 23.76zm17.11-10.93c.43-.34.71-.86.71-1.46s-.28-1.12-.71-1.46l-2.13-1.23-4.02 4.02 4.02 4.02 2.13-1.89zM2.34.24C2.13.56 2 .97 2 1.43v21.14c0 .46.13.87.34 1.19l.06.06L13.13 12v-.27L2.4.18l-.06.06z"/></svg>
-      Download Free App
+      Download Free on Android
+    </a>
+    <a href="#" class="pz-mobile-promo-btn" target="_blank" style="background:#1c1c1e;border:1.5px solid rgba(255,255,255,0.2);margin-top:4px;">
+      🍎 $0.99 on iOS — Coming Soon
     </a>
   </div>
-
-
 
   <section id="contact" style="position:relative;z-index:1;padding:80px 24px;max-width:680px;margin:0 auto;">
     <h2 class="section-title">💬 Comments & Requests</h2>
@@ -571,7 +423,6 @@
     <form action="https://formspree.io/f/xnjbjdzr" method="POST" id="contact-form"
       style="background:var(--panel);border:1.5px solid var(--outline);border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:16px;">
 
-      <!-- Name -->
       <div style="display:flex;flex-direction:column;gap:6px;">
         <label style="font-size:13px;font-weight:800;color:var(--muted);letter-spacing:0.5px;">YOUR NAME</label>
         <input type="text" name="name" placeholder="Your name" required
@@ -579,7 +430,6 @@
           onfocus="this.style.borderColor='#22d3ee'" onblur="this.style.borderColor='rgba(255,255,255,0.14)'" />
       </div>
 
-      <!-- Email -->
       <div style="display:flex;flex-direction:column;gap:6px;">
         <label style="font-size:13px;font-weight:800;color:var(--muted);letter-spacing:0.5px;">EMAIL ADDRESS</label>
         <input type="email" name="email" placeholder="you@example.com" required
@@ -587,7 +437,6 @@
           onfocus="this.style.borderColor='#22d3ee'" onblur="this.style.borderColor='rgba(255,255,255,0.14)'" />
       </div>
 
-      <!-- Type -->
       <div style="display:flex;flex-direction:column;gap:6px;">
         <label style="font-size:13px;font-weight:800;color:var(--muted);letter-spacing:0.5px;">TYPE</label>
         <select name="type"
@@ -600,7 +449,6 @@
         </select>
       </div>
 
-      <!-- Message -->
       <div style="display:flex;flex-direction:column;gap:6px;">
         <label style="font-size:13px;font-weight:800;color:var(--muted);letter-spacing:0.5px;">MESSAGE</label>
         <textarea name="message" placeholder="Tell us what's on your mind — product ideas, questions, feedback, or just say hi!" required
@@ -609,7 +457,6 @@
           onfocus="this.style.borderColor='#22d3ee'" onblur="this.style.borderColor='rgba(255,255,255,0.14)'"></textarea>
       </div>
 
-      <!-- Submit -->
       <button type="submit"
         style="background:var(--accent);color:white;border:none;border-radius:12px;padding:14px 28px;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;box-shadow:0 8px 24px rgba(183,0,54,0.35);transition:transform 0.15s,box-shadow 0.15s;"
         onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 32px rgba(183,0,54,0.5)'"
@@ -617,7 +464,6 @@
         Send Message 🚀
       </button>
 
-      <!-- Success message (shown after submit) -->
       <div id="form-success" style="display:none;background:rgba(34,197,94,0.12);border:1.5px solid rgba(34,197,94,0.4);border-radius:10px;padding:14px;text-align:center;">
         <div style="font-size:24px;margin-bottom:6px;">✅</div>
         <div style="font-size:15px;font-weight:800;color:#22c55e;">Message sent!</div>
@@ -658,20 +504,42 @@
   <div class="divider"></div>
 
   <section id="download" class="download-section">
-    <h2 class="section-title">📲 Download Punzle Free</h2>
-    <p class="section-sub">Available now on Android. Free to play. Daily challenge. No ads.</p>
-    <div class="download-card">
-      <a href="https://play.google.com/store/apps/details?id=punzle.app" target="_blank">
-        <img src="punzle_icon_512x512.png" alt="Punzle Icon" style="width:80px; height:80px; border-radius:18px; margin-bottom:16px; display:block;" onerror="this.style.display='none'" />
-      </a>
-      <p style="font-size:14px; color:var(--muted); font-weight:600; line-height:1.7;">
-        A totally Pun Puzzle that changes Daley. Free on Android — no ads, no subscriptions, just daily puzzle fun!
-      </p>
-      <a href="https://play.google.com/store/apps/details?id=punzle.app" class="play-store-btn" target="_blank">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M3.18 23.76c.3.17.64.24.99.2L15.53 12 11.68 8.15 3.18 23.76zm17.11-10.93c.43-.34.71-.86.71-1.46s-.28-1.12-.71-1.46l-2.13-1.23-4.02 4.02 4.02 4.02 2.13-1.89zM2.34.24C2.13.56 2 .97 2 1.43v21.14c0 .46.13.87.34 1.19l.06.06L13.13 12v-.27L2.4.18l-.06.06z"/></svg>
-        Get it on Google Play
-      </a>
-      <p class="play-store-note">Free · Android · No ads · Daily puzzle</p>
+    <h2 class="section-title">📲 Download Punzle</h2>
+    <p class="section-sub">Available on Android and iOS. Daily challenge. No ads.</p>
+    <div class="download-grid">
+
+      <!-- Android -->
+      <div class="download-card">
+        <a href="https://play.google.com/store/apps/details?id=punzle.app" target="_blank">
+          <img src="punzle_icon_512x512.png" alt="Punzle Icon" style="width:80px;height:80px;border-radius:18px;margin-bottom:16px;display:block;margin-left:auto;margin-right:auto;" onerror="this.style.display='none'" />
+        </a>
+        <p style="font-size:16px;font-weight:900;color:var(--gold);margin-bottom:8px;">Android</p>
+        <p style="font-size:14px;color:var(--muted);font-weight:600;line-height:1.7;">
+          Free to play — no ads, no subscriptions, just daily puzzle fun!
+        </p>
+        <a href="https://play.google.com/store/apps/details?id=punzle.app" class="play-store-btn" target="_blank">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M3.18 23.76c.3.17.64.24.99.2L15.53 12 11.68 8.15 3.18 23.76zm17.11-10.93c.43-.34.71-.86.71-1.46s-.28-1.12-.71-1.46l-2.13-1.23-4.02 4.02 4.02 4.02 2.13-1.89zM2.34.24C2.13.56 2 .97 2 1.43v21.14c0 .46.13.87.34 1.19l.06.06L13.13 12v-.27L2.4.18l-.06.06z"/></svg>
+          Get it on Google Play
+        </a>
+        <p class="play-store-note">Free · Android · No ads · Daily puzzle</p>
+      </div>
+
+      <!-- iOS -->
+      <div class="download-card ios-card">
+        <a href="#" target="_blank">
+          <img src="punzle_icon_512x512.png" alt="Punzle Icon" style="width:80px;height:80px;border-radius:18px;margin-bottom:16px;display:block;margin-left:auto;margin-right:auto;" onerror="this.style.display='none'" />
+        </a>
+        <p style="font-size:16px;font-weight:900;color:var(--gold);margin-bottom:8px;">iPhone & iPad</p>
+        <p style="font-size:14px;color:var(--muted);font-weight:600;line-height:1.7;">
+          Just $0.99 — one-time purchase, no subscriptions, no ads. Daily puzzle fun on iOS!
+        </p>
+        <a href="#" class="app-store-btn" target="_blank">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          Coming Soon on App Store
+        </a>
+        <p class="play-store-note">$0.99 · iPhone & iPad · No ads · Daily puzzle</p>
+      </div>
+
     </div>
   </section>
 
@@ -689,24 +557,18 @@
     <p>© 2026 WisconsinDalesCreations · <a href="https://sites.google.com/view/punzle-privacy-policy/home">Privacy Policy</a> · <a href="https://wisconsindales.com">WisconsinDales.com</a></p>
   </footer>
 
-
   <script src="punzle-game.js?v=75"></script>
   <script src="punzle-render.js?v=75"></script>
   <script src="punzle-interact.js?v=75"></script>
   <script>
-    // ── Mobile solver — completely separate from game state ──────────────────
     (function() {
       const isMobile = window.innerWidth <= 768 ||
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-      // Always enforce mobile/desktop split
       document.addEventListener("DOMContentLoaded", function() {
         const game   = document.querySelector(".pz-game-wrap");
         const solver = document.getElementById("pz-mobile-solver");
         if (isMobile) {
           if (game) game.style.display = "none";
-
-          // Hide hero content on mobile
           var heroLogo    = document.querySelector(".hero-logo");
           var heroTagline = document.querySelector(".hero-tagline");
           var heroSub     = document.querySelector(".hero-sub");
@@ -717,7 +579,6 @@
           if (heroSub)     heroSub.style.display     = "none";
           if (heroBtns)    heroBtns.style.display    = "none";
           if (heroEl) { heroEl.style.padding = "0"; heroEl.style.minHeight = "0"; }
-
           if (solver) {
             solver.style.display        = "flex";
             solver.style.flexDirection  = "column";
@@ -731,22 +592,15 @@
             solver.style.borderRadius   = "0";
             solver.style.margin         = "0";
           }
-
-          // Fix board and tray sizes
           var msBoard = document.getElementById("ms-board");
-          if (msBoard) {
-            msBoard.style.width   = "65vw";
-            msBoard.style.gap     = "2px";
-            msBoard.style.padding = "5px";
-          }
+          if (msBoard) { msBoard.style.width = "65vw"; msBoard.style.gap = "2px"; msBoard.style.padding = "5px"; }
         } else {
           if (game)   game.style.display   = "";
           if (solver) solver.style.display = "none";
         }
-        });
+      });
     })();
 
-    // ── Mobile solver — self-contained, reuses punzle-game.js ────────────────
     var ms = (function() {
       var solutions   = [];
       var solIndex    = 0;
@@ -760,10 +614,8 @@
         month = today.getMonth() + 1;
         day   = today.getDate();
         blk   = getBlockedCells(month, day);
-
         var dl = document.getElementById("ms-date-label");
         if (dl) dl.textContent = today.toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" });
-
         setTimeout(function() {
           solutions = solve(month, day, true);
           solIndex  = 0;
@@ -789,21 +641,17 @@
         var boardEl = document.getElementById("ms-board");
         if (!boardEl) return;
         boardEl.innerHTML = "";
-
-        // Only show peek highlight — board is empty otherwise
         var peekMap = new Map();
         if (peekPiece && hintSol) {
           var pp = hintSol.find(function(p) { return p.piece === peekPiece; });
           if (pp) pp.cells.forEach(function(rc) { peekMap.set(cellKey(rc[0], rc[1]), pp); });
         }
-
         for (var r = 0; r < 7; r++) {
           for (var c = 0; c < 7; c++) {
             var el    = document.createElement("div");
             var key   = cellKey(r, c);
             var valid = isValidCell(r, c);
             el.textContent = LABELS.get(key) || "";
-
             if (!valid) {
               el.className = "pz-cell pz-off";
             } else if (blk.has(key)) {
@@ -825,48 +673,24 @@
         var trayEl = document.getElementById("ms-tray");
         if (!trayEl) return;
         trayEl.innerHTML = "";
-
-        // Card width: 4 per row with gaps
         var cardW = Math.floor((window.innerWidth - 48) / 4);
-
         trayEl.style.flexWrap       = "wrap";
         trayEl.style.justifyContent = "center";
         trayEl.style.gap            = "6px";
         trayEl.style.width          = "100%";
-
         PIECES.forEach(function(piece) {
           var isHinted = hints.has(piece.name);
-
-          // Get hint shape — normalize actual solution cells like solver page
           var displayCells = normalize(piece.cells);
           if (isHinted && hintSol) {
             var placement = hintSol.find(function(p) { return p.piece === piece.name; });
             if (placement) displayCells = normalize(placement.cells);
           }
-
-          // Solver-style card — no flip/rotate zones
           var card = document.createElement("div");
-          card.style.cssText = [
-            "width:" + cardW + "px",
-            "min-height:" + cardW + "px",
-            "background:" + (isHinted ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.05)"),
-            "border:1px solid " + (isHinted ? "rgba(253,230,138,0.45)" : "rgba(255,255,255,0.1)"),
-            "border-radius:14px",
-            "padding:10px",
-            "display:flex",
-            "flex-direction:column",
-            "align-items:flex-start",
-            "gap:6px",
-            "position:relative",
-            "cursor:" + (isHinted ? "pointer" : "default"),
-            "box-sizing:border-box"
-          ].join(";");
-
-          // Title row: dot + name + star
+          card.style.cssText = ["width:"+cardW+"px","min-height:"+cardW+"px","background:"+(isHinted?"rgba(255,255,255,0.08)":"rgba(255,255,255,0.05)"),"border:1px solid "+(isHinted?"rgba(253,230,138,0.45)":"rgba(255,255,255,0.1)"),"border-radius:14px","padding:10px","display:flex","flex-direction:column","align-items:flex-start","gap:6px","position:relative","cursor:"+(isHinted?"pointer":"default"),"box-sizing:border-box"].join(";");
           var title = document.createElement("div");
-          title.style.cssText = "display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:" + (isHinted ? piece.color : "var(--muted)") + ";";
+          title.style.cssText = "display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:"+(isHinted?piece.color:"var(--muted)")+";";
           var dot = document.createElement("span");
-          dot.style.cssText = "width:10px;height:10px;border-radius:50%;background:" + piece.color + ";display:inline-block;flex-shrink:0;";
+          dot.style.cssText = "width:10px;height:10px;border-radius:50%;background:"+piece.color+";display:inline-block;flex-shrink:0;";
           var name = document.createElement("span");
           name.textContent = piece.name;
           title.appendChild(dot);
@@ -878,28 +702,15 @@
             title.appendChild(star);
           }
           card.appendChild(title);
-
-          // Mini piece grid
           var miniWrap = msMiniPiece(displayCells, piece.color);
           card.appendChild(miniWrap);
-
-          // Hold to peek
           if (isHinted) {
             var timer;
-            card.addEventListener("touchstart", function() {
-              timer = setTimeout(function() { peekPiece = piece.name; renderBoard(); }, 200);
-            }, { passive: true });
-            card.addEventListener("touchend", function() {
-              clearTimeout(timer); peekPiece = null; renderBoard();
-            });
-            card.addEventListener("mousedown", function() {
-              timer = setTimeout(function() { peekPiece = piece.name; renderBoard(); }, 200);
-            });
-            card.addEventListener("mouseup", function() {
-              clearTimeout(timer); peekPiece = null; renderBoard();
-            });
+            card.addEventListener("touchstart", function() { timer = setTimeout(function() { peekPiece = piece.name; renderBoard(); }, 200); }, { passive: true });
+            card.addEventListener("touchend", function() { clearTimeout(timer); peekPiece = null; renderBoard(); });
+            card.addEventListener("mousedown", function() { timer = setTimeout(function() { peekPiece = piece.name; renderBoard(); }, 200); });
+            card.addEventListener("mouseup", function() { clearTimeout(timer); peekPiece = null; renderBoard(); });
           }
-
           trayEl.appendChild(card);
         });
       }
@@ -922,14 +733,10 @@
         return wrap;
       }
 
-      // Public functions
       window.msHint = function() {
         if (!solutions.length || !hintSol) return;
         var unHinted = PIECES.filter(function(p) { return !hints.has(p.name); });
-        if (!unHinted.length) {
-          document.getElementById("ms-sarcasm").textContent = "All hints shown! You got this. Maybe. 😄";
-          return;
-        }
+        if (!unHinted.length) { document.getElementById("ms-sarcasm").textContent = "All hints shown! You got this. Maybe. 😄"; return; }
         var piece = unHinted[Math.floor(Math.random() * unHinted.length)];
         hints.add(piece.name);
         document.getElementById("ms-sarcasm").textContent = "★ Hold piece " + piece.name + " to see where it goes.";
@@ -962,18 +769,13 @@
       return { init: init };
     })();
 
-    // Init mobile solver when ready
     document.addEventListener("DOMContentLoaded", function() {
       var isMobile = window.innerWidth <= 768 ||
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      if (isMobile) {
-        // Small delay to let punzle-game.js finish loading
-        setTimeout(function() { ms.init(); }, 100);
-      }
+      if (isMobile) { setTimeout(function() { ms.init(); }, 100); }
     });
   </script>
   <script>
-    // Set date label
     const today = new Date();
     const dl = document.getElementById("pz-date-label");
     if (dl) dl.textContent = today.toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" });
