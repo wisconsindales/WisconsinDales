@@ -311,118 +311,6 @@
   .feat-title { font-size: 13px; color: var(--text); font-weight: 500; margin-bottom: 5px; }
   .feat-desc { font-size: 12px; color: var(--muted); line-height: 1.55; }
 
-  /* ── TESTER ── */
-  .tester-wrap { margin: 0 32px 32px; }
-
-  .tester-card {
-    background: var(--bg2);
-    border: 1.5px solid var(--red);
-    border-radius: 16px;
-    padding: 28px;
-    text-align: center;
-  }
-
-  .tester-eyebrow {
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    color: var(--red);
-    font-weight: 500;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-  }
-
-  .tester-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    color: var(--text);
-    margin-bottom: 8px;
-  }
-
-  .tester-sub {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.65;
-    margin-bottom: 22px;
-    max-width: 440px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .tester-steps {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 22px;
-    flex-wrap: wrap;
-  }
-
-  .tester-step {
-    background: var(--bg3);
-    border: 0.5px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-size: 12px;
-    color: #888;
-    line-height: 1.5;
-    text-align: left;
-    flex: 1;
-    min-width: 130px;
-    max-width: 190px;
-  }
-
-  .tester-step strong { display: block; color: var(--text); font-weight: 500; margin-bottom: 3px; }
-
-  .email-row {
-    display: flex;
-    gap: 8px;
-    max-width: 440px;
-    margin: 0 auto;
-  }
-
-  .email-input {
-    flex: 1;
-    background: var(--bg);
-    border: 0.5px solid var(--subtle);
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-size: 13px;
-    color: var(--text);
-    outline: none;
-    font-family: 'DM Sans', sans-serif;
-    transition: border-color 0.2s;
-  }
-  .email-input:focus { border-color: var(--red); }
-  .email-input::placeholder { color: #444; }
-
-  .email-submit {
-    background: var(--red);
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 12px 22px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    white-space: nowrap;
-    font-family: 'DM Sans', sans-serif;
-    transition: background 0.2s;
-  }
-  .email-submit:hover { background: var(--red-dark); }
-  .email-submit:disabled { opacity: 0.6; cursor: not-allowed; }
-
-  .tester-note {
-    font-size: 11px;
-    color: #444;
-    margin-top: 12px;
-  }
-
-  .tester-note a { color: var(--cyan); }
-  .tester-note a:hover { text-decoration: underline; }
-
-  .tester-status { min-height: 20px; margin-top: 10px; font-size: 12px; font-weight: 500; }
-  .tester-status.ok { color: var(--cyan); }
-  .tester-status.err { color: var(--red); }
-
   /* ── REVIEW ── */
   .review-wrap { margin: 0 32px 32px; }
 
@@ -645,8 +533,7 @@
   <a href="#review-zone" class="nav-pulse">Leave a review</a>
   <div class="nav-links">
     <a class="nav-a" href="#">Home</a>
-    <a class="nav-btn2" href="#testerEmail">Join testers</a>
-    <a class="nav-btn" href="https://play.google.com/apps/testing/punzle.app" target="_blank">Get early access</a>
+    <a class="nav-btn" href="https://play.google.com/apps/testing/punzle.app" target="_blank">Coming soon</a>
   </div>
 </nav>
 
@@ -656,53 +543,7 @@
     <img src="punzle_feature_graphic_1024x500.png" alt="Punzle — The Daily Puzzle Game" />
   </a>
 
-  <!-- COUNTDOWN -->
-  <div style="max-width:580px;margin:24px auto 0;">
-    <div id="countdown-card" style="background:var(--bg3);border:1.5px solid var(--red);border-radius:14px;padding:22px;text-align:center;">
-      <div style="font-size:10px;letter-spacing:0.14em;color:var(--red);font-weight:500;margin-bottom:8px;text-transform:uppercase;">&#9733; Google Play Launch Countdown &#9733;</div>
-      <div style="font-family:'Playfair Display',serif;font-size:20px;color:var(--text);margin-bottom:20px;">Punzle's next step towards Production in...</div>
-      <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:18px;">
-        <div style="background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:14px 18px;min-width:72px;">
-          <div id="cd-days" style="font-family:'Playfair Display',serif;font-size:38px;color:var(--red);line-height:1;">10</div>
-          <div style="font-size:10px;color:var(--muted);margin-top:5px;letter-spacing:0.08em;text-transform:uppercase;">Days</div>
-        </div>
-        <div style="background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:14px 18px;min-width:72px;">
-          <div id="cd-hours" style="font-family:'Playfair Display',serif;font-size:38px;color:var(--red);line-height:1;">00</div>
-          <div style="font-size:10px;color:var(--muted);margin-top:5px;letter-spacing:0.08em;text-transform:uppercase;">Hours</div>
-        </div>
-        <div style="background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:14px 18px;min-width:72px;">
-          <div id="cd-mins" style="font-family:'Playfair Display',serif;font-size:38px;color:var(--red);line-height:1;">00</div>
-          <div style="font-size:10px;color:var(--muted);margin-top:5px;letter-spacing:0.08em;text-transform:uppercase;">Mins</div>
-        </div>
-        <div style="background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:14px 18px;min-width:72px;">
-          <div id="cd-secs" style="font-family:'Playfair Display',serif;font-size:38px;color:var(--red);line-height:1;">00</div>
-          <div style="font-size:10px;color:var(--muted);margin-top:5px;letter-spacing:0.08em;text-transform:uppercase;">Secs</div>
-        </div>
-      </div>
-      <div style="background:var(--bg2);border-radius:8px;overflow:hidden;height:8px;margin-bottom:8px;max-width:380px;margin-left:auto;margin-right:auto;">
-        <div id="cd-bar" style="height:100%;background:var(--red);width:28.5%;border-radius:8px;"></div>
-      </div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:0;">4 of 14 days completed</div>
-    </div>
-  </div>
-  <div style="text-align:center;margin-top:16px;" id="tester-zone">
-    <div style="font-size:10px;letter-spacing:0.14em;color:var(--red);font-weight:500;margin-bottom:10px;text-transform:uppercase;">Early tester program</div>
-    <div style="font-family:'Playfair Display',serif;font-size:26px;color:var(--text);margin-bottom:16px;">Get early access to Punzle</div>
-    <div style="background:var(--bg2);border:1.5px solid var(--red);border-radius:14px;padding:24px;max-width:580px;margin:0 auto;text-align:center;">
-      <p style="font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:18px;max-width:420px;margin-left:auto;margin-right:auto;">Sign up below and we'll add your Google account email to the Play Console testers list — then the link below unlocks the app for you on Google Play.</p>
-      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:18px;flex-wrap:wrap;">
-        <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;padding:10px 14px;font-size:11px;color:#888;line-height:1.4;text-align:left;flex:1;min-width:120px;max-width:180px;"><strong style="display:block;color:var(--text);font-weight:500;margin-bottom:2px;">Step 1</strong>Enter your Google account email below.</div>
-        <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;padding:10px 14px;font-size:11px;color:#888;line-height:1.4;text-align:left;flex:1;min-width:120px;max-width:180px;"><strong style="display:block;color:var(--text);font-weight:500;margin-bottom:2px;">Step 2</strong>We'll add you to the testers list.</div>
-        <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;padding:10px 14px;font-size:11px;color:#888;line-height:1.4;text-align:left;flex:1;min-width:120px;max-width:180px;"><strong style="display:block;color:var(--text);font-weight:500;margin-bottom:2px;">Step 3</strong>Tap the Play Store link and install.</div>
-      </div>
-      <div style="display:flex;gap:8px;max-width:420px;margin:0 auto;">
-        <input class="email-input" type="email" id="testerEmail" placeholder="your@gmail.com" />
-        <button class="email-submit" onclick="submitTester()"><span class="icon-send"></span> Sign me up</button>
-      </div>
-      <div class="tester-status" id="testerStatus"></div>
-      <p style="font-size:11px;color:#444;margin-top:10px;">After you're added, use this link to install: <a href="https://play.google.com/apps/testing/punzle.app" target="_blank" style="color:var(--cyan);">play.google.com/apps/testing/punzle.app</a></p>
-    </div>
-  </div>
+  <div class="hero-badge">★ Coming soon to Google Play</div>
 
   <p class="hero-tagline">A new daily pun-powered word puzzle. One puzzle a day. Can you solve it before you run out of PATIENCE?</p>
 
@@ -710,8 +551,8 @@
     <a class="store-badge" href="https://play.google.com/apps/testing/punzle.app" target="_blank">
       <span class="store-icon icon-gplay"></span>
       <div class="store-text">
-        <span class="store-small">Early access on</span>
-        <span class="store-name">Google Play <span class="store-live">Live</span></span>
+        <span class="store-small">Coming soon to</span>
+        <span class="store-name">Google Play <span class="store-live">Soon</span></span>
       </div>
     </a>
     <a class="store-badge" href="https://wisconsindales.com/Punzle#game-section" target="_blank">
@@ -860,44 +701,6 @@
 </footer>
 
 <script>
-  async function submitTester() {
-    const emailEl = document.getElementById("testerEmail");
-    const statusEl = document.getElementById("testerStatus");
-    const btn = document.querySelector(".email-submit");
-    const email = emailEl.value.trim();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      statusEl.className = "tester-status err";
-      statusEl.textContent = "Please enter a valid email address.";
-      return;
-    }
-    btn.disabled = true;
-    btn.textContent = "Sending...";
-    statusEl.className = "tester-status";
-    statusEl.textContent = "";
-    try {
-      const fd = new FormData();
-      fd.append("email", email);
-      fd.append("type", "Tester signup");
-      fd.append("_subject", "Punzle tester signup: " + email);
-      fd.append("site", "wisconsindales.com");
-      fd.append("timestamp", new Date().toISOString());
-      const res = await fetch("https://formspree.io/f/xnjbjdzr", { method: "POST", body: fd, headers: { Accept: "application/json" } });
-      if (res.ok) {
-        statusEl.className = "tester-status ok";
-        statusEl.textContent = "You're on the list! We'll add you soon — then use the link below to install.";
-        emailEl.value = "";
-      } else throw new Error();
-    } catch (e) {
-      statusEl.className = "tester-status err";
-      statusEl.textContent = "Something went wrong. Try again.";
-    } finally {
-      btn.disabled = false;
-      btn.innerHTML = '<span class="icon-send"></span> Sign me up';
-    }
-  }
-
-  document.getElementById("testerEmail").addEventListener("keydown", e => { if (e.key === "Enter") submitTester(); });
-
   function setType(el, type) {
     document.querySelectorAll(".rtype").forEach(r => r.classList.remove("active"));
     el.classList.add("active");
@@ -959,35 +762,6 @@
       btn.innerHTML = '<span class="icon-send"></span> Send your review';
     }
   }
-
-  // Countdown — target is 10 days from May 19 2026 (day 4 of 14, need 10 more)
-  const cdTarget = new Date('2026-05-29T00:00:00').getTime();
-  function updateCountdown() {
-    const now = new Date().getTime();
-    const diff = cdTarget - now;
-    if (diff <= 0) {
-      document.getElementById('cd-days').textContent = '00';
-      document.getElementById('cd-hours').textContent = '00';
-      document.getElementById('cd-mins').textContent = '00';
-      document.getElementById('cd-secs').textContent = '00';
-      document.getElementById('cd-bar').style.width = '100%';
-      return;
-    }
-    const days  = Math.floor(diff / (1000*60*60*24));
-    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-    const mins  = Math.floor((diff % (1000*60*60)) / (1000*60));
-    const secs  = Math.floor((diff % (1000*60)) / 1000);
-    document.getElementById('cd-days').textContent  = String(days).padStart(2,'0');
-    document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
-    document.getElementById('cd-mins').textContent  = String(mins).padStart(2,'0');
-    document.getElementById('cd-secs').textContent  = String(secs).padStart(2,'0');
-    const totalSecs = 14 * 24 * 60 * 60;
-    const elapsed = totalSecs - Math.floor(diff/1000);
-    const pct = Math.min(100, Math.round((elapsed / totalSecs) * 100));
-    document.getElementById('cd-bar').style.width = pct + '%';
-  }
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
 </script>
 
 <script>
