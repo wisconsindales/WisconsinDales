@@ -523,6 +523,13 @@
   .icon-send::before { content: "→"; font-size: 0.9em; }
   .icon-star::before { content: "★"; font-size: 0.9em; }
   .icon-bulb::before { content: "💡"; font-size: 0.85em; }
+  /* ── NPD COUNTDOWN STRIP ── */
+  .npd-strip { background: linear-gradient(90deg,#1a0008,#2a0010 55%,#1a0008); border-top:1px solid var(--border-red); border-bottom:1px solid var(--border-red); padding:16px 20px; }
+  .npd-inner { max-width:900px; margin:0 auto; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:10px 20px; text-align:center; }
+  .npd-label { font-family:'Playfair Display',serif; font-weight:700; font-size:19px; color:#fff; letter-spacing:.3px; }
+  .npd-count { font-family:'DM Sans',sans-serif; font-size:16px; color:#e8a0b0; letter-spacing:.3px; }
+  .npd-count strong { color:#ff4d6d; font-weight:700; font-size:20px; }
+  @media (max-width:600px){ .npd-label{font-size:17px;} .npd-count{font-size:15px;} .npd-count strong{font-size:18px;} }
 </style>
 </head>
 <body>
@@ -576,6 +583,13 @@
 
 <div class="divider" style="margin-top:28px;"></div>
 
+<!-- NATIONAL PUNZLE DAY COUNTDOWN -->
+<section id="npd-strip" class="npd-strip" style="display:none;" aria-hidden="true">
+  <div class="npd-inner">
+    <span class="npd-label">🗓️ National Punzle Day</span>
+    <span class="npd-count"></span>
+  </div>
+</section>
 <!-- HOW IT WORKS -->
 <section class="section">
   <div class="section-label">How it works</div>
@@ -614,8 +628,8 @@
   </div>
   <div class="feat">
     <span class="feat-icon">🆓</span>
-    <div class="feat-title">Completely free</div>
-    <div class="feat-desc">Free to download and play. Always.</div>
+    <div class="feat-title">Free on Android</div>
+    <div class="feat-desc">Free to download and play on Google Play. Just $0.99 on iOS.</div>
   </div>
   <div class="feat">
     <span class="feat-icon">🚫</span>
@@ -777,6 +791,36 @@
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/sw.js");
   }
+</script>
+<script>
+(function(){
+  var strip = document.getElementById('npd-strip');
+  if(!strip) return;
+  var out = strip.querySelector('.npd-count');
+  function nextTarget(now){
+    var y = now.getFullYear();
+    var end = new Date(y,5,7,23,59,59,999); // end of June 7 this year
+    if(now > end) return new Date(y+1,5,7,0,0,0,0);
+    return new Date(y,5,7,0,0,0,0);
+  }
+  function tick(){
+    var now = new Date();
+    if(now.getMonth()===5 && now.getDate()===7){
+      strip.style.display=''; strip.setAttribute('aria-hidden','false');
+      out.innerHTML = "\uD83C\uDF89 It's National Punzle Day \u2014 play today's special board! \uD83C\uDF89";
+      return;
+    }
+    var diff = nextTarget(now) - now;
+    var days = Math.floor(diff/86400000);
+    if(days > 60){ strip.style.display='none'; strip.setAttribute('aria-hidden','true'); return; }
+    strip.style.display=''; strip.setAttribute('aria-hidden','false');
+    var h = Math.floor((diff%86400000)/3600000);
+    var m = Math.floor((diff%3600000)/60000);
+    var s = Math.floor((diff%60000)/1000);
+    out.innerHTML = '<strong>'+days+'</strong> days &nbsp; <strong>'+h+'</strong>h &nbsp; <strong>'+m+'</strong>m &nbsp; <strong>'+s+'</strong>s';
+  }
+  tick(); setInterval(tick, 1000);
+})();
 </script>
 </body>
 </html>
