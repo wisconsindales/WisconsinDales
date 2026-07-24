@@ -234,6 +234,26 @@
     .npd-count { font-family:'Nunito',sans-serif; font-weight:800; font-size:16px; color:var(--text); }
     .npd-count strong { color:var(--gold); font-weight:900; font-size:20px; }
     @media (max-width:600px){ .npd-label{font-size:21px;} .npd-count{font-size:15px;} .npd-count strong{font-size:18px;} }
+  /* ── iOS Promo Section ── */
+  .promo-section { position: relative; z-index: 1; padding: 80px 24px; max-width: 600px; margin: 0 auto; text-align: center; }
+  .promo-card { background: var(--panel); border: 1.5px solid rgba(253,230,138,0.3); border-radius: 24px; padding: 40px 32px; box-shadow: 0 16px 48px rgba(0,0,0,0.3); }
+  .promo-title { font-family: 'Boogaloo', cursive; font-size: clamp(24px, 5vw, 34px); color: var(--gold); margin-bottom: 10px; }
+  .promo-sub { font-size: 14px; color: var(--muted); font-weight: 600; line-height: 1.7; margin-bottom: 28px; max-width: 420px; margin-left: auto; margin-right: auto; }
+  .promo-steps { display: flex; gap: 10px; justify-content: center; margin-bottom: 28px; flex-wrap: wrap; }
+  .promo-step { background: rgba(255,255,255,0.04); border: 1px solid var(--outline); border-radius: 12px; padding: 12px 14px; font-size: 12px; color: var(--muted); font-weight: 600; text-align: left; flex: 1; min-width: 120px; max-width: 160px; line-height: 1.5; }
+  .promo-step strong { display: block; color: var(--gold); font-size: 11px; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .promo-input-row { display: flex; gap: 8px; max-width: 420px; margin: 0 auto 12px; }
+  .promo-input { flex: 1; background: rgba(255,255,255,0.06); border: 1.5px solid var(--outline); border-radius: 10px; padding: 13px 16px; font-size: 14px; color: var(--text); outline: none; font-family: 'Nunito', sans-serif; font-weight: 600; transition: border-color 0.2s; }
+  .promo-input:focus { border-color: var(--gold); }
+  .promo-input::placeholder { color: #444; }
+  .promo-btn { background: #1c1c1e; color: white; border: 1.5px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 13px 20px; font-size: 14px; font-weight: 900; cursor: pointer; font-family: 'Nunito', sans-serif; white-space: nowrap; transition: background 0.2s, transform 0.1s; display: flex; align-items: center; gap: 7px; }
+  .promo-btn:hover { background: #2c2c2e; transform: translateY(-1px); }
+  .promo-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .promo-status { min-height: 22px; font-size: 13px; font-weight: 700; text-align: center; margin-top: 4px; }
+  .promo-status.ok { color: var(--cyan); }
+  .promo-status.err { color: var(--accent); }
+  .promo-note { font-size: 11px; color: #444; margin-top: 16px; font-weight: 600; }
+  @media (max-width: 480px) { .promo-input-row { flex-direction: column; } .promo-btn { width: 100%; justify-content: center; } .promo-card { padding: 28px 20px; } }
   </style>
 </head>
 <body>
@@ -559,6 +579,28 @@
 
   <div class="divider"></div>
 
+  <!-- iOS Promo Code Section -->
+  <section class="promo-section" id="ios-promo">
+    <div class="promo-card">
+      <div style="font-size:40px;margin-bottom:16px;">🍎</div>
+      <h2 class="promo-title">Free on iOS — Limited Codes!</h2>
+      <p class="promo-sub">Normally $0.99 on the App Store (sorry — Apple charges us!). Enter your email and we'll send you a free promo code instantly. Limited to 50 codes — first come, first served.</p>
+      <div class="promo-steps">
+        <div class="promo-step"><strong>Step 1</strong>Enter your email below</div>
+        <div class="promo-step"><strong>Step 2</strong>Get your code instantly by email</div>
+        <div class="promo-step"><strong>Step 3</strong>Redeem in the App Store</div>
+      </div>
+      <div class="promo-input-row">
+        <input class="promo-input" type="email" id="promoEmail" placeholder="your@email.com" autocomplete="email" />
+        <button class="promo-btn" id="promoBtn" onclick="claimPromoCode()">🍎 Get Code</button>
+      </div>
+      <div class="promo-status" id="promoStatus"></div>
+      <p class="promo-note">One code per email · 50 codes total · iOS only · App Store redemption required</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
   <div class="about-strip">
     <img src="wisconsin-dales-creations.png" alt="WisconsinDalesCreations" class="about-logo" onerror="this.style.display='none'" />
     <p class="about-text">
@@ -794,6 +836,49 @@
     const dl = document.getElementById("pz-date-label");
     if (dl) dl.textContent = today.toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" });
   </script>
+
+<script>
+async function claimPromoCode() {
+  const emailEl = document.getElementById('promoEmail');
+  const statusEl = document.getElementById('promoStatus');
+  const btn = document.getElementById('promoBtn');
+  const email = emailEl.value.trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    statusEl.className = 'promo-status err';
+    statusEl.textContent = 'Please enter a valid email address.';
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  statusEl.className = 'promo-status';
+  statusEl.textContent = '';
+  try {
+    const res = await fetch('https://punzle-promo-api.vercel.app/api/claim-code', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      statusEl.className = 'promo-status ok';
+      statusEl.textContent = '🎉 ' + data.message;
+      emailEl.value = '';
+    } else {
+      statusEl.className = 'promo-status err';
+      statusEl.textContent = data.error || 'Something went wrong. Please try again.';
+    }
+  } catch (e) {
+    statusEl.className = 'promo-status err';
+    statusEl.textContent = 'Connection error. Please try again.';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '🍎 Get Code';
+  }
+}
+document.getElementById('promoEmail').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') claimPromoCode();
+});
+</script>
 
 <script>
 (function(){
