@@ -718,6 +718,51 @@
 </div>
 
 <!-- FOOTER -->
+<!-- iOS Promo Code Section -->
+<section style="background:#8c0029;padding:60px 24px;text-align:center;border-top:1px solid rgba(255,255,255,0.1);border-bottom:1px solid rgba(255,255,255,0.1);" id="ios-promo">
+  <div style="max-width:560px;margin:0 auto;">
+    <div style="font-size:40px;margin-bottom:16px;">🍎</div>
+    <h2 style="font-size:clamp(22px,5vw,32px);font-weight:900;color:#fff;margin-bottom:10px;font-family:sans-serif;">Get Punzle Free on iOS</h2>
+    <p style="font-size:14px;color:rgba(255,255,255,0.75);line-height:1.7;margin-bottom:28px;font-family:sans-serif;">Normally $0.99 on the App Store (sorry — Apple charges us!). Enter your email and we'll instantly send you a free promo code. Limited to 50 codes — first come, first served.</p>
+    <div style="display:flex;gap:8px;max-width:420px;margin:0 auto 10px;flex-wrap:wrap;">
+      <input type="email" id="indexPromoEmail" placeholder="your@email.com" autocomplete="email"
+        style="flex:1;min-width:200px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.25);border-radius:10px;padding:13px 16px;font-size:14px;color:#fff;outline:none;font-family:sans-serif;transition:border-color 0.2s;"
+        onfocus="this.style.borderColor='rgba(255,255,255,0.6)'" onblur="this.style.borderColor='rgba(255,255,255,0.25)'" />
+      <button id="indexPromoBtn" onclick="claimIndexPromoCode()"
+        style="background:#fff;color:#b70036;border:none;border-radius:10px;padding:13px 22px;font-size:14px;font-weight:900;cursor:pointer;font-family:sans-serif;white-space:nowrap;transition:opacity 0.2s,transform 0.1s;"
+        onmouseover="this.style.opacity='0.9';this.style.transform='translateY(-1px)'"
+        onmouseout="this.style.opacity='1';this.style.transform='none'">
+        🍎 Get Free Code
+      </button>
+    </div>
+    <div id="indexPromoStatus" style="min-height:22px;font-size:13px;font-weight:700;color:#fff;font-family:sans-serif;margin-top:4px;"></div>
+    <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:16px;font-family:sans-serif;">One code per email · 50 codes total · iOS only · App Store redemption required</p>
+  </div>
+</section>
+
+<script>
+async function claimIndexPromoCode() {
+  const emailEl = document.getElementById('indexPromoEmail');
+  const statusEl = document.getElementById('indexPromoStatus');
+  const btn = document.getElementById('indexPromoBtn');
+  const email = emailEl.value.trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    statusEl.style.color = '#ffb3c6'; statusEl.textContent = 'Please enter a valid email address.'; return;
+  }
+  btn.disabled = true; btn.textContent = 'Sending...'; statusEl.textContent = '';
+  try {
+    const res = await fetch('https://punzle-promo-api.vercel.app/api/claim-code', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    if (res.ok) { statusEl.style.color = '#86efac'; statusEl.textContent = '🎉 ' + data.message; emailEl.value = ''; }
+    else { statusEl.style.color = '#ffb3c6'; statusEl.textContent = data.error || 'Something went wrong. Please try again.'; }
+  } catch (e) { statusEl.style.color = '#ffb3c6'; statusEl.textContent = 'Connection error. Please try again.'; }
+  finally { btn.disabled = false; btn.innerHTML = '🍎 Get Free Code'; }
+}
+document.getElementById('indexPromoEmail').addEventListener('keydown', function(e) { if (e.key === 'Enter') claimIndexPromoCode(); });
+</script>
+
 <footer>
   <div class="footer-brand">Wisconsin Dales</div>
   <div class="footer-copy">A Daley dose of pun-ishment.</div>
