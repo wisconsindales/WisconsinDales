@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Punzle — Daily Pun Puzzle Game by WisconsinDalesCreations</title>
-  <meta name="description" content="A totally Pun Puzzle that changes Daley. Download Punzle free on Android or $0.99 on iOS (Sorry - They charge me.) . Also available as a crafted wooden puzzle from WisconsinDalesCreations." />
+  <meta name="description" content="A totally Pun Puzzle that changes Daley. Download Punzle free on Android and iOS. Also available as a crafted wooden puzzle from WisconsinDalesCreations." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -235,7 +235,6 @@
     .npd-count strong { color:var(--gold); font-weight:900; font-size:20px; }
     @media (max-width:600px){ .npd-label{font-size:21px;} .npd-count{font-size:15px;} .npd-count strong{font-size:18px;} }
   /* ── iOS Promo Section ── */
-  .promo-section { position: relative; z-index: 1; padding: 80px 24px; max-width: 600px; margin: 0 auto; text-align: center; }
   .promo-card { background: var(--panel); border: 1.5px solid rgba(253,230,138,0.3); border-radius: 24px; padding: 40px 32px; box-shadow: 0 16px 48px rgba(0,0,0,0.3); }
   .promo-title { font-family: 'Boogaloo', cursive; font-size: clamp(24px, 5vw, 34px); color: var(--gold); margin-bottom: 10px; }
   .promo-sub { font-size: 14px; color: var(--muted); font-weight: 600; line-height: 1.7; margin-bottom: 28px; max-width: 420px; margin-left: auto; margin-right: auto; }
@@ -263,7 +262,6 @@
       <img src="wisconsin-dales-creations.png" alt="WisconsinDalesCreations" />
     </a>
     <div class="nav-links">
-      <a href="#shop">Shop</a>
       <a href="#features">How It Works</a>
       <a href="#contact">Contact</a>
       <a href="#download" class="nav-btn">📲 Download</a>
@@ -281,47 +279,6 @@
     </a>
   </div>
 
-  <div class="divider" style="margin-top:32px;"></div>
-
-  <div class="shop-section" id="shop">
-    <div class="shop-inner">
-      <h2 class="section-title">🪵 Get the Real Thing</h2>
-      <p class="section-sub">Crafted wooden puzzles — Designed and Created by WisconsinDalesCreations</p>
-      <div class="shop-grid">
-
-        <div class="product-card">
-          <img src="wooden_puzzle.jpg" alt="Wisconsin Calendar Puzzle" class="product-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-          <div class="product-img-placeholder" style="display:none;">🪵</div>
-          <div class="product-info">
-            <div class="product-name">Wisconsin Calendar Puzzle</div>
-            <div class="product-desc">
-              Crafted wooden calendar puzzle shaped like Wisconsin. Includes 8 puzzle pieces and display stand. A new challenge every day — the inspiration behind the Punzle app.<br><br>Too nice not to display, and too fun not to play.<br><br><em>*Limited quantity available. Made to order. Charged at purchase. Ships within 2-3 weeks.*</em><br><br><strong style="color:#fde68a;">🎉 First order? Use code PUNZLE20 for $20 off!</strong>
-            </div>
-            <div class="product-price">$63.00 <span style="font-size:14px; color:var(--muted); font-weight:600;">or $43 with code</span></div>
-            <div class="coupon-banner">🎉 First order? Use code <strong>PUNZLE20</strong> for $20 off!</div>
-            <a href="https://buy.stripe.com/eVqaEWgQm9zbgEvdUKcwg00" class="buy-btn" target="_blank">
-              🛒 Buy Now — Free Shipping
-            </a>
-            <p class="free-shipping-note">✓ Free shipping · US orders only · Secure checkout via Stripe</p>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <div class="product-img-placeholder">🧩</div>
-          <div class="product-info">
-            <div class="product-name">More Puzzles Coming</div>
-            <div class="product-desc">
-              Newly crafted wooden puzzle designs are in the works — including other states and a square version. Check back soon!
-            </div>
-            <span class="coming-soon-badge">🕐 Coming Soon</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
 
   <section id="features">
     <h2 class="section-title">How It Works</h2>
@@ -380,18 +337,12 @@
       A new puzzle every single day — puns included.
     </p>
     <div class="hero-btns">
-      <a href="#download" class="btn-primary">📲 Download Free on Android</a>
-      <a href="#download" class="btn-ios">🍎 $0.99 on iOS</a>
-      <a href="#shop" class="btn-secondary">🪵 Get the Real Thing</a>
+      <a href="#download" class="btn-primary">▶ Free on Google Play</a>
+      <a href="#download" class="btn-ios">🍎 Free on App Store</a>
     </div>
     <div class="pz-game-wrap">
       <div class="pz-header-row">
         <div class="pz-date-label" id="pz-date-label"></div>
-        <a href="#shop" style="display:block;flex-shrink:0;">
-          <img src="wooden_puzzle.jpg" alt="Get the Real Thing"
-            style="width:44px;height:44px;object-fit:cover;border-radius:8px;border:1.5px solid rgba(253,230,138,0.4);box-shadow:0 4px 12px rgba(0,0,0,0.4);"
-            onerror="this.style.display='none'" />
-        </a>
         <div class="pz-sol-badge" id="pz-sol-badge">
           <span class="pz-sol-num" id="pz-sol-num">…</span>
           <span class="pz-sol-lbl" id="pz-sol-lbl">solutions</span>
@@ -415,11 +366,6 @@
   <div class="pz-mobile-promo" id="pz-mobile-solver">
     <div class="pz-header-row" style="max-width:96vw;">
       <div class="pz-date-label" id="ms-date-label"></div>
-      <a href="#shop" style="display:block;flex-shrink:0;">
-        <img src="wooden_puzzle.jpg" alt="Get the Real Thing"
-          style="width:44px;height:44px;object-fit:cover;border-radius:8px;border:1.5px solid rgba(253,230,138,0.4);box-shadow:0 4px 12px rgba(0,0,0,0.4);"
-          onerror="this.style.display='none'" />
-      </a>
       <div class="pz-sol-badge" id="ms-sol-badge">
         <span class="pz-sol-num" id="ms-sol-num">…</span>
         <span class="pz-sol-lbl" id="ms-sol-lbl">solutions</span>
@@ -436,10 +382,10 @@
     <div style="font-size:12px;color:#f3c5d8;font-weight:800;opacity:0.7;">v=75</div>
     <a href="https://play.google.com/store/apps/details?id=punzle.app" class="pz-mobile-promo-btn" target="_blank">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M3.18 23.76c.3.17.64.24.99.2L15.53 12 11.68 8.15 3.18 23.76zm17.11-10.93c.43-.34.71-.86.71-1.46s-.28-1.12-.71-1.46l-2.13-1.23-4.02 4.02 4.02 4.02 2.13-1.89zM2.34.24C2.13.56 2 .97 2 1.43v21.14c0 .46.13.87.34 1.19l.06.06L13.13 12v-.27L2.4.18l-.06.06z"/></svg>
-      Download Free on Android
+      Download Free on Google Play
     </a>
     <a href="https://apps.apple.com/app/id6774663022" class="pz-mobile-promo-btn" target="_blank" style="background:#1c1c1e;border:1.5px solid rgba(255,255,255,0.2);margin-top:4px;">
-      🍎 $0.99 on iOS (Sorry - They charge me!)
+      🍎 Free on iOS — Download Now
     </a>
   </div>
 
@@ -538,65 +484,37 @@
   </div>
 </section>
   <section id="download" class="download-section">
-    <h2 class="section-title">📲 Download Punzle</h2>
-    <p class="section-sub">Available on Android and iOS. Daily challenge. No ads.</p>
-    <div class="download-grid">
+    <h2 class="section-title">📲 Download Punzle — It's Free!</h2>
+    <p class="section-sub">Available free on Android and iOS. Daily challenge. No ads. No subscriptions.</p>
 
-      <!-- Android -->
-      <div class="download-card">
-        <a href="https://play.google.com/store/apps/details?id=punzle.app" target="_blank">
-          <img src="punzle_icon_512x512.png" alt="Punzle Icon" style="width:80px;height:80px;border-radius:18px;margin-bottom:16px;display:block;margin-left:auto;margin-right:auto;" onerror="this.style.display='none'" />
-        </a>
-        <p style="font-size:16px;font-weight:900;color:var(--gold);margin-bottom:8px;">Android</p>
-        <p style="font-size:14px;color:var(--muted);font-weight:600;line-height:1.7;">
-          Free to play — no ads, no subscriptions, just daily puzzle fun!
-        </p>
-        <a href="https://play.google.com/store/apps/details?id=punzle.app" class="play-store-btn" target="_blank">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M3.18 23.76c.3.17.64.24.99.2L15.53 12 11.68 8.15 3.18 23.76zm17.11-10.93c.43-.34.71-.86.71-1.46s-.28-1.12-.71-1.46l-2.13-1.23-4.02 4.02 4.02 4.02 2.13-1.89zM2.34.24C2.13.56 2 .97 2 1.43v21.14c0 .46.13.87.34 1.19l.06.06L13.13 12v-.27L2.4.18l-.06.06z"/></svg>
-          Get it on Google Play
-        </a>
-        <p class="play-store-note">Free · Android · No ads · Daily puzzle</p>
-      </div>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:8px;">
 
-      <!-- iOS -->
-      <div class="download-card ios-card">
-        <a href="https://apps.apple.com/app/id6774663022" target="_blank">
-          <img src="punzle_icon_512x512.png" alt="Punzle Icon" style="width:80px;height:80px;border-radius:18px;margin-bottom:16px;display:block;margin-left:auto;margin-right:auto;" onerror="this.style.display='none'" />
-        </a>
-        <p style="font-size:16px;font-weight:900;color:var(--gold);margin-bottom:8px;">iPhone & iPad</p>
-        <p style="font-size:14px;color:var(--muted);font-weight:600;line-height:1.7;">
-          Just $0.99 — one-time purchase, no subscriptions, no ads. Daily puzzle fun on iOS!
-        </p>
-        <a href="https://apps.apple.com/app/id6774663022" class="app-store-btn" target="_blank">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-          Download on the App Store
-        </a>
-        <p class="play-store-note">$0.99 · iPhone & iPad · No ads · Daily puzzle</p>
-      </div>
+      <!-- Google Play -->
+      <a href="https://play.google.com/store/apps/details?id=punzle.app" target="_blank"
+        style="display:inline-flex;align-items:center;gap:12px;background:var(--bg2);color:var(--text);text-decoration:none;padding:16px 28px;border-radius:14px;font-size:15px;font-weight:900;border:1.5px solid var(--border);transition:border-color 0.2s,transform 0.15s;min-width:200px;justify-content:center;"
+        onmouseover="this.style.borderColor='#01875f';this.style.transform='translateY(-2px)'"
+        onmouseout="this.style.borderColor='rgba(255,255,255,0.14)';this.style.transform='none'">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#01875f"><path d="M3.18 23.76c.3.17.64.24.99.2L15.53 12 11.68 8.15 3.18 23.76zm17.11-10.93c.43-.34.71-.86.71-1.46s-.28-1.12-.71-1.46l-2.13-1.23-4.02 4.02 4.02 4.02 2.13-1.89zM2.34.24C2.13.56 2 .97 2 1.43v21.14c0 .46.13.87.34 1.19l.06.06L13.13 12v-.27L2.4.18l-.06.06z"/></svg>
+        <div style="text-align:left;">
+          <div style="font-size:10px;font-weight:500;opacity:0.5;letter-spacing:0.5px;line-height:1;">GET IT ON</div>
+          <div style="font-size:16px;font-weight:900;line-height:1.2;">Google Play</div>
+        </div>
+      </a>
+
+      <!-- App Store -->
+      <a href="https://apps.apple.com/app/id6774663022" target="_blank"
+        style="display:inline-flex;align-items:center;gap:12px;background:var(--bg2);color:var(--text);text-decoration:none;padding:16px 28px;border-radius:14px;font-size:15px;font-weight:900;border:1.5px solid var(--border);transition:border-color 0.2s,transform 0.15s;min-width:200px;justify-content:center;"
+        onmouseover="this.style.borderColor='rgba(255,255,255,0.4)';this.style.transform='translateY(-2px)'"
+        onmouseout="this.style.borderColor='rgba(255,255,255,0.14)';this.style.transform='none'">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        <div style="text-align:left;">
+          <div style="font-size:10px;font-weight:500;opacity:0.5;letter-spacing:0.5px;line-height:1;">DOWNLOAD ON THE</div>
+          <div style="font-size:16px;font-weight:900;line-height:1.2;">App Store</div>
+        </div>
+      </a>
 
     </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- iOS Promo Code Section -->
-  <section class="promo-section" id="ios-promo">
-    <div class="promo-card">
-      <div style="font-size:40px;margin-bottom:16px;">🍎</div>
-      <h2 class="promo-title">Free on iOS — Limited Codes!</h2>
-      <p class="promo-sub">Normally $0.99 on the App Store (sorry — Apple charges us!). Enter your email and we'll send you a free promo code instantly. Limited to 50 codes — first come, first served.</p>
-      <div class="promo-steps">
-        <div class="promo-step"><strong>Step 1</strong>Enter your email below</div>
-        <div class="promo-step"><strong>Step 2</strong>Get your code instantly by email</div>
-        <div class="promo-step"><strong>Step 3</strong>Redeem in the App Store</div>
-      </div>
-      <div class="promo-input-row">
-        <input class="promo-input" type="email" id="promoEmail" placeholder="your@email.com" autocomplete="email" />
-        <button class="promo-btn" id="promoBtn" onclick="claimPromoCode()">🍎 Get Code</button>
-      </div>
-      <div class="promo-status" id="promoStatus"></div>
-      <p class="promo-note">One code per email · 50 codes total · iOS only · App Store redemption required</p>
-    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:20px;">Free · Android &amp; iPhone &amp; iPad · No ads · No subscriptions</p>
   </section>
 
   <div class="divider"></div>
@@ -837,48 +755,7 @@
     if (dl) dl.textContent = today.toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" });
   </script>
 
-<script>
-async function claimPromoCode() {
-  const emailEl = document.getElementById('promoEmail');
-  const statusEl = document.getElementById('promoStatus');
-  const btn = document.getElementById('promoBtn');
-  const email = emailEl.value.trim();
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    statusEl.className = 'promo-status err';
-    statusEl.textContent = 'Please enter a valid email address.';
-    return;
-  }
-  btn.disabled = true;
-  btn.textContent = 'Sending...';
-  statusEl.className = 'promo-status';
-  statusEl.textContent = '';
-  try {
-    const res = await fetch('https://punzle-promo-api.vercel.app/api/claim-code', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
-    });
-    const data = await res.json();
-    if (res.ok) {
-      statusEl.className = 'promo-status ok';
-      statusEl.textContent = '🎉 ' + data.message;
-      emailEl.value = '';
-    } else {
-      statusEl.className = 'promo-status err';
-      statusEl.textContent = data.error || 'Something went wrong. Please try again.';
-    }
-  } catch (e) {
-    statusEl.className = 'promo-status err';
-    statusEl.textContent = 'Connection error. Please try again.';
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '🍎 Get Code';
-  }
-}
-document.getElementById('promoEmail').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') claimPromoCode();
-});
-</script>
+
 
 <script>
 (function(){
@@ -908,6 +785,102 @@ document.getElementById('promoEmail').addEventListener('keydown', function(e) {
     out.innerHTML = '<strong>'+days+'</strong> days &nbsp; <strong>'+h+'</strong>h &nbsp; <strong>'+m+'</strong>m &nbsp; <strong>'+s+'</strong>s';
   }
   tick(); setInterval(tick, 1000);
+})();
+</script>
+
+<script>
+// ── National Punzle Day — disable Hint & Next Solution buttons ──
+(function() {
+  var now = new Date();
+  if (now.getMonth() !== 5 || now.getDate() !== 7) return; // only June 7
+
+  // Create popup element
+  var popup = document.createElement('div');
+  popup.id = 'npd-popup';
+  popup.style.cssText = [
+    'display:none',
+    'position:fixed',
+    'top:50%',
+    'left:50%',
+    'transform:translate(-50%,-50%)',
+    'background:#1a1021',
+    'border:2px solid #d81b60',
+    'border-radius:20px',
+    'padding:32px 40px',
+    'text-align:center',
+    'z-index:9999',
+    'box-shadow:0 24px 64px rgba(0,0,0,0.7)',
+    'font-family:inherit',
+    'max-width:320px',
+    'width:90vw'
+  ].join(';');
+
+  function buildPopupHTML() {
+    var solNum = '…';
+    var badge = document.getElementById('pz-sol-num');
+    if (badge && badge.textContent && badge.textContent !== '…') solNum = badge.textContent.trim();
+    var solLine = solNum !== '…'
+      ? 'Today\'s Punzle has <strong style="color:#fde68a;">' + solNum + '</strong> solutions — but you\'re on your own to find one!'
+      : 'Today\'s Punzle has plenty of solutions — but you\'re on your own to find one!';
+    return [
+      '<div style="font-size:48px;margin-bottom:12px;">🎉</div>',
+      '<div style="font-family:Boogaloo,cursive;font-size:26px;color:#fde68a;margin-bottom:12px;">Happy National Punzle Day!</div>',
+      '<div style="font-size:14px;color:#f3c5d8;font-weight:600;line-height:1.7;margin-bottom:20px;">' + solLine + ' Hints are taking the day off. 😄</div>',
+      '<button onclick="document.getElementById(\'npd-popup\').style.display=\'none\';document.getElementById(\'npd-overlay\').style.display=\'none\';" ',
+      'style="background:#d81b60;color:#fff;border:none;border-radius:10px;padding:10px 28px;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;">Let\'s go! 🎉</button>'
+    ].join('');
+  }
+
+  popup.innerHTML = buildPopupHTML();
+
+  // Overlay
+  var overlay = document.createElement('div');
+  overlay.id = 'npd-overlay';
+  overlay.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9998;';
+  overlay.onclick = function() {
+    popup.style.display = 'none';
+    overlay.style.display = 'none';
+  };
+  document.body.appendChild(overlay);
+  document.body.appendChild(popup);
+
+  function showNPDPopup() {
+    popup.innerHTML = buildPopupHTML();
+    popup.style.display = 'block';
+    overlay.style.display = 'block';
+  }
+
+  // Wait for DOM to be ready then disable buttons
+  document.addEventListener('DOMContentLoaded', function() {
+    disableNPDButtons();
+  });
+  // Also try immediately in case DOM already loaded
+  if (document.readyState !== 'loading') disableNPDButtons();
+
+  function disableNPDButtons() {
+    // Desktop hint + next
+    ['pz-hint-btn', 'pz-next-btn'].forEach(function(id) {
+      var btn = document.getElementById(id);
+      if (!btn) return;
+      btn.disabled = true;
+      btn.style.opacity = '0.4';
+      btn.style.cursor = 'not-allowed';
+      btn.removeAttribute('onclick');
+      btn.addEventListener('click', showNPDPopup);
+    });
+
+    // Mobile hint + next (no IDs — target by class inside mobile solver)
+    var solver = document.getElementById('pz-mobile-solver');
+    if (solver) {
+      solver.querySelectorAll('.pz-hint-btn, .pz-next-btn').forEach(function(btn) {
+        btn.disabled = true;
+        btn.style.opacity = '0.4';
+        btn.style.cursor = 'not-allowed';
+        btn.removeAttribute('onclick');
+        btn.addEventListener('click', showNPDPopup);
+      });
+    }
+  }
 })();
 </script>
 </body>
