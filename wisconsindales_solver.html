@@ -97,5 +97,97 @@
   <script src="puzzle-engine.js?v=10"></script>
 <script src="puzzle-ui.js?v=12"></script>
 <script src="puzzle-drag.js?v=10"></script>
+
+<script>
+// ── National Punzle Day — disable hint/nav buttons on June 7 ──
+(function() {
+  var now = new Date();
+  if (now.getMonth() !== 5 || now.getDate() !== 7) return; // only June 7
+
+  // Overlay
+  var overlay = document.createElement('div');
+  overlay.id = 'npd-overlay';
+  overlay.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9998;';
+  overlay.onclick = function() {
+    overlay.style.display = 'none';
+    var p = document.getElementById('npd-popup');
+    if (p) p.style.display = 'none';
+  };
+  document.body.appendChild(overlay);
+
+  // Popup
+  var popup = document.createElement('div');
+  popup.id = 'npd-popup';
+  popup.style.cssText = [
+    'display:none',
+    'position:fixed',
+    'top:50%',
+    'left:50%',
+    'transform:translate(-50%,-50%)',
+    'background:#1a1021',
+    'border:2px solid #d81b60',
+    'border-radius:20px',
+    'padding:32px 40px',
+    'text-align:center',
+    'z-index:9999',
+    'box-shadow:0 24px 64px rgba(0,0,0,0.7)',
+    'font-family:Inter,Arial,sans-serif',
+    'max-width:320px',
+    'width:90vw'
+  ].join(';');
+  document.body.appendChild(popup);
+
+  function buildPopupHTML() {
+    // Try to read solution count from the solver's element
+    var solNum = null;
+    var countEl = document.getElementById('todaySolutionCount');
+    if (countEl) {
+      var txt = countEl.textContent || '';
+      var match = txt.match(/\d+/);
+      if (match) solNum = match[0];
+    }
+    var solLine = solNum
+      ? 'Today\'s Punzle has <strong style="color:#fde68a;">' + solNum + '</strong> solutions — but you\'re on your own to find one!'
+      : 'Today\'s Punzle has plenty of solutions — but you\'re on your own to find one!';
+    return [
+      '<div style="font-size:48px;margin-bottom:12px;">🎉</div>',
+      '<div style="font-size:24px;font-weight:900;color:#fde68a;margin-bottom:12px;">Happy National Punzle Day!</div>',
+      '<div style="font-size:14px;color:#f3c5d8;font-weight:600;line-height:1.7;margin-bottom:20px;">' + solLine + ' Hints are taking the day off. 😄</div>',
+      '<button onclick="document.getElementById(\'npd-popup\').style.display=\'none\';document.getElementById(\'npd-overlay\').style.display=\'none\';" ',
+      'style="background:#d81b60;color:#fff;border:none;border-radius:10px;padding:10px 28px;font-size:14px;font-weight:900;cursor:pointer;">Let\'s go! 🎉</button>'
+    ].join('');
+  }
+
+  function showNPDPopup() {
+    popup.innerHTML = buildPopupHTML();
+    popup.style.display = 'block';
+    overlay.style.display = 'block';
+  }
+
+  function disableNPDButtons() {
+    ['hintBtn', 'prevBtn', 'nextBtn'].forEach(function(id) {
+      var btn = document.getElementById(id);
+      if (!btn) return;
+      btn.disabled = true;
+      btn.style.opacity = '0.4';
+      btn.style.cursor = 'not-allowed';
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        showNPDPopup();
+      }, true); // capture phase so it fires before any existing handlers
+    });
+  }
+
+  // Run after scripts have loaded and initialized
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(disableNPDButtons, 500);
+    });
+  } else {
+    setTimeout(disableNPDButtons, 500);
+  }
+})();
+</script>
 </body>
 </html>
