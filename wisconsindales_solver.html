@@ -145,22 +145,70 @@
   }
 
   function applyNPD() {
+    // Hide "Are you confused?" button
+    var confusedBtn = document.getElementById('confusedBtn');
+    if (confusedBtn) confusedBtn.style.display = 'none';
+
     // Replace board grid with celebratory message
     var board = document.getElementById('board');
     if (board) {
       // Override the grid layout so text isn't squished into columns
       board.style.display = 'block';
       board.style.gridTemplateColumns = 'none';
+      board.style.background = 'linear-gradient(180deg, rgba(99,28,72,0.72), rgba(53,17,46,0.88))';
+      board.style.borderRadius = '14px';
+      board.style.border = '1px solid rgba(255,255,255,0.16)';
       board.innerHTML = [
-        '<div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:center;',
-        'min-height:300px;padding:28px 24px;text-align:left;gap:16px;width:100%;">',
-        '<div style="font-size:52px;line-height:1;">🎉</div>',
-        '<div style="font-size:clamp(22px,3.5vw,36px);font-weight:900;color:#fde68a;line-height:1.2;">',
-        'Happy National Punzle Day!</div>',
-        '<div style="font-size:clamp(14px,1.8vw,17px);color:#f3c5d8;font-weight:600;line-height:1.7;">',
-        'With <strong style="color:#fde68a;">97 possible solutions</strong>, the most and hardest day of the year!</div>',
-        '<div style="font-size:clamp(14px,1.8vw,17px);color:#f3c5d8;font-weight:700;line-height:1.5;">',
-        'Good luck. You\'re going to need it. 😄</div>',
+        '<div style="',
+          'display:flex;flex-direction:column;align-items:flex-start;',
+          'justify-content:center;min-height:300px;',
+          'padding:32px 28px;gap:20px;width:100%;',
+        '">',
+
+        // Emoji + title row
+        '<div style="display:flex;align-items:center;gap:14px;">',
+          '<span style="font-size:48px;line-height:1;">🎉</span>',
+          '<div style="',
+            'font-size:clamp(20px,3vw,30px);font-weight:900;',
+            'color:#fde68a;line-height:1.15;letter-spacing:-0.01em;',
+          '">Happy National<br>Punzle Day!</div>',
+        '</div>',
+
+        // Divider
+        '<div style="width:100%;height:1px;background:rgba(255,255,255,0.14);"></div>',
+
+        // Main message
+        '<div style="',
+          'font-size:clamp(14px,1.8vw,17px);color:#f3c5d8;',
+          'font-weight:700;line-height:1.75;',
+        '">',
+          'The day of the year with the most — ',
+          '<strong style="color:#fde68a;font-size:1.1em;">97 possible solutions</strong> — ',
+          'yet somehow the <strong style="color:#ff6b9d;">hardest day of the year</strong>.',
+        '</div>',
+
+        // Zero help badge
+        '<div style="',
+          'display:inline-flex;align-items:center;gap:10px;',
+          'background:rgba(216,27,96,0.18);',
+          'border:1.5px solid rgba(216,27,96,0.5);',
+          'border-radius:999px;padding:10px 20px;',
+        '">',
+          '<span style="font-size:20px;">🚫</span>',
+          '<span style="',
+            'font-size:clamp(13px,1.6vw,16px);font-weight:900;',
+            'color:#ff6b9d;letter-spacing:0.03em;',
+          '">ZERO HELP TODAY. You\'re on your own.</span>',
+        '</div>',
+
+        // Good luck
+        '<div style="',
+          'font-size:clamp(14px,1.8vw,17px);color:#f3c5d8;',
+          'font-weight:700;font-style:italic;line-height:1.5;',
+        '">',
+          'Good luck. You\'re going to need it. 😄',
+        '</div>',
+
         '</div>'
       ].join('');
     }
@@ -190,8 +238,16 @@
   }
 
   function clearNPD() {
+    var confusedBtn = document.getElementById('confusedBtn');
+    if (confusedBtn) confusedBtn.style.display = '';
     var board = document.getElementById('board');
-    if (board) { board.style.display = ''; board.style.gridTemplateColumns = ''; }
+    if (board) {
+      board.style.display = '';
+      board.style.gridTemplateColumns = '';
+      board.style.background = '';
+      board.style.borderRadius = '';
+      board.style.border = '';
+    }
     var hintBtn = document.getElementById('hintBtn');
     if (hintBtn) hintBtn.style.display = '';
     var pieces = document.getElementById('piecesPreview');
