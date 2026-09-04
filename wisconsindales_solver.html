@@ -149,24 +149,26 @@
     var board = document.getElementById('board');
     if (board) {
       board.innerHTML = [
-        '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;',
-        'min-height:220px;padding:28px 20px;text-align:center;gap:14px;">',
+        '<div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:center;',
+        'min-height:300px;padding:28px 24px;text-align:left;gap:16px;width:100%;">',
         '<div style="font-size:52px;line-height:1;">🎉</div>',
-        '<div style="font-size:clamp(18px,3vw,26px);font-weight:900;color:#fde68a;line-height:1.2;">',
-        'Happy National Punzle Day!</div>',
-        '<div style="font-size:clamp(13px,1.8vw,15px);color:#f3c5d8;font-weight:600;line-height:1.7;max-width:340px;">',
-        'With <strong style="color:#fde68a;">97 possible solutions</strong>, the most and hardest day of the year!</div>',
-        '<div style="font-size:clamp(13px,1.8vw,15px);color:#f3c5d8;font-weight:700;line-height:1.5;">',
+        '<div style="font-size:clamp(20px,4vw,32px);font-weight:900;color:#fde68a;line-height:1.2;">',
+        'Happy National<br>Punzle Day!</div>',
+        '<div style="font-size:clamp(14px,2vw,16px);color:#f3c5d8;font-weight:600;line-height:1.7;">',
+        'With <strong style="color:#fde68a;">97 possible solutions</strong>,<br>the most and hardest day of the year!</div>',
+        '<div style="font-size:clamp(14px,2vw,16px);color:#f3c5d8;font-weight:700;line-height:1.5;">',
         'Good luck. You\'re going to need it. 😄</div>',
         '</div>'
       ].join('');
     }
 
-    // Hide hint button and puzzle pieces
+    // Hide hint button, puzzle pieces and entire hint section
     var hintBtn = document.getElementById('hintBtn');
     if (hintBtn) hintBtn.style.display = 'none';
     var pieces = document.getElementById('piecesPreview');
     if (pieces) pieces.style.display = 'none';
+    var hintSection = document.getElementById('hintSection');
+    if (hintSection) hintSection.style.display = 'none';
 
     // Disable prev/next with popup
     ['prevBtn', 'nextBtn'].forEach(function(id) {
@@ -189,6 +191,8 @@
     if (hintBtn) hintBtn.style.display = '';
     var pieces = document.getElementById('piecesPreview');
     if (pieces) pieces.style.display = '';
+    var hintSection = document.getElementById('hintSection');
+    if (hintSection) hintSection.style.display = '';
     ['prevBtn', 'nextBtn'].forEach(function(id) {
       var btn = document.getElementById(id);
       if (!btn) return;
