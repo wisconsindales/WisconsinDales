@@ -208,14 +208,14 @@
     if (dateEl && dateEl.value) {
       var parts = dateEl.value.split('-');
       if (isNPD(parseInt(parts[1]), parseInt(parts[2]))) {
-        setTimeout(applyNPD, 300); return;
+        setTimeout(applyNPD, 500); return;
       }
     }
     // Check month/day selects
     var m = document.getElementById('monthSelect');
     var d = document.getElementById('daySelect');
     if (m && d && isNPD(parseInt(m.value), parseInt(d.value))) {
-      setTimeout(applyNPD, 300); return;
+      setTimeout(applyNPD, 500); return;
     }
     clearNPD();
   }
@@ -228,10 +228,24 @@
     if (monthEl) monthEl.addEventListener('change', checkDate);
     if (dayEl)   dayEl.addEventListener('change', checkDate);
 
-    // Auto-apply if today is June 7
+    // Auto-apply if today is June 7 — try multiple times to beat the engine
     var now = new Date();
     if (isNPD(now.getMonth() + 1, now.getDate())) {
       setTimeout(applyNPD, 600);
+      setTimeout(applyNPD, 1200);
+      setTimeout(applyNPD, 2500);
+    }
+
+    // Also watch for URL param date=06-07
+    var urlParams = new URLSearchParams(window.location.search);
+    var dateParam = urlParams.get('date');
+    if (dateParam) {
+      var parts = dateParam.split('-');
+      if (isNPD(parseInt(parts[0]), parseInt(parts[1]))) {
+        setTimeout(applyNPD, 600);
+        setTimeout(applyNPD, 1200);
+        setTimeout(applyNPD, 2500);
+      }
     }
   });
 
